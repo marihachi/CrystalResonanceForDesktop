@@ -8,7 +8,10 @@ using namespace std;
 class Core
 {
 public: static Core &GetInstance(void) { static Core instance; return instance; }
-private: Core(void) { }
+private: Core(void)
+{
+	StateNumber = State::None;
+}
 
 public:
 	// 状況を表します。
@@ -20,7 +23,7 @@ public:
 		Setting
 	};
 
-	State StateNumber = State::None;
+	State StateNumber;
 
 	// インスタンスを初期化します
 	bool Initialize(string title, int sizeX, int sizeY, int backR, int backG, int backB)
