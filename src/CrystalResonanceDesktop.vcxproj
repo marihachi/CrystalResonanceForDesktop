@@ -87,6 +87,7 @@
   <ItemGroup>
     <ClInclude Include="class\Core.hpp" />
     <ClInclude Include="class\GameMain.hpp" />
+    <ClInclude Include="class\GameSetting.hpp" />
     <ClInclude Include="class\IState.hpp" />
     <ClInclude Include="class\GameResult.hpp" />
     <ClInclude Include="class\GameTitle.hpp" />

@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include "DxLib.h"
+#include <string>
+
 #include "IState.hpp"
 
 using namespace std;
@@ -11,6 +13,11 @@ public: static GameMain &GetInstance(void) { static auto instance = GameMain(); 
 private: GameMain() { }
 
 public:
+	string StateName()
+	{
+		return "Main";
+	}
+
 	// 更新
 	void Update()
 	{

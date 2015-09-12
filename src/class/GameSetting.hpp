@@ -7,15 +7,15 @@
 
 using namespace std;
 
-class GameResult : public IState
+class GameSetting : public IState
 {
-public: static GameResult &GetInstance(void) { static auto instance = GameResult(); return instance; }
-private: GameResult() { }
+public: static GameSetting &GetInstance(void) { static auto instance = GameSetting(); return instance; }
+private: GameSetting() { }
 
 public:
 	string StateName()
 	{
-		return "Result";
+		return "Setting";
 	}
 
 	// 更新
