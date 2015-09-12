@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "DxLib.h"
 #include <string>
@@ -11,7 +11,7 @@ public: static Core &GetInstance(void) { static Core instance; return instance; 
 private: Core(void) { }
 
 public:
-	// ó‹µ‚ğ•\‚µ‚Ü‚·B
+	// çŠ¶æ³ã‚’è¡¨ã—ã¾ã™ã€‚
 	enum State{
 		None,
 		Title,
@@ -22,7 +22,7 @@ public:
 
 	State StateNumber = State::None;
 
-	// ƒCƒ“ƒXƒ^ƒ“ƒX‚ğ‰Šú‰»‚µ‚Ü‚·
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’åˆæœŸåŒ–ã—ã¾ã™
 	bool Initialize(string title, int sizeX, int sizeY, int backR, int backG, int backB)
 	{
 		SetMainWindowText((title + string(" - Initializing...")).c_str());
@@ -44,7 +44,7 @@ public:
 		return true;
 	}
 
-	// –ˆƒtƒŒ[ƒ€ŒÄ‚Ño‚·•K—v‚ª‚ ‚éŠî–{ˆ—‚ğŒÄ‚Ño‚µ‚Ü‚·
+	// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‘¼ã³å‡ºã™å¿…è¦ãŒã‚ã‚‹åŸºæœ¬å‡¦ç†ã‚’å‘¼ã³å‡ºã—ã¾ã™
 	bool ProcessContext()
 	{
 		if (ScreenFlip() != 0)
@@ -59,7 +59,7 @@ public:
 		return true;
 	}
 
-	// ƒCƒ“ƒXƒ^ƒ“ƒX‚ğ”jŠü‚µ‚Ü‚·
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç ´æ£„ã—ã¾ã™
 	bool Finalize()
 	{
 		DxLib_End();

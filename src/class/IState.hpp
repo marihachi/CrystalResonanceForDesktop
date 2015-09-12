@@ -1,6 +1,6 @@
-#pragma once
+ï»¿#pragma once
 
-// ƒQ[ƒ€‚Ìê–Ê‚ğ•\‚µ‚Ü‚·
+// ã‚²ãƒ¼ãƒ ã®å ´é¢ã‚’è¡¨ã—ã¾ã™
 class IState
 {
 public:
