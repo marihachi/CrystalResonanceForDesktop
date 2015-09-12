@@ -1,2 +1,4 @@
 # Crystal-Resonance-for-Desktop
-music game
+This software is music game.
+## License
+Released under the [MIT license](LICENSE)
