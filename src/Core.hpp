@@ -7,13 +7,20 @@
 class Core
 {
 public: static Core &GetInstance(void) { static Core instance; return instance; }
-private: Core(void) { }
+private: Core(void)
+{
+	ScreenSizeX = 0;
+	ScreenSizeY = 0;
+}
 
 private:
 	vector<StateInterface*> StateList;
 	string NowStateName;
 
 public:
+	int ScreenSizeX;
+	int ScreenSizeY;
+
 	// 場面を追加します
 	void AddState(StateInterface* state)
 	{
@@ -54,6 +61,9 @@ public:
 	// インスタンスを初期化します
 	bool Initialize(string title, int sizeX, int sizeY, int backR, int backG, int backB)
 	{
+		ScreenSizeX = sizeX;
+		ScreenSizeY = sizeY;
+
 		if (SetMainWindowText((title + string(" - Initializing...")).c_str()) != 0)
 			return false;
 
