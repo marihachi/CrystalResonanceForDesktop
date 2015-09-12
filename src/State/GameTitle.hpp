@@ -27,7 +27,7 @@ public:
 		{
 			IsInitial = false;
 
-			logoHandle = LoadGraph("Images/logo.png", 1);
+			logoHandle = LoadGraph("Image/logo.png", 1);
 		}
 	}
 
