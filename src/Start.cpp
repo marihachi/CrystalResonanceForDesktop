@@ -3,8 +3,8 @@
 #include <string>
 #include <vector>
 
-#include "class\IState.hpp"
 #include "class\Core.hpp"
+
 #include "class\GameTitle.hpp"
 #include "class\GameMain.hpp"
 #include "class\GameResult.hpp"

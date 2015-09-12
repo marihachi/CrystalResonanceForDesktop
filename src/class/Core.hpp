@@ -3,6 +3,8 @@
 #include "DxLib.h"
 #include <string>
 
+#include "IState.hpp"
+
 using namespace std;
 
 class Core
