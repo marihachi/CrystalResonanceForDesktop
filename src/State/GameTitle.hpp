@@ -37,13 +37,13 @@ public:
 	{
 		if (Core::GetInstance().GetNowStateName() == StateName())
 		{
-			auto centerScreenX = Core::GetInstance().ScreenSizeX / 2;
-			auto centerScreenY = Core::GetInstance().ScreenSizeY / 2;
+			auto centerScreenW = Core::GetInstance().ScreenSize.GetWidth() / 2;
+			auto centerScreenH = Core::GetInstance().ScreenSize.GetHeight() / 2;
 			
-			int logoSizeX, logoSizeY;
-			GetGraphSize(logoHandle, &logoSizeX, &logoSizeY);
+			int logoSizeW, logoSizeH;
+			GetGraphSize(logoHandle, &logoSizeW, &logoSizeH);
 
-			DrawGraph(centerScreenX - (logoSizeX / 2), centerScreenY - (logoSizeY / 2) - 150, logoHandle, 1);
+			DrawGraph(centerScreenW - (logoSizeW / 2), centerScreenH - (logoSizeH / 2) - 150, logoHandle, 1);
 		}
 	}
 };

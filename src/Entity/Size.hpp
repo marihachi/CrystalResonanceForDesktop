@@ -12,6 +12,30 @@ public:
 		Height = height;
 	}
 
+	Size operator + (Size& a)
+	{
+		return Size(Width + a.GetWidth(), Width + a.GetHeight());
+	}
+
+	Size operator - (Size& a)
+	{
+		return Size(Width - a.GetWidth(), Height - a.GetHeight());
+	}
+
+	Size operator += (Size& a)
+	{
+		Width += a.GetWidth();
+		Height += a.GetHeight();
+		return *this;
+	}
+
+	Size operator -= (Size& a)
+	{
+		Width -= a.GetWidth();
+		Height -= a.GetHeight();
+		return *this;
+	}
+
 	int GetWidth()
 	{
 		return Width;
