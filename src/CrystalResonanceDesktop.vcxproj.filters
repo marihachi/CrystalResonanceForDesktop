@@ -28,7 +28,7 @@
     <ClInclude Include="Core.hpp" />
     <ClInclude Include="StateInterface.hpp" />
     <ClInclude Include="StandardInclude.hpp" />
-    <ClInclude Include="InputHelper.h">
+    <ClInclude Include="Helper\InputHelper.h">
       <Filter>Helper</Filter>
     </ClInclude>
   </ItemGroup>
