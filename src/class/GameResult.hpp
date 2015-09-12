@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "DxLib.h"
 #include "IState.hpp"
@@ -11,13 +11,13 @@ public: static GameResult &GetInstance(void) { static auto instance = GameResult
 private: GameResult() { }
 
 public:
-	// XV
+	// æ›´æ–°
 	void Update()
 	{
 
 	}
 
-	// •`‰æ
+	// æç”»
 	void Draw()
 	{
 
