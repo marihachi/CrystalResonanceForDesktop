@@ -3,11 +3,11 @@
 #include "DxLib.h"
 #include <string>
 
-#include "../IState.hpp"
+#include "../StateInterface.hpp"
 
 using namespace std;
 
-class GameSetting : public IState
+class GameSetting : public StateInterface
 {
 public: static GameSetting &GetInstance(void) { static auto instance = GameSetting(); return instance; }
 private: GameSetting() { }

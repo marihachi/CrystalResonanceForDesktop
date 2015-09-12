@@ -5,10 +5,10 @@
 using namespace std;
 
 // ゲームの場面を表すインターフェイスクラスです
-class IState
+class StateInterface
 {
 public:
-	virtual ~IState() {}
+	virtual ~StateInterface() {}
 
 	// 場面名を取得します
 	virtual string StateName() = 0;

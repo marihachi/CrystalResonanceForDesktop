@@ -3,7 +3,7 @@
 #include "DxLib.h"
 #include <string>
 
-#include "IState.hpp"
+#include "StateInterface.hpp"
 
 using namespace std;
 
@@ -13,12 +13,12 @@ public: static Core &GetInstance(void) { static Core instance; return instance; 
 private: Core(void) { }
 
 private:
-	vector<IState*> StateList;
+	vector<StateInterface*> StateList;
 	string NowStateName;
 
 public:
 	// 場面を追加します
-	void AddState(IState* state)
+	void AddState(StateInterface* state)
 	{
 		StateList.push_back(state);
 	}

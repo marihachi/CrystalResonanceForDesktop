@@ -23,7 +23,7 @@
       <Filter>State</Filter>
     </ClInclude>
     <ClInclude Include="Core.hpp" />
-    <ClInclude Include="IState.hpp" />
+    <ClInclude Include="StateInterface.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Start.cpp" />
