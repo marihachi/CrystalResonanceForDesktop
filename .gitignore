@@ -1,0 +1,5 @@
+Debug/
+src/*.sln
+*.suo
+*.sdf
+Log.txt
