@@ -10,20 +10,49 @@ class Core
 public: static Core &GetInstance(void) { static Core instance; return instance; }
 private: Core(void)
 {
-	StateNumber = State::None;
 }
 
-public:
-	// 状況を表します。
-	enum State{
-		None,
-		Title,
-		GameMain,
-		Result,
-		Setting
-	};
+private:
+	vector<IState*> StateList;
+	string NowStateName;
 
-	State StateNumber;
+public:
+	// 場面を追加します
+	void AddState(IState* state)
+	{
+		StateList.push_back(state);
+	}
+
+	// 現在の場面名を設定します
+	void SetNowStateName(string nowStateName)
+	{
+		NowStateName = nowStateName;
+	}
+
+	// 現在の場面名を設定します
+	string GetNowStateName()
+	{
+		return NowStateName;
+	}
+
+	// 対象場面のUpdateメソッドを呼び出します
+	void UpdateTriger()
+	{
+		for (auto state : StateList)
+			if (state->StateName() == NowStateName)
+			{
+				state->Update();
+				return;
+			}
+		throw new exception("場面が見つかりませんでした。");
+	}
+
+	// 全ての場面のDrawメソッドを呼び出します
+	void DrawTriger()
+	{
+		for (auto state : StateList)
+			state->Draw();
+	}
 
 	// インスタンスを初期化します
 	bool Initialize(string title, int sizeX, int sizeY, int backR, int backG, int backB)
@@ -42,8 +71,6 @@ public:
 		if (SetMainWindowText(title.c_str()) != 0)
 			return false;
 
-		StateNumber = State::Title;
-
 		return true;
 	}
 
@@ -61,6 +88,8 @@ public:
 
 		return true;
 	}
+
+
 
 	// インスタンスを破棄します
 	bool Finalize()

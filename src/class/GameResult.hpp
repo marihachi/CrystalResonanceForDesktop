@@ -13,20 +13,21 @@ public: static GameResult &GetInstance(void) { static auto instance = GameResult
 private: GameResult() { }
 
 public:
+	// 場面名を取得します
 	string StateName()
 	{
 		return "Result";
 	}
 
-	// 更新
+	// 更新(ターゲット時のみ)
 	void Update()
 	{
 
 	}
 
-	// 描画
+	// 描画(常時)
 	void Draw()
 	{
-
+		DrawString(0, 0, "Result", 0);
 	}
 };
