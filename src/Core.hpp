@@ -1,11 +1,8 @@
 ﻿#pragma once
 
-#include "DxLib.h"
-#include <string>
+#include "StandardInclude.hpp"
 
 #include "StateInterface.hpp"
-
-using namespace std;
 
 class Core
 {

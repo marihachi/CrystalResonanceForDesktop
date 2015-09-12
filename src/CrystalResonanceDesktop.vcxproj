@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.hpp" />
+    <ClInclude Include="StandardInclude.hpp" />
     <ClInclude Include="State\GameMain.hpp" />
     <ClInclude Include="State\GameSetting.hpp" />
     <ClInclude Include="StateInterface.hpp" />

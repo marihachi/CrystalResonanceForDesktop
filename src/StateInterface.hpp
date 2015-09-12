@@ -1,8 +1,6 @@
 ﻿#pragma once
 
-#include <string>
-
-using namespace std;
+#include "StandardInclude.hpp"
 
 // ゲームの場面を表すインターフェイスクラスです
 class StateInterface

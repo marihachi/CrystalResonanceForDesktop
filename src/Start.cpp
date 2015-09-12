@@ -1,7 +1,4 @@
-﻿#include "DxLib.h"
-
-#include <string>
-#include <vector>
+﻿#include "StandardInclude.hpp"
 
 #include "Core.hpp"
 
@@ -9,8 +6,6 @@
 #include "State\GameMain.hpp"
 #include "State\GameResult.hpp"
 #include "State\GameSetting.hpp"
-
-using namespace std;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {

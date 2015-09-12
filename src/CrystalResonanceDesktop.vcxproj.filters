@@ -24,6 +24,7 @@
     </ClInclude>
     <ClInclude Include="Core.hpp" />
     <ClInclude Include="StateInterface.hpp" />
+    <ClInclude Include="StandardInclude.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Start.cpp" />
