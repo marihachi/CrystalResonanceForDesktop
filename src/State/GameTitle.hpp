@@ -29,7 +29,6 @@ public:
 
 			logoHandle = LoadGraph("Images/logo.png", 1);
 		}
-
 	}
 
 	// 描画(常時)
