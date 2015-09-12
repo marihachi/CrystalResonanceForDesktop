@@ -11,7 +11,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	Core &core = Core::GetInstance();
 
-	if (!core.Initialize("Crystal Resonance for Desktop", 1280, 720, 255, 255, 255))
+	if (!core.Initialize("Crystal Resonance for Desktop", 1280, 720, 82, 195, 202))
 		return -1;
 
 	core.AddState(&GameTitle::GetInstance());
