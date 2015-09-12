@@ -29,7 +29,7 @@ public:
 		NowStateName = nowStateName;
 	}
 
-	// 現在の場面名を設定します
+	// 現在の場面名を取得します
 	string GetNowStateName()
 	{
 		return NowStateName;
