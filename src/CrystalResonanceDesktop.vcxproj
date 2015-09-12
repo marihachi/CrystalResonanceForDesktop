@@ -86,7 +86,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.hpp" />
+    <ClInclude Include="Entity\Point.hpp" />
     <ClInclude Include="Helper\InputHelper.h" />
+    <ClInclude Include="Entity\Size.hpp" />
     <ClInclude Include="StandardInclude.hpp" />
     <ClInclude Include="State\GameMain.hpp" />
     <ClInclude Include="State\GameSetting.hpp" />

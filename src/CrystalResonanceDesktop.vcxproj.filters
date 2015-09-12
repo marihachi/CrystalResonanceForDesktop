@@ -11,6 +11,9 @@
     <Filter Include="Helper">
       <UniqueIdentifier>{376d9a4d-8fff-466f-a12c-a5f85680a1d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Entity">
+      <UniqueIdentifier>{5b4ef19d-97b2-41af-b315-bc9736c88597}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="State\GameMain.hpp">
@@ -30,6 +33,12 @@
     <ClInclude Include="StandardInclude.hpp" />
     <ClInclude Include="Helper\InputHelper.h">
       <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\Size.hpp">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\Point.hpp">
+      <Filter>Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -2,17 +2,16 @@
 
 #include "../StandardInclude.hpp"
 
-class InputHelper
-{
-public: static InputHelper &GetInstance(void) { static auto instance = InputHelper(); return instance; }
-private: InputHelper() { }
+#include "../Entity/Point.hpp"
 
+static class InputHelper
+{
 public:
 	// キーボードの入力時間
-	int KeyState[256];
+	static int KeyState[256];
 
 	// キーボードの入力時間を
-	void UpdateKeyInputTime()
+	static void UpdateKeyInputTime()
 	{
 		char state[256];
 		GetHitKeyStateAll(state);
@@ -27,13 +26,12 @@ public:
 	}
 
 	// 0: 左ボタン, 1: 右ボタン, 2: 回転量
-	int MouseState[3];
+	static int MouseState[3];
 
-	// 0: X座標, 1: Y座標
-	int MousePos[2];
+	static Point MousePos;
 
 	// マウスの入力状態
-	void UpdateMouseInputTime()
+	static void UpdateMouseInputTime()
 	{
 		int buf = GetMouseInput();
 
@@ -47,7 +45,9 @@ public:
 		else
 			MouseState[1] = 0;
 
-		GetMousePoint(&MousePos[0], &MousePos[1]);
+		int temp[2];
+		GetMousePoint(&temp[0], &temp[1]);
+		MousePos = Point(temp[0], temp[1]);
 
 		// オーバーフロー防止処理
 		if (MouseState[2] > 2147483600 || MouseState[2] < -2147483600)

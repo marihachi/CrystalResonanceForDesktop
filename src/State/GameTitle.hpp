@@ -11,7 +11,7 @@ private: GameTitle() { }
 
 private:
 	bool IsInitial = true;
-	int logoHandle; //411 x 260
+	int logoHandle;
 
 public:
 	// 場面名を取得します
@@ -38,8 +38,11 @@ public:
 		{
 			auto centerScreenX = Core::GetInstance().ScreenSizeX / 2;
 			auto centerScreenY = Core::GetInstance().ScreenSizeY / 2;
+			
+			int logoSizeX, logoSizeY;
+			GetGraphSize(logoHandle, &logoSizeX, &logoSizeY);
 
-			DrawGraph(centerScreenX - (411 / 2), centerScreenY - (260 / 2) - 150, logoHandle, 1);
+			DrawGraph(centerScreenX - (logoSizeX / 2), centerScreenY - (logoSizeY / 2) - 150, logoHandle, 1);
 		}
 	}
 };
