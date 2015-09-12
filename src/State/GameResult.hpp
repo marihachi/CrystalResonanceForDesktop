@@ -25,6 +25,9 @@ public:
 	// 描画(常時)
 	void Draw()
 	{
-		DrawString(0, 0, "Result", 0);
+		if (Core::GetInstance().GetNowStateName() == StateName())
+		{
+			DrawString(0, 0, "Result", 0);
+		}
 	}
 };
