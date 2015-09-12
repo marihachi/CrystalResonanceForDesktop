@@ -10,9 +10,7 @@ using namespace std;
 class Core
 {
 public: static Core &GetInstance(void) { static Core instance; return instance; }
-private: Core(void)
-{
-}
+private: Core(void) { }
 
 private:
 	vector<IState*> StateList;
@@ -97,8 +95,6 @@ public:
 
 		return true;
 	}
-
-
 
 	// インスタンスを破棄します
 	bool Finalize()
