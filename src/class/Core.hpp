@@ -57,16 +57,23 @@ public:
 	// インスタンスを初期化します
 	bool Initialize(string title, int sizeX, int sizeY, int backR, int backG, int backB)
 	{
-		SetMainWindowText((title + string(" - Initializing...")).c_str());
-
-		SetGraphMode(sizeX, sizeY, 32);
-		SetBackgroundColor(backR, backG, backB);
-		ChangeWindowMode(true);
-
-		if (DxLib_Init() == -1)
+		if (SetMainWindowText((title + string(" - Initializing...")).c_str()) != 0)
 			return false;
 
-		SetDrawScreen(DX_SCREEN_BACK);
+		if (SetGraphMode(sizeX, sizeY, 32) != DX_CHANGESCREEN_OK)
+			return false;
+
+		if (SetBackgroundColor(backR, backG, backB) != 0)
+			return false;
+
+		if (ChangeWindowMode(true) != DX_CHANGESCREEN_OK)
+			return false;
+
+		if (DxLib_Init() != 0)
+			return false;
+
+		if (SetDrawScreen(DX_SCREEN_BACK) != 0)
+			return false;
 
 		if (SetMainWindowText(title.c_str()) != 0)
 			return false;
@@ -95,6 +102,7 @@ public:
 	bool Finalize()
 	{
 		DxLib_End();
+
 		return true;
 	}
 };
