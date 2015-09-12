@@ -1,4 +1,5 @@
 ﻿#include "StandardInclude.hpp"
+#include "EntityInclude.hpp"
 
 #include "Core.hpp"
 

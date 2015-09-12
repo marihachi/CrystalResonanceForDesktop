@@ -1,8 +1,7 @@
 #pragma once
 
 #include "../StandardInclude.hpp"
-
-#include "../Entity/Point.hpp"
+#include "../EntityInclude.hpp"
 
 static class InputHelper
 {

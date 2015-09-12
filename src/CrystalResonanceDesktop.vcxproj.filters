@@ -40,6 +40,7 @@
     <ClInclude Include="Entity\Point.hpp">
       <Filter>Entity</Filter>
     </ClInclude>
+    <ClInclude Include="EntityInclude.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Start.cpp" />
