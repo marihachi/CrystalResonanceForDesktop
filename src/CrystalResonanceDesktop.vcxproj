@@ -85,11 +85,11 @@
     <ClCompile Include="Start.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Core.hpp" />
-    <ClInclude Include="GameMain.hpp" />
-    <ClInclude Include="IState.hpp" />
-    <ClInclude Include="GameResult.hpp" />
-    <ClInclude Include="GameTitle.h" />
+    <ClInclude Include="class\Core.hpp" />
+    <ClInclude Include="class\GameMain.hpp" />
+    <ClInclude Include="class\IState.hpp" />
+    <ClInclude Include="class\GameResult.hpp" />
+    <ClInclude Include="class\GameTitle.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

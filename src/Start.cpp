@@ -1,5 +1,8 @@
 #include "DxLib.h"
-#include "Core.hpp"
+#include "class\Core.hpp"
+#include "class\GameTitle.hpp"
+#include "class\GameMain.hpp"
+#include "class\GameResult.hpp"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {

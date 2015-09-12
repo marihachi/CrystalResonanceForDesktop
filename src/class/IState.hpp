@@ -1,3 +1,5 @@
+#pragma once
+
 // ƒQ[ƒ€‚Ìê–Ê‚ğ•\‚µ‚Ü‚·
 class IState
 {
