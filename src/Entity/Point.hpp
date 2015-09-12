@@ -29,6 +29,13 @@ public:
 		return *this;
 	}
 
+	Point operator -= (Point& a)
+	{
+		X -= a.GetX();
+		Y -= a.GetY();
+		return *this;
+	}
+
 	int GetX()
 	{
 		return X;
