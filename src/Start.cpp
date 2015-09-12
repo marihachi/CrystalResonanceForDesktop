@@ -3,12 +3,12 @@
 #include <string>
 #include <vector>
 
-#include "class\Core.hpp"
+#include "Core.hpp"
 
-#include "class\GameTitle.hpp"
-#include "class\GameMain.hpp"
-#include "class\GameResult.hpp"
-#include "class\GameSetting.hpp"
+#include "State\GameTitle.hpp"
+#include "State\GameMain.hpp"
+#include "State\GameResult.hpp"
+#include "State\GameSetting.hpp"
 
 using namespace std;
 

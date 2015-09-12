@@ -3,20 +3,20 @@
 #include "DxLib.h"
 #include <string>
 
-#include "IState.hpp"
+#include "../IState.hpp"
 
 using namespace std;
 
-class GameMain : public IState
+class GameTitle : public IState
 {
-public: static GameMain &GetInstance(void) { static auto instance = GameMain(); return instance; }
-private: GameMain() { }
+public: static GameTitle &GetInstance(void) { static auto instance = GameTitle(); return instance; }
+private: GameTitle() { }
 
 public:
 	// 場面名を取得します
 	string StateName()
 	{
-		return "Main";
+		return "Title";
 	}
 
 	// 更新(ターゲット時のみ)
@@ -28,6 +28,6 @@ public:
 	// 描画(常時)
 	void Draw()
 	{
-		DrawString(0, 0, "Main", 0);
+		DrawString(0, 0, "Title", 0);
 	}
 };
