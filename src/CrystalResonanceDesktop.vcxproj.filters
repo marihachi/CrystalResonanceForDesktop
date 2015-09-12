@@ -8,7 +8,7 @@
     <Filter Include="State">
       <UniqueIdentifier>{9c9d0952-9f7f-4902-9eca-62011a997021}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Module">
+    <Filter Include="Helper">
       <UniqueIdentifier>{376d9a4d-8fff-466f-a12c-a5f85680a1d0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -28,6 +28,9 @@
     <ClInclude Include="Core.hpp" />
     <ClInclude Include="StateInterface.hpp" />
     <ClInclude Include="StandardInclude.hpp" />
+    <ClInclude Include="InputHelper.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Start.cpp" />
