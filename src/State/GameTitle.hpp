@@ -37,11 +37,11 @@ public:
 	{
 		if (Core::GetInstance().GetNowStateName() == StateName())
 		{
-			int temp[2];
-			GetGraphSize(logoHandle, &temp[0], &temp[1]);
-			Point imageRightBottom = Point(temp[0], temp[1]);
+			int imageSize[2];
+			GetGraphSize(logoHandle, &imageSize[0], &imageSize[1]);
+			Point imageRightBottom = Point(imageSize[0], imageSize[1]);
 
-			Point screenRightBottom = (Point)Core::GetInstance().ScreenSize;
+			Point screenRightBottom = Core::GetInstance().ScreenSize.ToPoint();
 
 			Point location = screenRightBottom / 2 - imageRightBottom / 2;
 			location.AddY(-150);

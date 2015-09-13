@@ -1,3 +1,5 @@
+#include "../EntityInclude.hpp"
+
 // サイズを表します
 class Size
 {
@@ -35,11 +37,6 @@ public:
 		return Size(Width / a, Height / a);
 	}
 
-	operator Point()
-	{
-		return Point(Width, Height);
-	}
-
 	// 幅を取得します
 	int GetWidth()
 	{
@@ -50,6 +47,12 @@ public:
 	int GetHeight()
 	{
 		return Height;
+	}
+
+	// 座標として取り出します
+	Point ToPoint()
+	{
+		return Point(Width, Height);
 	}
 
 	// 幅を設定します

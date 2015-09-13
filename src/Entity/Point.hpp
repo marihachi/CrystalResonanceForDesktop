@@ -1,3 +1,5 @@
+#include "../EntityInclude.hpp"
+
 // À•W‚ğ•\‚µ‚Ü‚·
 class Point
 {
@@ -85,11 +87,6 @@ public:
 		X /= a;
 		Y /= a;
 		return *this;
-	}
-
-	operator Size()
-	{
-		return Size(X, Y);
 	}
 
 	// XÀ•W‚ğæ“¾‚µ‚Ü‚·
