@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../EntityInclude.hpp"
 
 // À•W‚ğ•\‚µ‚Ü‚·
