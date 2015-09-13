@@ -34,7 +34,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 		catch (exception ex)
 		{
-			MessageBox(NULL, ("UpdateTrigerメソッドで例外が発生しました\n(詳細: " + string(ex.what()) + ")").c_str(), "エラー", 0);
+			MessageBox(
+				DxLib::GetMainWindowHandle(),
+				("UpdateTrigerメソッドで例外が発生しました\n(詳細: " + string(ex.what()) + ")").c_str(),
+				"エラー",
+				MB_OK);
 			break;
 		}
 		core.DrawTriger();
