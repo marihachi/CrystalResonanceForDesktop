@@ -4,6 +4,7 @@
 #include "Core.hpp"
 
 #include "State\GameTitle.hpp"
+#include "State\GameMusicSelect.hpp"
 #include "State\GameMain.hpp"
 #include "State\GameResult.hpp"
 #include "State\GameSetting.hpp"

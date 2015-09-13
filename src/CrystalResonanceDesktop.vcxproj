@@ -88,6 +88,7 @@
     <ClInclude Include="Core.hpp" />
     <ClInclude Include="EntityInclude.hpp" />
     <ClInclude Include="Entity\Point.hpp" />
+    <ClInclude Include="State\GameMusicSelect.hpp" />
     <ClInclude Include="Helper\InputHelper.h" />
     <ClInclude Include="Entity\Size.hpp" />
     <ClInclude Include="Entity\Rectangle.hpp" />
