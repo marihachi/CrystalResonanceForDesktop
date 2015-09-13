@@ -116,12 +116,17 @@ public:
 		}
 	}
 
-	void DrawMenuItem(Point centerPosition, Size boxSize, const char *text)
+	Rect DrawMenuItem(Point centerPosition, Size boxSize, const char *text)
 	{
+		Rect rect(centerPosition - boxSize.GetWidthHeightAsPoint() / 2, boxSize);
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)(255 * 0.7));
-		boxSize = boxSize / 2;
-		DrawBox(centerPosition.GetX() - boxSize.GetWidth(), centerPosition.GetY() - boxSize.GetHeight(), centerPosition.GetX() + boxSize.GetWidth(), centerPosition.GetY() + boxSize.GetHeight(), 0xffffff, 0);
+		rect.Draw(0xffffff, 0);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-		DrawStringToHandle(centerPosition.GetX() - GetDrawStringWidthToHandle(text, strlen(text), FontHandle) / 2, centerPosition.GetY() - 25 / 2, text, 0xffffff, FontHandle);
+
+		Size textSize(GetDrawStringWidthToHandle(text, strlen(text), FontHandle), 25);
+		auto textLocation = centerPosition - textSize.GetWidthHeightAsPoint() / 2;
+		DrawStringToHandle(textLocation.GetX(), textLocation.GetY(), text, 0xffffff, FontHandle);
+
+		return rect;
 	}
 };
