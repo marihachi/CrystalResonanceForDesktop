@@ -39,10 +39,11 @@ public:
 	// ‹éŒ`‚ð•`‰æ‚µ‚Ü‚·
 	void Draw(unsigned int color, bool fillFlag)
 	{
+		Point location1 = GetLocationLeftTop();
 		Point location2 = GetLocationRightBottom();
 
 		DrawBox(
-			_Location.GetX(), _Location.GetY(),
+			location1.GetX(), location1.GetY(),
 			location2.GetX(), location2.GetY(),
 			color,
 			fillFlag ? 1 : 0);
