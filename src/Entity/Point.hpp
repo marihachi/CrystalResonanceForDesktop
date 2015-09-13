@@ -73,6 +73,20 @@ public:
 		return *this;
 	}
 
+	Point operator *= (int a)
+	{
+		X *= a;
+		Y *= a;
+		return *this;
+	}
+
+	Point operator /= (int a)
+	{
+		X /= a;
+		Y /= a;
+		return *this;
+	}
+
 	// XÀ•W‚ğæ“¾‚µ‚Ü‚·
 	int GetX()
 	{
