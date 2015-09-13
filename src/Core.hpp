@@ -59,7 +59,7 @@ public:
 	{
 		ScreenSize = Size(sizeX, sizeY);
 
-		if (SetMainWindowText((title + string(" - Initializing...")).c_str()) != 0)
+		if (SetMainWindowText((title + string(" - 起動中です...")).c_str()) != 0)
 			return false;
 
 		if (SetGraphMode(sizeX, sizeY, 32) != DX_CHANGESCREEN_OK)
