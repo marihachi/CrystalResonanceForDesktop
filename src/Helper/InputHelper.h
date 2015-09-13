@@ -3,14 +3,17 @@
 #include "../StandardInclude.hpp"
 #include "../EntityInclude.hpp"
 
-static class InputHelper
+class InputHelper
 {
+public: static InputHelper &GetInstance(void) { static InputHelper instance; return instance; }
+private: InputHelper() { }
+
 public:
 	// キーボードの入力時間
-	static int KeyState[256];
+	int KeyState[256];
 
 	// キーボードの入力時間を
-	static void UpdateKeyInputTime()
+	void UpdateKeyInputTime()
 	{
 		char state[256];
 		GetHitKeyStateAll(state);
@@ -25,12 +28,12 @@ public:
 	}
 
 	// 0: 左ボタン, 1: 右ボタン, 2: 回転量
-	static int MouseState[3];
+	int MouseState[3];
 
-	static Point MousePos;
+	Point MousePos;
 
 	// マウスの入力状態
-	static void UpdateMouseInputTime()
+	void UpdateMouseInputTime()
 	{
 		int buf = GetMouseInput();
 

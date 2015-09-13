@@ -2,6 +2,7 @@
 
 #include "../StandardInclude.hpp"
 #include "../EntityInclude.hpp"
+#include "../HelperInclude.hpp"
 
 #include "../StateInterface.hpp"
 
@@ -75,6 +76,8 @@ public:
 			else
 				it++;
 		}
+
+		auto input = InputHelper::GetInstance();
 	}
 
 	// 描画(常時)

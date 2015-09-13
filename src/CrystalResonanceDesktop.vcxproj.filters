@@ -44,6 +44,7 @@
     <ClInclude Include="State\GameMusicSelect.hpp">
       <Filter>State</Filter>
     </ClInclude>
+    <ClInclude Include="HelperInclude.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Start.cpp" />

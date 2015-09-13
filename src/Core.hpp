@@ -2,6 +2,7 @@
 
 #include "StandardInclude.hpp"
 #include "EntityInclude.hpp"
+#include "HelperInclude.hpp"
 
 #include "StateInterface.hpp"
 
@@ -98,6 +99,10 @@ public:
 
 		if (ClearDrawScreen() != 0)
 			return false;
+
+		InputHelper::GetInstance().UpdateKeyInputTime();
+
+		InputHelper::GetInstance().UpdateMouseInputTime();
 
 		return true;
 	}
