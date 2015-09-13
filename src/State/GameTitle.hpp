@@ -105,7 +105,7 @@ public:
 		random_device r;
 
 		int rVal = (int)((double)r() / 0xffffffff * 1000);
-		if ((rVal < 5 && Ripples.size() < 4) || (rVal < 100 && Ripples.size() == 0))
+		if ((rVal < 3 && Ripples.size() < 4) || (rVal < 100 && Ripples.size() == 0))
 		{
 			int x = (int)((double)r() / 0xffffffff * 1280);
 			int y = (int)((double)r() / 0xffffffff * 720);
@@ -116,7 +116,7 @@ public:
 		auto it = Ripples.begin();
 		while (it != Ripples.end())
 		{
-			(*it).Radius += 3;
+			(*it).Radius += 2;
 
 			if ((*it).Radius > 1280 * 1.42)
 				it = Ripples.erase(it);
