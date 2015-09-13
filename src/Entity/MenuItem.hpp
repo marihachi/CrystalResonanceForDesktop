@@ -39,15 +39,11 @@ public:
 	// 項目がクリックされたかどうかを検証します
 	bool VerifyClicked()
 	{
-		if (InputHelper::GetInstance().MouseState[0] == 1)
-		{
-			auto mp = InputHelper::GetInstance().MousePos;
-			auto p1 = Box.GetLocationLeftTop();
-			auto p2 = Box.GetLocationRightBottom();
+		auto mp = InputHelper::GetInstance().MousePos;
+		auto p1 = Box.GetLocationLeftTop();
+		auto p2 = Box.GetLocationRightBottom();
 
-			return mp >= p1 && mp <= p2;
-		}
-		return false;
+		return InputHelper::GetInstance().MouseState[0] == 1 && mp >= p1 && mp <= p2;
 	}
 
 	// メニュー項目を構築します
