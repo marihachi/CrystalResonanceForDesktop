@@ -6,6 +6,9 @@ private:
 	int Height;
 
 public:
+	Size();
+
+	// 新しいインスタンスを初期化します
 	Size(int width, int height)
 	{
 		Width = width;
@@ -36,19 +39,25 @@ public:
 		return *this;
 	}
 
+	// 幅を取得します
 	int GetWidth()
 	{
 		return Width;
 	}
+
+	// 幅を設定します
 	void SetWidth(int value)
 	{
 		Width = value;
 	}
 
+	// 高さを設定します
 	int GetHeight()
 	{
 		return Height;
 	}
+
+	// 高さを設定します
 	void SetHeight(int value)
 	{
 		Height = value;

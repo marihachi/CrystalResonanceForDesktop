@@ -6,6 +6,9 @@ private:
 	int Y;
 
 public:
+	Point();
+
+	// 新しいインスタンスを初期化します
 	Point(int x, int y)
 	{
 		X = x;
@@ -36,19 +39,24 @@ public:
 		return *this;
 	}
 
+	// X座標を取得します
 	int GetX()
 	{
 		return X;
 	}
+
+	// X座標を設定します
 	void SetX(int value)
 	{
 		X = value;
 	}
 
+	// Y座標を取得します
 	int GetY()
 	{
 		return Y;
 	}
+	// Y座標を設定します
 	void SetY(int value)
 	{
 		Y = value;
