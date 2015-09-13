@@ -27,23 +27,23 @@ public:
 	}
 
 	// 描画します
-	void Draw(int boxColor, int textColor, int fontHandle)
+	void Draw(int boxColor,bool isFill, int textColor, int fontHandle)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)(255 * 0.7));
-		Box.Draw(boxColor, false);
+		Box.Draw(boxColor, isFill);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 		DrawStringToHandle(TextLocation.GetX(), TextLocation.GetY(), Text.c_str(), textColor, fontHandle);
 	}
 
-	// 項目がクリックされたかどうかを検証します
-	bool VerifyClicked()
+	// 項目上にマウスポインタがあるかどうかを検証します
+	bool VerifyOnMouse()
 	{
 		auto mp = InputHelper::GetInstance().MousePos;
 		auto p1 = Box.GetLocationLeftTop();
 		auto p2 = Box.GetLocationRightBottom();
 
-		return InputHelper::GetInstance().MouseState[0] == 1 && mp >= p1 && mp <= p2;
+		return mp >= p1 && mp <= p2;
 	}
 
 	// メニュー項目を構築します

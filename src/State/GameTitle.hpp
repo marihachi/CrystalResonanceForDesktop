@@ -70,17 +70,17 @@ public:
 				it++;
 		}
 
-		if (MenuItemStart.VerifyClicked())
+		if (MenuItemStart.VerifyOnMouse() && InputHelper::GetInstance().MouseState[0] == 1)
 		{
 			DrawString(0, 0, "Start", 0xffffff);
 		}
-		
-		if (MenuItemSetting.VerifyClicked())
+
+		if (MenuItemSetting.VerifyOnMouse() && InputHelper::GetInstance().MouseState[0] == 1)
 		{
 			DrawString(0, 0, "Setting", 0xffffff);
 		}
 
-		if (MenuItemEnd.VerifyClicked())
+		if (MenuItemEnd.VerifyOnMouse() && InputHelper::GetInstance().MouseState[0] == 1)
 		{
 			DrawString(0, 0, "End", 0xffffff);
 		}
@@ -108,9 +108,20 @@ public:
 			DrawGraph(logoLocation.GetX(), logoLocation.GetY(), LogoHandle, 1);
 
 			// メニュー
-			MenuItemStart.Draw(0xffffff, 0xffffff, FontHandle);
-			MenuItemSetting.Draw(0xffffff, 0xffffff, FontHandle);
-			MenuItemEnd.Draw(0xffffff, 0xffffff, FontHandle);
+			if (!MenuItemStart.VerifyOnMouse())
+				MenuItemStart.Draw(0xffffff, false, 0xffffff, FontHandle);
+			else
+				MenuItemStart.Draw(0xffffff, true, GetColor(82, 195, 202), FontHandle);
+
+			if (!MenuItemSetting.VerifyOnMouse())
+				MenuItemSetting.Draw(0xffffff, false, 0xffffff, FontHandle);
+			else
+				MenuItemSetting.Draw(0xffffff, true, GetColor(82, 195, 202), FontHandle);
+
+			if (!MenuItemEnd.VerifyOnMouse())
+				MenuItemEnd.Draw(0xffffff, false, 0xffffff, FontHandle);
+			else
+				MenuItemEnd.Draw(0xffffff, true, GetColor(82, 195, 202), FontHandle);
 		}
 	}
 };
