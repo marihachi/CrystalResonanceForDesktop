@@ -35,6 +35,11 @@ public:
 		return Size(Width / a, Height / a);
 	}
 
+	operator Point()
+	{
+		return Point(Width, Height);
+	}
+
 	// •‚ğæ“¾‚µ‚Ü‚·
 	int GetWidth()
 	{

@@ -87,6 +87,11 @@ public:
 		return *this;
 	}
 
+	operator Size()
+	{
+		return Size(X, Y);
+	}
+
 	// XÀ•W‚ğæ“¾‚µ‚Ü‚·
 	int GetX()
 	{
