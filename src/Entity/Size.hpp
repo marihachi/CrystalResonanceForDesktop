@@ -15,16 +15,6 @@ public:
 		Height = height;
 	}
 
-	Size operator + (Size& a)
-	{
-		return Size(Width + a.GetWidth(), Width + a.GetHeight());
-	}
-
-	Size operator - (Size& a)
-	{
-		return Size(Width - a.GetWidth(), Height - a.GetHeight());
-	}
-
 	Size operator * (Size& a)
 	{
 		return Size(Width * a.GetWidth(), Height * a.GetHeight());
@@ -35,16 +25,6 @@ public:
 		return Size(Width / a.GetWidth(), Height / a.GetHeight());
 	}
 
-	Size operator + (int a)
-	{
-		return Size(Width + a, Width + a);
-	}
-
-	Size operator - (int a)
-	{
-		return Size(Width - a, Height - a);
-	}
-
 	Size operator * (int a)
 	{
 		return Size(Width * a, Height * a);
@@ -53,20 +33,6 @@ public:
 	Size operator / (int a)
 	{
 		return Size(Width / a, Height / a);
-	}
-
-	Size operator += (Size& a)
-	{
-		Width += a.GetWidth();
-		Height += a.GetHeight();
-		return *this;
-	}
-
-	Size operator -= (Size& a)
-	{
-		Width -= a.GetWidth();
-		Height -= a.GetHeight();
-		return *this;
 	}
 
 	// ïùÇéÊìæÇµÇ‹Ç∑

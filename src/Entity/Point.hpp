@@ -35,16 +35,6 @@ public:
 		return Point(X / a.GetX(), Y / a.GetY());
 	}
 
-	Point operator + (int a)
-	{
-		return Point(X + a, Y + a);
-	}
-
-	Point operator - (int a)
-	{
-		return Point(X - a, Y - a);
-	}
-
 	Point operator * (int a)
 	{
 		return Point(X * a, Y * a);
