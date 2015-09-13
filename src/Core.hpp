@@ -50,8 +50,12 @@ public:
 	// 登録されている全ての場面のDrawメソッドを呼び出します
 	void DrawTriger()
 	{
+
 		for (auto state : StateList)
-			state->Draw();
+		{
+			StateEventArgs e(state->StateName() == NowStateName);
+			state->Draw(e);
+		}
 	}
 
 	// インスタンスを初期化します

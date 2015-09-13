@@ -24,9 +24,9 @@ public:
 	}
 
 	// 描画(常時)
-	void Draw()
+	void Draw(StateEventArgs e)
 	{
-		if (Core::GetInstance().GetNowStateName() == StateName())
+		if (e.IsActive())
 		{
 			DrawString(0, 0, "Main", 0);
 		}
