@@ -2,6 +2,7 @@
 
 #include "../StandardInclude.hpp"
 #include "../EntityInclude.hpp"
+#include "../HelperInclude.hpp"
 
 class MenuItem
 {
@@ -25,6 +26,7 @@ public:
 		TextLocation = textRelativeLocation;
 	}
 
+	// 描画します
 	void Draw(int boxColor, int textColor, int fontHandle)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)(255 * 0.7));
@@ -32,6 +34,20 @@ public:
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 		DrawStringToHandle(TextLocation.GetX(), TextLocation.GetY(), Text.c_str(), textColor, fontHandle);
+	}
+
+	// 項目がクリックされたかどうかを検証します
+	bool VerifyClicked()
+	{
+		if (InputHelper::GetInstance().MouseState[0] == 1)
+		{
+			auto mp = InputHelper::GetInstance().MousePos;
+			auto p1 = Box.GetLocationLeftTop();
+			auto p2 = Box.GetLocationRightBottom();
+
+			return mp >= p1 && mp <= p2;
+		}
+		return false;
 	}
 
 	// メニュー項目を構築します

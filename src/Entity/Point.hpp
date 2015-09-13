@@ -91,6 +91,21 @@ public:
 		return *this;
 	}
 
+	bool operator >= (Point& a)
+	{
+		return X >= a.GetX() && Y >= a.GetY();
+	}
+
+	bool operator <= (Point& a)
+	{
+		return X <= a.GetX() && Y <= a.GetY();
+	}
+
+	bool operator == (Point& a)
+	{
+		return X == a.GetX() && Y == a.GetY();
+	}
+
 	// X座標を取得します
 	int GetX()
 	{

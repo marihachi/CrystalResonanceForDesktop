@@ -2,7 +2,6 @@
 
 #include "../StandardInclude.hpp"
 #include "../EntityInclude.hpp"
-#include "../HelperInclude.hpp"
 
 #include "../StateInterface.hpp"
 
@@ -71,7 +70,20 @@ public:
 				it++;
 		}
 
-		auto input = InputHelper::GetInstance();
+		if (MenuItemStart.VerifyClicked())
+		{
+			DrawString(0, 0, "Start", 0xffffff);
+		}
+		
+		if (MenuItemSetting.VerifyClicked())
+		{
+			DrawString(0, 0, "Setting", 0xffffff);
+		}
+
+		if (MenuItemEnd.VerifyClicked())
+		{
+			DrawString(0, 0, "End", 0xffffff);
+		}
 	}
 
 	// 描画(常時)
