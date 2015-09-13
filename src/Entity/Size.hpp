@@ -49,8 +49,8 @@ public:
 		return Height;
 	}
 
-	// À•W‚Æ‚µ‚Äæ‚èo‚µ‚Ü‚·
-	Point ToPoint()
+	// •‚Æ‚‚³‚ğÀ•W‚Æ‚µ‚Äæ“¾‚µ‚Ü‚·
+	Point GetWidthHeightAsPoint()
 	{
 		return Point(Width, Height);
 	}
