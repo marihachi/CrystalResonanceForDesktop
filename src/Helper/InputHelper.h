@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "../StandardInclude.hpp"
 #include "../EntityInclude.hpp"
@@ -6,10 +6,10 @@
 static class InputHelper
 {
 public:
-	// ƒL[ƒ{[ƒh‚Ì“ü—ÍŽžŠÔ
+	// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®å…¥åŠ›æ™‚é–“
 	static int KeyState[256];
 
-	// ƒL[ƒ{[ƒh‚Ì“ü—ÍŽžŠÔ‚ð
+	// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®å…¥åŠ›æ™‚é–“ã‚’
 	static void UpdateKeyInputTime()
 	{
 		char state[256];
@@ -24,12 +24,12 @@ public:
 		}
 	}
 
-	// 0: ¶ƒ{ƒ^ƒ“, 1: ‰Eƒ{ƒ^ƒ“, 2: ‰ñ“]—Ê
+	// 0: å·¦ãƒœã‚¿ãƒ³, 1: å³ãƒœã‚¿ãƒ³, 2: å›žè»¢é‡
 	static int MouseState[3];
 
 	static Point MousePos;
 
-	// ƒ}ƒEƒX‚Ì“ü—Íó‘Ô
+	// ãƒžã‚¦ã‚¹ã®å…¥åŠ›çŠ¶æ…‹
 	static void UpdateMouseInputTime()
 	{
 		int buf = GetMouseInput();
@@ -48,11 +48,11 @@ public:
 		GetMousePoint(&temp[0], &temp[1]);
 		MousePos = Point(temp[0], temp[1]);
 
-		// ƒI[ƒo[ƒtƒ[–hŽ~ˆ—
+		// ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼é˜²æ­¢å‡¦ç†
 		if (MouseState[2] > 2147483600 || MouseState[2] < -2147483600)
 			MouseState[2] = (int)(MouseState[2] / fabs((float)MouseState[2]));
 
-		// ‹tŒü‚«‚É“®‚©‚µ‚½‚çƒŠƒZƒbƒgi“r’†‚ÅŒü‚«‚ð•Ï‚¦‚½‚Æ‚«‚É•K—v‚ÈˆÚ“®—Ê‚ð“™‚µ‚­‚·‚é‚½‚ßj
+		// é€†å‘ãã«å‹•ã‹ã—ãŸã‚‰ãƒªã‚»ãƒƒãƒˆï¼ˆé€”ä¸­ã§å‘ãã‚’å¤‰ãˆãŸã¨ãã«å¿…è¦ãªç§»å‹•é‡ã‚’ç­‰ã—ãã™ã‚‹ãŸã‚ï¼‰
 		auto wheelRotVol = GetMouseWheelRotVol();
 
 		if ((MouseState[2] > 0 && wheelRotVol < 0) || (MouseState[2] < 0 && wheelRotVol > 0))

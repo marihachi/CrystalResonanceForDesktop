@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "../StandardInclude.hpp"
 #include "../EntityInclude.hpp"
@@ -11,19 +11,19 @@ public: static GameMusicSelect &GetInstance(void) { static auto instance = GameM
 private: GameMusicSelect() { }
 
 public:
-	// ê–Ê–¼‚ğæ“¾‚µ‚Ü‚·
+	// å ´é¢åã‚’å–å¾—ã—ã¾ã™
 	string StateName()
 	{
 		return "MusicSelect";
 	}
 
-	// XV(ƒ^[ƒQƒbƒg‚Ì‚İ)
+	// æ›´æ–°(ã‚¿ãƒ¼ã‚²ãƒƒãƒˆæ™‚ã®ã¿)
 	void Update()
 	{
 
 	}
 
-	// •`‰æ(í)
+	// æç”»(å¸¸æ™‚)
 	void Draw(StateEventArgs e)
 	{
 		if (e.IsActive())

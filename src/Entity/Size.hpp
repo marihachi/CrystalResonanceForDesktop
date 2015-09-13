@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 
 #include "../EntityInclude.hpp"
 
-// ƒTƒCƒY‚ğ•\‚µ‚Ü‚·
+// ã‚µã‚¤ã‚ºã‚’è¡¨ã—ã¾ã™
 class Size
 {
 private:
@@ -10,9 +10,9 @@ private:
 	int Height;
 
 public:
-	Size();
+	Size() { }
 
-	// V‚µ‚¢ƒCƒ“ƒXƒ^ƒ“ƒX‚ğ‰Šú‰»‚µ‚Ü‚·
+	// æ–°ã—ã„ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’åˆæœŸåŒ–ã—ã¾ã™
 	Size(int width, int height)
 	{
 		Width = width;
@@ -39,44 +39,44 @@ public:
 		return Size(Width / a, Height / a);
 	}
 
-	// •‚ğæ“¾‚µ‚Ü‚·
+	// å¹…ã‚’å–å¾—ã—ã¾ã™
 	int GetWidth()
 	{
 		return Width;
 	}
 
-	// ‚‚³‚ğİ’è‚µ‚Ü‚·
+	// é«˜ã•ã‚’è¨­å®šã—ã¾ã™
 	int GetHeight()
 	{
 		return Height;
 	}
 
-	// •‚Æ‚‚³‚ğÀ•W‚Æ‚µ‚Äæ“¾‚µ‚Ü‚·
+	// å¹…ã¨é«˜ã•ã‚’åº§æ¨™ã¨ã—ã¦å–å¾—ã—ã¾ã™
 	Point GetWidthHeightAsPoint()
 	{
 		return Point(Width, Height);
 	}
 
-	// •‚ğİ’è‚µ‚Ü‚·
+	// å¹…ã‚’è¨­å®šã—ã¾ã™
 	void SetWidth(int value)
 	{
 		Width = value;
 	}
 
-	// ‚‚³‚ğİ’è‚µ‚Ü‚·
+	// é«˜ã•ã‚’è¨­å®šã—ã¾ã™
 	void SetHeight(int value)
 	{
 		Height = value;
 	}
 
 
-	// •‚É’l‚ğ‰ÁZ‚µ‚Ü‚·
+	// å¹…ã«å€¤ã‚’åŠ ç®—ã—ã¾ã™
 	void AddWidth(int value)
 	{
 		Width += value;
 	}
 
-	// ‚‚³‚É’l‚ğ‰ÁZ‚µ‚Ü‚·
+	// é«˜ã•ã«å€¤ã‚’åŠ ç®—ã—ã¾ã™
 	void AddHeight(int value)
 	{
 		Height += value;

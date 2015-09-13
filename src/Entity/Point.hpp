@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 
 #include "../EntityInclude.hpp"
 
-// À•W‚ğ•\‚µ‚Ü‚·
+// åº§æ¨™ã‚’è¡¨ã—ã¾ã™
 class Point
 {
 private:
@@ -10,9 +10,9 @@ private:
 	int Y;
 
 public:
-	Point();
+	Point() { }
 
-	// V‚µ‚¢ƒCƒ“ƒXƒ^ƒ“ƒX‚ğ‰Šú‰»‚µ‚Ü‚·
+	// æ–°ã—ã„ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’åˆæœŸåŒ–ã—ã¾ã™
 	Point(int x, int y)
 	{
 		X = x;
@@ -91,37 +91,37 @@ public:
 		return *this;
 	}
 
-	// XÀ•W‚ğæ“¾‚µ‚Ü‚·
+	// Xåº§æ¨™ã‚’å–å¾—ã—ã¾ã™
 	int GetX()
 	{
 		return X;
 	}
 
-	// YÀ•W‚ğæ“¾‚µ‚Ü‚·
+	// Yåº§æ¨™ã‚’å–å¾—ã—ã¾ã™
 	int GetY()
 	{
 		return Y;
 	}
 
-	// XÀ•W‚ğİ’è‚µ‚Ü‚·
+	// Xåº§æ¨™ã‚’è¨­å®šã—ã¾ã™
 	void SetX(int value)
 	{
 		X = value;
 	}
 
-	// YÀ•W‚ğİ’è‚µ‚Ü‚·
+	// Yåº§æ¨™ã‚’è¨­å®šã—ã¾ã™
 	void SetY(int value)
 	{
 		Y = value;
 	}
 
-	// XÀ•W‚É’l‚ğ‰ÁZ‚µ‚Ü‚·
+	// Xåº§æ¨™ã«å€¤ã‚’åŠ ç®—ã—ã¾ã™
 	void AddX(int value)
 	{
 		X += value;
 	}
 
-	// YÀ•W‚É’l‚ğ‰ÁZ‚µ‚Ü‚·
+	// Yåº§æ¨™ã«å€¤ã‚’åŠ ç®—ã—ã¾ã™
 	void AddY(int value)
 	{
 		Y += value;
