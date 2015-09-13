@@ -64,12 +64,15 @@ public:
 			Ripples.push_back(Ripple(Point(x, y), 0));
 		}
 
-		for (auto it = Ripples.begin(); it != Ripples.end(); it++)
+		auto it = Ripples.begin();
+		while (it != Ripples.end())
 		{
 			(*it).Radius += 3;
 
 			if ((*it).Radius > 1280 * 1.42)
 				it = Ripples.erase(it);
+			else
+				it++;
 		}
 	}
 
