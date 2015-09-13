@@ -19,6 +19,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// 場面の追加
 	core.AddState(&GameTitle::GetInstance());
+	core.AddState(&GameMusicSelect::GetInstance());
 	core.AddState(&GameMain::GetInstance());
 	core.AddState(&GameResult::GetInstance());
 	core.AddState(&GameSetting::GetInstance());
