@@ -70,7 +70,8 @@ public:
 	void DrawMenuItem(Point centerPosition, Size boxSize, const char *text)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)(255 * 0.7));
-		DrawBox(centerPosition.GetX() - boxSize.GetWidth() / 2, centerPosition.GetY() - boxSize.GetHeight() / 2, centerPosition.GetX() + boxSize.GetWidth() / 2, centerPosition.GetY() + boxSize.GetHeight() / 2, 0xffffff, 0);
+		boxSize = boxSize / 2;
+		DrawBox(centerPosition.GetX() - boxSize.GetWidth(), centerPosition.GetY() - boxSize.GetHeight(), centerPosition.GetX() + boxSize.GetWidth(), centerPosition.GetY() + boxSize.GetHeight(), 0xffffff, 0);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		DrawStringToHandle(centerPosition.GetX() - GetDrawStringWidthToHandle(text, strlen(text), fontHandle) / 2, centerPosition.GetY() - 25 / 2, text, 0xffffff, fontHandle);
 	}
