@@ -41,6 +41,9 @@
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="EntityInclude.hpp" />
+    <ClInclude Include="Entity\Rectangle.hpp">
+      <Filter>Entity</Filter>
+    </ClInclude>
     <ClInclude Include="State\GameMusicSelect.hpp">
       <Filter>State</Filter>
     </ClInclude>
