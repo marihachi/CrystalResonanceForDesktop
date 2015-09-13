@@ -28,7 +28,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// ゲームループ
 	while (core.ProcessContext())
 	{
-		core.UpdateTriger();
+		try
+		{
+			core.UpdateTriger();
+		}
+		catch (exception ex)
+		{
+			MessageBox(NULL, ("UpdateTrigerメソッドで例外が発生しました\n(詳細: " + string(ex.what()) + ")").c_str(), "エラー", 0);
+			break;
+		}
 		core.DrawTriger();
 	}
 

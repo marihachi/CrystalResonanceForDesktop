@@ -44,7 +44,7 @@ public:
 				state->Update();
 				return;
 			}
-		throw new exception("場面が見つかりませんでした。");
+		throw exception((NowStateName + "という場面は見つかりませんでした。").c_str());
 	}
 
 	// 登録されている全ての場面のDrawメソッドを呼び出します
