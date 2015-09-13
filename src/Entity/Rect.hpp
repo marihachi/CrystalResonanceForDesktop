@@ -2,7 +2,7 @@
 #include "../EntityInclude.hpp"
 
 // 矩形を表します
-class Rectangle
+class Rect
 {
 private:
 	Size _Size;
@@ -10,7 +10,7 @@ private:
 
 public:
 	// 新しいインスタンスを初期化します
-	Rectangle(Point location, Size size)
+	Rect(Point location, Size size)
 	{
 		_Location = location;
 		_Size = size;

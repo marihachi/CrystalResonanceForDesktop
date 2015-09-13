@@ -92,7 +92,7 @@
     <ClInclude Include="State\GameMusicSelect.hpp" />
     <ClInclude Include="Helper\InputHelper.h" />
     <ClInclude Include="Entity\Size.hpp" />
-    <ClInclude Include="Entity\Rectangle.hpp" />
+    <ClInclude Include="Entity\Rect.hpp" />
     <ClInclude Include="StandardInclude.hpp" />
     <ClInclude Include="State\GameMain.hpp" />
     <ClInclude Include="State\GameSetting.hpp" />
