@@ -1,5 +1,4 @@
 Debug/
-DxLib/
 src/*.sln
 *.vcxproj.user
 *.suo
