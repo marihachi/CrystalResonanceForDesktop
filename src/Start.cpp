@@ -33,7 +33,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 
 	// 解放
-	core.Finalize();
+	if (!core.Finalize())
+		return -1;
 
 	return 0;
 }

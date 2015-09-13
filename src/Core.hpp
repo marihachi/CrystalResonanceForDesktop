@@ -101,7 +101,8 @@ public:
 	// インスタンスを破棄します
 	bool Finalize()
 	{
-		DxLib_End();
+		if (DxLib_End() != 0)
+			return false;
 
 		return true;
 	}
