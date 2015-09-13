@@ -41,8 +41,7 @@ public:
 			GetGraphSize(logoHandle, &temp[0], &temp[1]);
 			Point imageRightBottom = Point(temp[0], temp[1]);
 
-			Size screenSize = Core::GetInstance().ScreenSize;
-			Point screenRightBottom = Point(screenSize.GetWidth(), screenSize.GetHeight());
+			Point screenRightBottom = (Point)Core::GetInstance().ScreenSize;
 
 			Point location = screenRightBottom / 2 - imageRightBottom / 2;
 			location.AddY(-150);
