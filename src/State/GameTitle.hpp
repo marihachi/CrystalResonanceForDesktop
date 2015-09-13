@@ -27,6 +27,38 @@ public:
 	}
 };
 
+class MenuItem
+{
+public:
+	// 矩形です
+	Rect Box;
+
+	// 文字列です
+	string Text;
+
+	// 文字列の位置です
+	Point TextLocation;
+
+	MenuItem() { }
+
+	// 新しいインスタンスを初期化します
+	MenuItem(Rect box, string text, Point textRelativeLocation)
+	{
+		Box = box;
+		Text = text;
+		TextLocation = textRelativeLocation;
+	}
+
+	void Draw(int boxColor, int textColor, int fontHandle)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)(255 * 0.7));
+		Box.Draw(boxColor, false);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+		DrawStringToHandle(TextLocation.GetX(), TextLocation.GetY(), Text.c_str(), textColor, fontHandle);
+	}
+};
+
 class GameTitle : public StateInterface
 {
 public: static GameTitle &GetInstance(void) { static auto instance = GameTitle(); return instance; }
@@ -37,6 +69,9 @@ public:
 	int LogoHandle;
 	int FontHandle;
 	vector<Ripple> Ripples;
+	MenuItem MenuItemStart;
+	MenuItem MenuItemSetting;
+	MenuItem MenuItemEnd;
 
 	// 場面名を取得します
 	string StateName()
@@ -53,6 +88,18 @@ public:
 
 			LogoHandle = LoadGraph("Image/logo.png", 1);
 			FontHandle = CreateFontToHandle("メイリオ", 25, 5, DX_FONTTYPE_ANTIALIASING_8X8);
+
+			// メニュー
+			auto itemCenter = (Core::GetInstance().ScreenSize / 2).GetWidthHeightAsPoint();
+
+			itemCenter.AddY(100);
+			MenuItemStart = BuildMenuItem(itemCenter, Size((Core::GetInstance().ScreenSize / 3).GetWidth(), 40), "Start");
+
+			itemCenter.AddY(60);
+			MenuItemSetting = BuildMenuItem(itemCenter, Size((Core::GetInstance().ScreenSize / 3).GetWidth(), 40), "Setting");
+
+			itemCenter.AddY(60);
+			MenuItemEnd = BuildMenuItem(itemCenter, Size((Core::GetInstance().ScreenSize / 3).GetWidth(), 40), "End");
 		}
 
 		random_device r;
@@ -96,37 +143,23 @@ public:
 			auto logoRightBottom = Point(imageSize[0], imageSize[1]);
 			auto logoCenter = logoRightBottom / 2;
 
-			// logo
+			// ロゴ
 			auto logoLocation = screenCenter - logoCenter;
 			logoLocation.AddY(-150);
 			DrawGraph(logoLocation.GetX(), logoLocation.GetY(), LogoHandle, 1);
 
-			// menu
-			auto itemCenter = screenCenter;
-			Size boxSize(screenRightBottom.GetX() / 3, 40);
-
-			itemCenter.AddY(100);
-			DrawMenuItem(itemCenter, boxSize, "Start");
-
-			itemCenter.AddY(60);
-			DrawMenuItem(itemCenter, boxSize, "Setting");
-
-			itemCenter.AddY(60);
-			DrawMenuItem(itemCenter, boxSize, "End");
+			// メニュー
+			MenuItemStart.Draw(0xffffff, 0xffffff, FontHandle);
+			MenuItemSetting.Draw(0xffffff, 0xffffff, FontHandle);
+			MenuItemEnd.Draw(0xffffff, 0xffffff, FontHandle);
 		}
 	}
 
-	Rect DrawMenuItem(Point centerPosition, Size boxSize, const char *text)
+	MenuItem BuildMenuItem(Point centerPosition, Size boxSize, const char *text)
 	{
 		Rect rect(centerPosition - boxSize.GetWidthHeightAsPoint() / 2, boxSize);
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)(255 * 0.7));
-		rect.Draw(0xffffff, 0);
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
 		Size textSize(GetDrawStringWidthToHandle(text, strlen(text), FontHandle), 25);
 		auto textLocation = centerPosition - textSize.GetWidthHeightAsPoint() / 2;
-		DrawStringToHandle(textLocation.GetX(), textLocation.GetY(), text, 0xffffff, FontHandle);
-
-		return rect;
+		return MenuItem(rect, text, textLocation);
 	}
 };

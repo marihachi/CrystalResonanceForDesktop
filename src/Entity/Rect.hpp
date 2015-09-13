@@ -9,6 +9,8 @@ private:
 	Point _Location;
 
 public:
+	Rect() { }
+
 	// 新しいインスタンスを初期化します
 	Rect(Point location, Size size)
 	{
