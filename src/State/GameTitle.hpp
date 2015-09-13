@@ -105,7 +105,7 @@ public:
 		random_device r;
 
 		int rVal = (int)((double)r() / 0xffffffff * 1000);
-		if ((rVal < 5 && Ripples.size() < 3) || (rVal < 100 && Ripples.size() == 0))
+		if ((rVal < 5 && Ripples.size() < 4) || (rVal < 100 && Ripples.size() == 0))
 		{
 			int x = (int)((double)r() / 0xffffffff * 1280);
 			int y = (int)((double)r() / 0xffffffff * 720);
