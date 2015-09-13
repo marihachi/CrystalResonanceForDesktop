@@ -25,6 +25,36 @@ public:
 		return Size(Width - a.GetWidth(), Height - a.GetHeight());
 	}
 
+	Size operator * (Size& a)
+	{
+		return Size(Width * a.GetWidth(), Height * a.GetHeight());
+	}
+
+	Size operator / (Size& a)
+	{
+		return Size(Width / a.GetWidth(), Height / a.GetHeight());
+	}
+
+	Size operator + (int a)
+	{
+		return Size(Width + a, Width + a);
+	}
+
+	Size operator - (int a)
+	{
+		return Size(Width - a, Height - a);
+	}
+
+	Size operator * (int a)
+	{
+		return Size(Width * a, Height * a);
+	}
+
+	Size operator / (int a)
+	{
+		return Size(Width / a, Height / a);
+	}
+
 	Size operator += (Size& a)
 	{
 		Width += a.GetWidth();
@@ -45,6 +75,12 @@ public:
 		return Width;
 	}
 
+	// ‚‚³‚ğİ’è‚µ‚Ü‚·
+	int GetHeight()
+	{
+		return Height;
+	}
+
 	// •‚ğİ’è‚µ‚Ü‚·
 	void SetWidth(int value)
 	{
@@ -52,14 +88,21 @@ public:
 	}
 
 	// ‚‚³‚ğİ’è‚µ‚Ü‚·
-	int GetHeight()
-	{
-		return Height;
-	}
-
-	// ‚‚³‚ğİ’è‚µ‚Ü‚·
 	void SetHeight(int value)
 	{
 		Height = value;
+	}
+
+
+	// •‚É’l‚ğ‰ÁZ‚µ‚Ü‚·
+	void AddWidth(int value)
+	{
+		Width += value;
+	}
+
+	// ‚‚³‚É’l‚ğ‰ÁZ‚µ‚Ü‚·
+	void AddHeight(int value)
+	{
+		Height += value;
 	}
 };
