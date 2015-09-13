@@ -48,6 +48,12 @@
     <ClInclude Include="Entity\Rect.hpp">
       <Filter>Entity</Filter>
     </ClInclude>
+    <ClInclude Include="Entity\Ripple.hpp">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\MenuItem.hpp">
+      <Filter>Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Start.cpp" />

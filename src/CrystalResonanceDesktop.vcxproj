@@ -87,7 +87,9 @@
   <ItemGroup>
     <ClInclude Include="Core.hpp" />
     <ClInclude Include="EntityInclude.hpp" />
+    <ClInclude Include="Entity\MenuItem.hpp" />
     <ClInclude Include="Entity\Point.hpp" />
+    <ClInclude Include="Entity\Ripple.hpp" />
     <ClInclude Include="HelperInclude.hpp" />
     <ClInclude Include="State\GameMusicSelect.hpp" />
     <ClInclude Include="Helper\InputHelper.h" />
