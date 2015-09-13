@@ -53,29 +53,25 @@ public:
 			DrawGraph(logoLocation.GetX(), logoLocation.GetY(), logoHandle, 1);
 
 			// menu
-			auto temp = screenCenter;
+			auto itemCenter = screenCenter;
 			Size boxSize(screenRightBottom.GetX() / 3, 40);
 
-			temp.AddY(100);
-			auto str = "Start";
-			SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)(255 * 0.7));
-			DrawBox(temp.GetX() - boxSize.GetWidth() / 2, temp.GetY() - boxSize.GetHeight() / 2, temp.GetX() + boxSize.GetWidth() / 2, temp.GetY() + boxSize.GetHeight() / 2, 0xffffff, 0);
-			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-			DrawStringToHandle(temp.GetX() - GetDrawStringWidthToHandle(str, strlen(str), fontHandle) / 2, temp.GetY() - 25 / 2, str, 0xffffff, fontHandle);
+			itemCenter.AddY(100);
+			DrawMenuItem(itemCenter, boxSize, "Start");
 
-			temp.AddY(60);
-			str = "Setting";
-			SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)(255 * 0.7));
-			DrawBox(temp.GetX() - boxSize.GetWidth() / 2, temp.GetY() - boxSize.GetHeight() / 2, temp.GetX() + boxSize.GetWidth() / 2, temp.GetY() + boxSize.GetHeight() / 2, 0xffffff, 0);
-			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-			DrawStringToHandle(temp.GetX() - GetDrawStringWidthToHandle(str, strlen(str), fontHandle) / 2, temp.GetY() - 25 / 2, str, 0xffffff, fontHandle);
+			itemCenter.AddY(60);
+			DrawMenuItem(itemCenter, boxSize, "Setting");
 
-			temp.AddY(60);
-			str = "End";
-			SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)(255 * 0.7));
-			DrawBox(temp.GetX() - boxSize.GetWidth() / 2, temp.GetY() - boxSize.GetHeight() / 2, temp.GetX() + boxSize.GetWidth() / 2, temp.GetY() + boxSize.GetHeight() / 2, 0xffffff, 0);
-			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-			DrawStringToHandle(temp.GetX() - GetDrawStringWidthToHandle(str, strlen(str), fontHandle) / 2, temp.GetY() - 25 / 2, str, 0xffffff, fontHandle);
+			itemCenter.AddY(60);
+			DrawMenuItem(itemCenter, boxSize, "End");
 		}
+	}
+
+	void DrawMenuItem(Point centerPosition, Size boxSize, const char *text)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)(255 * 0.7));
+		DrawBox(centerPosition.GetX() - boxSize.GetWidth() / 2, centerPosition.GetY() - boxSize.GetHeight() / 2, centerPosition.GetX() + boxSize.GetWidth() / 2, centerPosition.GetY() + boxSize.GetHeight() / 2, 0xffffff, 0);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		DrawStringToHandle(centerPosition.GetX() - GetDrawStringWidthToHandle(text, strlen(text), fontHandle) / 2, centerPosition.GetY() - 25 / 2, text, 0xffffff, fontHandle);
 	}
 };
