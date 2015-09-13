@@ -59,14 +59,14 @@ public:
 	}
 
 	// インスタンスを初期化します
-	bool Initialize(string title, int sizeX, int sizeY, int backR, int backG, int backB)
+	bool Initialize(string title, Size size, int backR, int backG, int backB)
 	{
-		ScreenSize = Size(sizeX, sizeY);
+		ScreenSize = size;
 
 		if (SetMainWindowText((title + string(" - 起動中です...")).c_str()) != 0)
 			return false;
 
-		if (SetGraphMode(sizeX, sizeY, 32) != DX_CHANGESCREEN_OK)
+		if (SetGraphMode(size.GetWidth(), size.GetHeight(), 32) != DX_CHANGESCREEN_OK)
 			return false;
 
 		if (SetBackgroundColor(backR, backG, backB) != 0)
