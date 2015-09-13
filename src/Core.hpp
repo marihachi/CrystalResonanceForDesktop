@@ -47,7 +47,7 @@ public:
 		throw new exception("場面が見つかりませんでした。");
 	}
 
-	// 全ての場面のDrawメソッドを呼び出します
+	// 登録されている全ての場面のDrawメソッドを呼び出します
 	void DrawTriger()
 	{
 		for (auto state : StateList)
