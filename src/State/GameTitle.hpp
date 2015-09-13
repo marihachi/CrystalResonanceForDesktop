@@ -56,7 +56,8 @@ public:
 
 		random_device r;
 
-		if ((int)((double)r() / 0xffffffff * 1000) < 5)
+		int rVal = (int)((double)r() / 0xffffffff * 1000);
+		if ((rVal < 5 && Ripples.size() < 3) || (rVal < 100 && Ripples.size() == 0))
 		{
 			int x = (int)((double)r() / 0xffffffff * 1280);
 			int y = (int)((double)r() / 0xffffffff * 720);
@@ -83,8 +84,6 @@ public:
 		{
 			for (auto ripple : Ripples)
 				ripple.Draw();
-
-			DrawFormatString(0, 0, 0xffffff, "波紋数: %d", Ripples.size());
 
 			auto screenRightBottom = Core::GetInstance().ScreenSize.GetWidthHeightAsPoint();
 			auto screenCenter = screenRightBottom / 2;
