@@ -59,6 +59,20 @@ public:
 		return *this;
 	}
 
+	Point operator *= (Point& a)
+	{
+		X *= a.GetX();
+		Y *= a.GetY();
+		return *this;
+	}
+
+	Point operator /= (Point& a)
+	{
+		X /= a.GetX();
+		Y /= a.GetY();
+		return *this;
+	}
+
 	// XÀ•W‚ğæ“¾‚µ‚Ü‚·
 	int GetX()
 	{
