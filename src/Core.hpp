@@ -12,49 +12,53 @@ public: static Core &GetInstance(void) { static Core instance; return instance; 
 private: Core() { }
 
 private:
-	vector<IState*> StateList;
-	string NowStateName;
+	vector<IState*> _StateList;
+	string _NowStateName;
+	Size _ScreenSize = Size(0, 0);
 
 public:
-	Size ScreenSize = Size(0, 0);
 
 	// 場面を追加します
 	void AddState(IState* state)
 	{
-		StateList.push_back(state);
+		_StateList.push_back(state);
 	}
 
 	// 現在の場面名を設定します
 	void SetNowStateName(string nowStateName)
 	{
-		NowStateName = nowStateName;
+		_NowStateName = nowStateName;
 	}
 
 	// 現在の場面名を取得します
 	string GetNowStateName()
 	{
-		return NowStateName;
+		return _NowStateName;
+	}
+
+	Size ScreenSize()
+	{
+		return _ScreenSize;
 	}
 
 	// 対象場面のUpdateメソッドを呼び出します
 	void UpdateTriger()
 	{
-		for (auto state : StateList)
-			if (state->StateName() == NowStateName)
+		for (auto state : _StateList)
+			if (state->StateName() == _NowStateName)
 			{
 				state->Update();
 				return;
 			}
-		throw exception((NowStateName + "という場面は見つかりませんでした。").c_str());
+		throw exception((_NowStateName + "という場面は見つかりませんでした。").c_str());
 	}
 
 	// 登録されている全ての場面のDrawメソッドを呼び出します
 	void DrawTriger()
 	{
-
-		for (auto state : StateList)
+		for (auto state : _StateList)
 		{
-			StateEventArgs e(state->StateName() == NowStateName);
+			StateEventArgs e(state->StateName() == _NowStateName);
 			state->Draw(e);
 		}
 	}
@@ -62,7 +66,7 @@ public:
 	// インスタンスを初期化します
 	bool Initialize(string title, Size size, int backR, int backG, int backB)
 	{
-		ScreenSize = size;
+		_ScreenSize = size;
 
 		if (SetMainWindowText((title + string(" - 起動中です...")).c_str()) != 0)
 			return false;
@@ -98,6 +102,9 @@ public:
 			return false;
 
 		if (ClearDrawScreen() != 0)
+			return false;
+
+		if (_NowStateName == "Close")
 			return false;
 
 		InputHelper::GetInstance().UpdateKeyInputTime();

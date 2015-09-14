@@ -29,9 +29,9 @@ public:
 	// 更新(ターゲット時のみ)
 	void Update()
 	{
-		auto core = Core::GetInstance();
-		auto random = RandomHelper::GetInstance();
-		auto input = InputHelper::GetInstance();
+		auto &core = Core::GetInstance();
+		auto &random = RandomHelper::GetInstance();
+		auto &input = InputHelper::GetInstance();
 
 		// 初期化
 		if (_IsInitial)
@@ -43,9 +43,9 @@ public:
 
 			// メニュー
 
-			auto itemCenter = (core.ScreenSize / 2).GetWidthHeightAsPoint();
+			auto itemCenter = (core.ScreenSize() / 2).GetWidthHeightAsPoint();
 
-			auto buttonSize = Size((core.ScreenSize / 3).Width(), 40);
+			auto buttonSize = Size((core.ScreenSize() / 3).Width(), 40);
 			auto normalStyle = ButtonStyle(0xffffff, false, 0xffffff);
 			auto hoverStyle = ButtonStyle(0xffffff, true, GetColor(82, 195, 202));
 
@@ -80,17 +80,17 @@ public:
 
 		if (_StartButton.VerifyOnMouse() && input.MouseState[0] == 1)
 		{
-			DrawString(0, 0, "Game Start", 0xffffff);
+			core.SetNowStateName("Main");
 		}
 
 		if (_SettingButton.VerifyOnMouse() && input.MouseState[0] == 1)
 		{
-			DrawString(0, 0, "Setting", 0xffffff);
+			
 		}
 
 		if (_CloseButton.VerifyOnMouse() && input.MouseState[0] == 1)
 		{
-			DrawString(0, 0, "Close", 0xffffff);
+			core.SetNowStateName("Close");
 		}
 	}
 
@@ -104,7 +104,7 @@ public:
 			for (auto ripple : _Ripples)
 				ripple.Draw();
 
-			auto screenRightBottom = core.ScreenSize.GetWidthHeightAsPoint();
+			auto screenRightBottom = core.ScreenSize().GetWidthHeightAsPoint();
 			auto screenCenter = screenRightBottom / 2;
 
 			int imageSize[2];
