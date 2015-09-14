@@ -127,8 +127,6 @@ public:
 		if (ChangeWindowMode(true) != DX_CHANGESCREEN_OK)
 			return false;
 
-		SetUse3DFlag(false);
-
 		SetDoubleStartValidFlag(true);
 
 		SetOutApplicationLogValidFlag(false);
