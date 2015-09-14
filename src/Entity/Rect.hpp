@@ -21,21 +21,21 @@ public:
 	}
 
 	// 矩形の左上の座標を取得します
-	Point GetLocationLeftTop()
+	Point LocationLeftTop()
 	{
 		return _Location;
 	}
 
 	// 矩形の右下の座標を取得します
-	Point GetLocationRightBottom()
+	Point LocationRightBottom()
 	{
 		return Point(
-			_Location.GetX() + _Size.GetWidth(),
-			_Location.GetY() + _Size.GetHeight());
+			_Location.X() + _Size.Width(),
+			_Location.Y() + _Size.Height());
 	}
 
 	// 矩形のサイズを取得します
-	Size GetSize()
+	Size Size()
 	{
 		return _Size;
 	}
@@ -43,12 +43,12 @@ public:
 	// 矩形を描画します
 	void Draw(unsigned int color, bool fillFlag)
 	{
-		Point location1 = GetLocationLeftTop();
-		Point location2 = GetLocationRightBottom();
+		Point location1 = LocationLeftTop();
+		Point location2 = LocationRightBottom();
 
 		DrawBox(
-			location1.GetX(), location1.GetY(),
-			location2.GetX(), location2.GetY(),
+			location1.X(), location1.Y(),
+			location2.X(), location2.Y(),
 			color,
 			fillFlag ? 1 : 0);
 	}

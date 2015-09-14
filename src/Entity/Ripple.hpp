@@ -5,21 +5,32 @@
 
 class Ripple
 {
-public:
-	Point Location;
-	int Radius;
+private:
+	Point _Location;
+	int _Radius;
 
+public:
 	// 新しいインスタンスを初期化します
 	Ripple(Point location, int radius = 0)
 	{
-		Location = location;
-		Radius = radius;
+		_Location = location;
+		_Radius = radius;
+	}
+
+	int Radius()
+	{
+		return _Radius;
+	}
+
+	void AddRadius(int value)
+	{
+		_Radius += value;
 	}
 
 	void Draw()
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)(255 * 0.5));
-		DrawCircle(Location.GetX(), Location.GetY(), Radius, 0xffffff, 0);
+		DrawCircle(_Location.X(), _Location.Y(), _Radius, 0xffffff, 0);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 };

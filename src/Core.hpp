@@ -67,7 +67,7 @@ public:
 		if (SetMainWindowText((title + string(" - 起動中です...")).c_str()) != 0)
 			return false;
 
-		if (SetGraphMode(size.GetWidth(), size.GetHeight(), 32) != DX_CHANGESCREEN_OK)
+		if (SetGraphMode(size.Width(), size.Height(), 32) != DX_CHANGESCREEN_OK)
 			return false;
 
 		if (SetBackgroundColor(backR, backG, backB) != 0)

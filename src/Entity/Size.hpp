@@ -6,8 +6,8 @@
 class Size
 {
 private:
-	int Width;
-	int Height;
+	int _Width;
+	int _Height;
 
 public:
 	Size() { }
@@ -15,70 +15,70 @@ public:
 	// 新しいインスタンスを初期化します
 	Size(int width, int height)
 	{
-		Width = width;
-		Height = height;
+		_Width = width;
+		_Height = height;
 	}
 
 	Size operator * (Size& a)
 	{
-		return Size(Width * a.GetWidth(), Height * a.GetHeight());
+		return Size(_Width * a.Width(), _Height * a.Height());
 	}
 
 	Size operator / (Size& a)
 	{
-		return Size(Width / a.GetWidth(), Height / a.GetHeight());
+		return Size(_Width / a.Width(), _Height / a.Height());
 	}
 
 	Size operator * (int a)
 	{
-		return Size(Width * a, Height * a);
+		return Size(_Width * a, _Height * a);
 	}
 
 	Size operator / (int a)
 	{
-		return Size(Width / a, Height / a);
+		return Size(_Width / a, _Height / a);
 	}
 
 	// 幅を取得します
-	int GetWidth()
+	int Width()
 	{
-		return Width;
+		return _Width;
 	}
 
 	// 高さを設定します
-	int GetHeight()
+	int Height()
 	{
-		return Height;
+		return _Height;
 	}
 
 	// 幅と高さを座標として取得します
 	Point GetWidthHeightAsPoint()
 	{
-		return Point(Width, Height);
+		return Point(_Width, _Height);
 	}
 
 	// 幅を設定します
 	void SetWidth(int value)
 	{
-		Width = value;
+		_Width = value;
 	}
 
 	// 高さを設定します
 	void SetHeight(int value)
 	{
-		Height = value;
+		_Height = value;
 	}
 
 
 	// 幅に値を加算します
 	void AddWidth(int value)
 	{
-		Width += value;
+		_Width += value;
 	}
 
 	// 高さに値を加算します
 	void AddHeight(int value)
 	{
-		Height += value;
+		_Height += value;
 	}
 };

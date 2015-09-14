@@ -10,15 +10,16 @@ class GameTitle : public StateInterface
 public: static GameTitle &GetInstance(void) { static auto instance = GameTitle(); return instance; }
 private: GameTitle() { }
 
-public:
-	bool IsInitial = true;
-	int LogoHandle;
-	int FontHandle;
-	vector<Ripple> Ripples;
-	Button StartButton;
-	Button SettingButton;
-	Button CloseButton;
+private:
+	bool _IsInitial = true;
+	int _LogoHandle;
+	int _FontHandle;
+	vector<Ripple> _Ripples;
+	Button _StartButton;
+	Button _SettingButton;
+	Button _CloseButton;
 
+public:
 	// 場面名を取得します
 	string StateName()
 	{
@@ -33,61 +34,61 @@ public:
 		auto input = InputHelper::GetInstance();
 
 		// 初期化
-		if (IsInitial)
+		if (_IsInitial)
 		{
-			IsInitial = false;
+			_IsInitial = false;
 
-			LogoHandle = LoadGraph("Image/logo.png", 1);
-			FontHandle = CreateFontToHandle("メイリオ", 25, 5, DX_FONTTYPE_ANTIALIASING_8X8);
+			_LogoHandle = LoadGraph("Image/logo.png", 1);
+			_FontHandle = CreateFontToHandle("メイリオ", 25, 5, DX_FONTTYPE_ANTIALIASING_8X8);
 
 			// メニュー
 
 			auto itemCenter = (core.ScreenSize / 2).GetWidthHeightAsPoint();
 
-			auto buttonSize = Size((core.ScreenSize / 3).GetWidth(), 40);
+			auto buttonSize = Size((core.ScreenSize / 3).Width(), 40);
 			auto normalStyle = ButtonStyle(0xffffff, false, 0xffffff);
 			auto hoverStyle = ButtonStyle(0xffffff, true, GetColor(82, 195, 202));
 
 			itemCenter.AddY(80);
-			StartButton = Button::BuildMenuItem(itemCenter, buttonSize, "Game Start", FontHandle, normalStyle, hoverStyle);
+			_StartButton = Button::BuildMenuItem(itemCenter, buttonSize, "Game Start", _FontHandle, normalStyle, hoverStyle);
 
 			itemCenter.AddY(60);
-			SettingButton = Button::BuildMenuItem(itemCenter, buttonSize, "Setting", FontHandle, normalStyle, hoverStyle);
+			_SettingButton = Button::BuildMenuItem(itemCenter, buttonSize, "Setting", _FontHandle, normalStyle, hoverStyle);
 
 			itemCenter.AddY(60);
-			CloseButton = Button::BuildMenuItem(itemCenter, buttonSize, "Close", FontHandle, normalStyle, hoverStyle);
+			_CloseButton = Button::BuildMenuItem(itemCenter, buttonSize, "Close", _FontHandle, normalStyle, hoverStyle);
 		}
 
-		if ((input.MouseState[0] == 1 || random.Next(0, 1000) < 4) && Ripples.size() <= 6)
+		if ((input.MouseState[0] == 1 || random.Next(0, 1000) < 4) && _Ripples.size() <= 6)
 		{
 			int x = random.Next(0, 1280);
 			int y = random.Next(0, 720);
 
-			Ripples.push_back(Ripple(Point(x, y)));
+			_Ripples.push_back(Ripple(Point(x, y)));
 		}
 
-		auto it = Ripples.begin();
-		while (it != Ripples.end())
+		auto it = _Ripples.begin();
+		while (it != _Ripples.end())
 		{
-			(*it).Radius += 2;
+			(*it).AddRadius(2);
 
-			if ((*it).Radius > 1280 * 1.42)
-				it = Ripples.erase(it);
+			if ((*it).Radius() > 1280 * 1.42)
+				it = _Ripples.erase(it);
 			else
 				it++;
 		}
 
-		if (StartButton.VerifyOnMouse() && input.MouseState[0] == 1)
+		if (_StartButton.VerifyOnMouse() && input.MouseState[0] == 1)
 		{
 			DrawString(0, 0, "Game Start", 0xffffff);
 		}
 
-		if (SettingButton.VerifyOnMouse() && input.MouseState[0] == 1)
+		if (_SettingButton.VerifyOnMouse() && input.MouseState[0] == 1)
 		{
 			DrawString(0, 0, "Setting", 0xffffff);
 		}
 
-		if (CloseButton.VerifyOnMouse() && input.MouseState[0] == 1)
+		if (_CloseButton.VerifyOnMouse() && input.MouseState[0] == 1)
 		{
 			DrawString(0, 0, "Close", 0xffffff);
 		}
@@ -100,26 +101,26 @@ public:
 
 		if (e.IsActive())
 		{
-			for (auto ripple : Ripples)
+			for (auto ripple : _Ripples)
 				ripple.Draw();
 
 			auto screenRightBottom = core.ScreenSize.GetWidthHeightAsPoint();
 			auto screenCenter = screenRightBottom / 2;
 
 			int imageSize[2];
-			GetGraphSize(LogoHandle, &imageSize[0], &imageSize[1]);
+			GetGraphSize(_LogoHandle, &imageSize[0], &imageSize[1]);
 			auto logoRightBottom = Point(imageSize[0], imageSize[1]);
 			auto logoCenter = logoRightBottom / 2;
 
 			// ロゴ
 			auto logoLocation = screenCenter - logoCenter;
 			logoLocation.AddY(-150);
-			DrawGraph(logoLocation.GetX(), logoLocation.GetY(), LogoHandle, 1);
+			DrawGraph(logoLocation.X(), logoLocation.Y(), _LogoHandle, 1);
 
 			// メニュー
-			StartButton.Draw();
-			SettingButton.Draw();
-			CloseButton.Draw();
+			_StartButton.Draw();
+			_SettingButton.Draw();
+			_CloseButton.Draw();
 		}
 	}
 };

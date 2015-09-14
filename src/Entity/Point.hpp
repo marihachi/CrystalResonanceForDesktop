@@ -6,8 +6,8 @@
 class Point
 {
 private:
-	int X;
-	int Y;
+	int _X;
+	int _Y;
 
 public:
 	Point() { }
@@ -15,130 +15,130 @@ public:
 	// 新しいインスタンスを初期化します
 	Point(int x, int y)
 	{
-		X = x;
-		Y = y;
+		_X = x;
+		_Y = y;
 	}
 
 	Point operator + (Point& a)
 	{
-		return Point(X + a.GetX(), Y + a.GetY());
+		return Point(_X + a.X(), _Y + a.Y());
 	}
 
 	Point operator - (Point& a)
 	{
-		return Point(X - a.GetX(), Y - a.GetY());
+		return Point(_X - a.X(), _Y - a.Y());
 	}
 
 	Point operator * (Point& a)
 	{
-		return Point(X * a.GetX(), Y * a.GetY());
+		return Point(_X * a.X(), _Y * a.Y());
 	}
 
 	Point operator / (Point& a)
 	{
-		return Point(X / a.GetX(), Y / a.GetY());
+		return Point(_X / a.X(), _Y / a.Y());
 	}
 
 	Point operator * (int a)
 	{
-		return Point(X * a, Y * a);
+		return Point(_X * a, _Y * a);
 	}
 
 	Point operator / (int a)
 	{
-		return Point(X / a, Y / a);
+		return Point(_X / a, _Y / a);
 	}
 
 	Point operator += (Point& a)
 	{
-		X += a.GetX();
-		Y += a.GetY();
+		_X += a.X();
+		_Y += a.Y();
 		return *this;
 	}
 
 	Point operator -= (Point& a)
 	{
-		X -= a.GetX();
-		Y -= a.GetY();
+		_X -= a.X();
+		_Y -= a.Y();
 		return *this;
 	}
 
 	Point operator *= (Point& a)
 	{
-		X *= a.GetX();
-		Y *= a.GetY();
+		_X *= a.X();
+		_Y *= a.Y();
 		return *this;
 	}
 
 	Point operator /= (Point& a)
 	{
-		X /= a.GetX();
-		Y /= a.GetY();
+		_X /= a.X();
+		_Y /= a.Y();
 		return *this;
 	}
 
 	Point operator *= (int a)
 	{
-		X *= a;
-		Y *= a;
+		_X *= a;
+		_Y *= a;
 		return *this;
 	}
 
 	Point operator /= (int a)
 	{
-		X /= a;
-		Y /= a;
+		_X /= a;
+		_Y /= a;
 		return *this;
 	}
 
 	bool operator >= (Point& a)
 	{
-		return X >= a.GetX() && Y >= a.GetY();
+		return _X >= a.X() && _Y >= a.Y();
 	}
 
 	bool operator <= (Point& a)
 	{
-		return X <= a.GetX() && Y <= a.GetY();
+		return _X <= a.X() && _Y <= a.Y();
 	}
 
 	bool operator == (Point& a)
 	{
-		return X == a.GetX() && Y == a.GetY();
+		return _X == a.X() && _Y == a.Y();
 	}
 
-	// X座標を取得します
-	int GetX()
+	// _X座標を取得します
+	int X()
 	{
-		return X;
+		return _X;
 	}
 
-	// Y座標を取得します
-	int GetY()
+	// _Y座標を取得します
+	int Y()
 	{
-		return Y;
+		return _Y;
 	}
 
-	// X座標を設定します
+	// _X座標を設定します
 	void SetX(int value)
 	{
-		X = value;
+		_X = value;
 	}
 
-	// Y座標を設定します
+	// _Y座標を設定します
 	void SetY(int value)
 	{
-		Y = value;
+		_Y = value;
 	}
 
-	// X座標に値を加算します
+	// _X座標に値を加算します
 	void AddX(int value)
 	{
-		X += value;
+		_X += value;
 	}
 
-	// Y座標に値を加算します
+	// _Y座標に値を加算します
 	void AddY(int value)
 	{
-		Y += value;
+		_Y += value;
 	}
 };

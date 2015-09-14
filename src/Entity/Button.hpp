@@ -78,15 +78,15 @@ public:
 		_Box.Draw(style.Color(), style.IsFill());
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-		DrawStringToHandle(_TextLocation.GetX(), _TextLocation.GetY(), _Text.c_str(), style.TextColor(), _FontHandle);
+		DrawStringToHandle(_TextLocation.X(), _TextLocation.Y(), _Text.c_str(), style.TextColor(), _FontHandle);
 	}
 
 	// 項目上にマウスポインタがあるかどうかを検証します
 	bool VerifyOnMouse()
 	{
 		auto mp = InputHelper::GetInstance().MousePos;
-		auto p1 = _Box.GetLocationLeftTop();
-		auto p2 = _Box.GetLocationRightBottom();
+		auto p1 = _Box.LocationLeftTop();
+		auto p2 = _Box.LocationRightBottom();
 
 		return mp >= p1 && mp <= p2;
 	}
