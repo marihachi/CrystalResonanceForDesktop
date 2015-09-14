@@ -99,7 +99,7 @@ public:
 	// 描画(常時)
 	void Draw(StateEventArgs e)
 	{
-		auto core = Core::GetInstance();
+		auto &core = Core::GetInstance();
 
 		if (e.IsActive())
 		{

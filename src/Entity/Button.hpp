@@ -84,11 +84,11 @@ public:
 	// 項目上にマウスポインタがあるかどうかを検証します
 	bool IsOnMouse()
 	{
-		auto mp = InputHelper::GetInstance().MousePos;
+		auto &input = InputHelper::GetInstance();
 		auto p1 = _Box.LocationLeftTop();
 		auto p2 = _Box.LocationRightBottom();
 
-		return mp >= p1 && mp <= p2;
+		return input.MousePos >= p1 && input.MousePos <= p2;
 	}
 
 	// ボタンを構築してインスタンスを生成します

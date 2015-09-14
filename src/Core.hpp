@@ -96,6 +96,8 @@ public:
 	// 毎フレーム呼び出す必要がある基本処理を呼び出します
 	bool ProcessContext()
 	{
+		auto &input = InputHelper::GetInstance();
+
 		if (ScreenFlip() != 0)
 			return false;
 
@@ -108,9 +110,9 @@ public:
 		if (_NowStateName == "Quit")
 			return false;
 
-		InputHelper::GetInstance().UpdateKeyInputTime();
+		input.UpdateKeyInputTime();
 
-		InputHelper::GetInstance().UpdateMouseInputTime();
+		input.UpdateMouseInputTime();
 
 		return true;
 	}

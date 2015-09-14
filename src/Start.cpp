@@ -11,7 +11,7 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	Core &core = Core::GetInstance();
+	auto &core = Core::GetInstance();
 
 	// 初期化
 	if (!core.Initialize("Crystal Resonance for Desktop", Size(1280, 720), 82, 195, 202))
