@@ -2,6 +2,7 @@
 
 #include "StandardInclude.hpp"
 
+// イベントが発生した時の引数情報
 class StateEventArgs
 {
 private:

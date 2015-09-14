@@ -3,7 +3,7 @@
 #include "../StandardInclude.hpp"
 #include "../EntityInclude.hpp"
 
-// ”g–ä
+// ”g–ä‚ð•\‚µ‚Ü‚·
 class Ripple
 {
 private:

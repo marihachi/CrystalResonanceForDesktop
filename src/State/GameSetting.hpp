@@ -5,6 +5,7 @@
 
 #include "../IState.hpp"
 
+// 設定画面の場面を表します
 class GameSetting : public IState
 {
 public: static GameSetting &GetInstance(void) { static auto instance = GameSetting(); return instance; }

@@ -5,6 +5,7 @@
 
 #include "../IState.hpp"
 
+// 選曲画面の場面を表します
 class GameMusicSelect : public IState
 {
 public: static GameMusicSelect &GetInstance(void) { static auto instance = GameMusicSelect(); return instance; }

@@ -3,6 +3,7 @@
 #include "../StandardInclude.hpp"
 #include "../EntityInclude.hpp"
 
+// 入力についての操作を提供します
 class InputHelper
 {
 public: static InputHelper &GetInstance(void) { static InputHelper instance; return instance; }

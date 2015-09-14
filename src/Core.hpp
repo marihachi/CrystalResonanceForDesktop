@@ -6,6 +6,7 @@
 
 #include "IState.hpp"
 
+// 場面の制御などを提供します
 class Core
 {
 public: static Core &GetInstance(void) { static Core instance; return instance; }

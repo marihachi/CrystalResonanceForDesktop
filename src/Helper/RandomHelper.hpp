@@ -3,6 +3,7 @@
 #include "../StandardInclude.hpp"
 #include "../EntityInclude.hpp"
 
+// —””­¶‚É‚Â‚¢‚Ä‚Ì‘€ì‚ğ’ñ‹Ÿ‚µ‚Ü‚·
 class RandomHelper
 {
 public: static RandomHelper &GetInstance(void) { static auto instance = RandomHelper(); return instance; }

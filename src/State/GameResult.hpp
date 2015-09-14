@@ -5,6 +5,7 @@
 
 #include "../IState.hpp"
 
+// 結果画面の場面を表します
 class GameResult : public IState
 {
 public: static GameResult &GetInstance(void) { static auto instance = GameResult(); return instance; }
