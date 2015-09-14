@@ -99,7 +99,7 @@
     <ClInclude Include="StandardInclude.hpp" />
     <ClInclude Include="State\GameMain.hpp" />
     <ClInclude Include="State\GameSetting.hpp" />
-    <ClInclude Include="StateInterface.hpp" />
+    <ClInclude Include="IState.hpp" />
     <ClInclude Include="State\GameResult.hpp" />
     <ClInclude Include="State\GameTitle.hpp" />
   </ItemGroup>

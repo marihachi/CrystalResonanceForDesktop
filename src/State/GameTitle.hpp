@@ -3,9 +3,9 @@
 #include "../StandardInclude.hpp"
 #include "../EntityInclude.hpp"
 
-#include "../StateInterface.hpp"
+#include "../IState.hpp"
 
-class GameTitle : public StateInterface
+class GameTitle : public IState
 {
 public: static GameTitle &GetInstance(void) { static auto instance = GameTitle(); return instance; }
 private: GameTitle() { }

@@ -29,7 +29,6 @@
       <Filter>State</Filter>
     </ClInclude>
     <ClInclude Include="Core.hpp" />
-    <ClInclude Include="StateInterface.hpp" />
     <ClInclude Include="StandardInclude.hpp" />
     <ClInclude Include="Entity\Size.hpp">
       <Filter>Entity</Filter>
@@ -57,6 +56,7 @@
     <ClInclude Include="Entity\Button.hpp">
       <Filter>Entity</Filter>
     </ClInclude>
+    <ClInclude Include="IState.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Start.cpp" />

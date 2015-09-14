@@ -22,10 +22,10 @@ public:
 };
 
 // ゲームの場面を表すインターフェイスクラスです
-class StateInterface
+class IState
 {
 public:
-	virtual ~StateInterface() {}
+	virtual ~IState() {}
 
 	// 場面名を取得します
 	virtual string StateName() = 0;

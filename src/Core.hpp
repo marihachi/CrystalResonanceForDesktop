@@ -4,7 +4,7 @@
 #include "EntityInclude.hpp"
 #include "HelperInclude.hpp"
 
-#include "StateInterface.hpp"
+#include "IState.hpp"
 
 class Core
 {
@@ -12,14 +12,14 @@ public: static Core &GetInstance(void) { static Core instance; return instance; 
 private: Core() { }
 
 private:
-	vector<StateInterface*> StateList;
+	vector<IState*> StateList;
 	string NowStateName;
 
 public:
 	Size ScreenSize = Size(0, 0);
 
 	// 場面を追加します
-	void AddState(StateInterface* state)
+	void AddState(IState* state)
 	{
 		StateList.push_back(state);
 	}
