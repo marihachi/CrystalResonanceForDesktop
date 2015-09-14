@@ -4,6 +4,7 @@
 #include "../EntityInclude.hpp"
 #include "../HelperInclude.hpp"
 
+// ボタンのスタイルを表します
 class ButtonStyle
 {
 private:
@@ -14,6 +15,7 @@ private:
 public:
 	ButtonStyle() { }
 
+	// 新しいインスタンスを初期化します
 	ButtonStyle(int color, bool isFill, int textColor)
 	{
 		_Color = color;
@@ -37,6 +39,7 @@ public:
 	}
 };
 
+// 四角形と文字列から成るボタンを表します
 class Button
 {
 private:
