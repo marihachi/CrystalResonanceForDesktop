@@ -60,7 +60,7 @@ public:
 			_CloseButton = Button::BuildButton(itemCenter, buttonSize, "Quit", _FontHandle, normalStyle, hoverStyle);
 		}
 
-		if ((input.MouseState[0] == 1 || random.Next(0, 1000) < 4) && _Ripples.size() <= 6)
+		if ((input.MouseLeft == 1 || random.Next(0, 1000) < 4) && _Ripples.size() <= 6)
 		{
 			int x = random.Next(0, 1280);
 			int y = random.Next(0, 720);
@@ -79,18 +79,18 @@ public:
 				it++;
 		}
 
-		if (_StartButton.IsOnMouse() && input.MouseState[0] == 1)
+		if (_StartButton.IsOnMouse() && input.MouseLeft == 1)
 		{
 			//core.SetNowStateName("MusicSelect");
 			core.SetNowStateName("Main");
 		}
 
-		if (_SettingButton.IsOnMouse() && input.MouseState[0] == 1)
+		if (_SettingButton.IsOnMouse() && input.MouseLeft == 1)
 		{
 			core.SetNowStateName("Setting");
 		}
 
-		if (_CloseButton.IsOnMouse() && input.MouseState[0] == 1)
+		if (_CloseButton.IsOnMouse() && input.MouseLeft == 1)
 		{
 			core.SetNowStateName("Quit");
 		}

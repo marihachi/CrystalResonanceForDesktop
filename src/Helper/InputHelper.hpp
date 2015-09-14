@@ -11,7 +11,19 @@ private: InputHelper() { }
 
 public:
 	// キーボードの入力時間
-	int KeyState[256];
+	int Key[256];
+
+	// マウス左ボタン
+	int MouseLeft;
+
+	// マウス右ボタン
+	int MouseRight;
+
+	// マウス回転量
+	int MouseWheel;
+
+	// マウスポインタ座標
+	Point MousePos;
 
 	// キーボードの入力時間を
 	void UpdateKeyInputTime()
@@ -22,16 +34,11 @@ public:
 		for (int i = 0; i < 256; i++)
 		{
 			if (state[i] == 1)
-				KeyState[i]++;
+				Key[i]++;
 			else
-				KeyState[i] = 0;
+				Key[i] = 0;
 		}
 	}
-
-	// 0: 左ボタン, 1: 右ボタン, 2: 回転量
-	int MouseState[3];
-
-	Point MousePos;
 
 	// マウスの入力状態
 	void UpdateMouseInputTime()
@@ -39,29 +46,29 @@ public:
 		int buf = GetMouseInput();
 
 		if ((buf & MOUSE_INPUT_LEFT) != 0)
-			MouseState[0]++;
+			MouseLeft++;
 		else
-			MouseState[0] = 0;
+			MouseLeft = 0;
 
 		if ((buf & MOUSE_INPUT_RIGHT) != 0)
-			MouseState[1]++;
+			MouseRight++;
 		else
-			MouseState[1] = 0;
+			MouseRight = 0;
 
 		int temp[2];
 		GetMousePoint(&temp[0], &temp[1]);
 		MousePos = Point(temp[0], temp[1]);
 
 		// オーバーフロー防止処理
-		if (MouseState[2] > 2147483600 || MouseState[2] < -2147483600)
-			MouseState[2] = (int)(MouseState[2] / fabs((float)MouseState[2]));
+		if (MouseWheel > 2147483600 || MouseWheel < -2147483600)
+			MouseWheel = (int)(MouseWheel / fabs((float)MouseWheel));
 
 		// 逆向きに動かしたらリセット（途中で向きを変えたときに必要な移動量を等しくするため）
 		auto wheelRotVol = GetMouseWheelRotVol();
 
-		if ((MouseState[2] > 0 && wheelRotVol < 0) || (MouseState[2] < 0 && wheelRotVol > 0))
-			MouseState[2] = 0;
+		if ((MouseWheel > 0 && wheelRotVol < 0) || (MouseWheel < 0 && wheelRotVol > 0))
+			MouseWheel = 0;
 
-		MouseState[2] += wheelRotVol;
+		MouseWheel += wheelRotVol;
 	}
 };
