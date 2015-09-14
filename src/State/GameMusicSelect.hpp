@@ -20,7 +20,13 @@ public:
 	// 更新(ターゲット時のみ)
 	void Update()
 	{
+		auto &core = Core::GetInstance();
+		auto &input = InputHelper::GetInstance();
 
+		if (input.KeyState[KEY_INPUT_ESCAPE] == 1)
+		{
+			core.SetNowStateName("Title");
+		}
 	}
 
 	// 描画(常時)
