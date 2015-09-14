@@ -87,7 +87,7 @@
   <ItemGroup>
     <ClInclude Include="Core.hpp" />
     <ClInclude Include="EntityInclude.hpp" />
-    <ClInclude Include="Entity\MenuItem.hpp" />
+    <ClInclude Include="Entity\Button.hpp" />
     <ClInclude Include="Entity\Point.hpp" />
     <ClInclude Include="Entity\Ripple.hpp" />
     <ClInclude Include="HelperInclude.hpp" />

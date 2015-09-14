@@ -15,9 +15,9 @@ public:
 	int LogoHandle;
 	int FontHandle;
 	vector<Ripple> Ripples;
-	MenuItem MenuItemStart;
-	MenuItem MenuItemSetting;
-	MenuItem MenuItemClose;
+	Button StartButton;
+	Button SettingButton;
+	Button CloseButton;
 
 	// 場面名を取得します
 	string StateName()
@@ -45,17 +45,17 @@ public:
 			auto itemCenter = (core.ScreenSize / 2).GetWidthHeightAsPoint();
 
 			auto buttonSize = Size((core.ScreenSize / 3).GetWidth(), 40);
-			auto normalStyle = MenuItemStyle(0xffffff, false, 0xffffff);
-			auto hoverStyle = MenuItemStyle(0xffffff, true, GetColor(82, 195, 202));
+			auto normalStyle = ButtonStyle(0xffffff, false, 0xffffff);
+			auto hoverStyle = ButtonStyle(0xffffff, true, GetColor(82, 195, 202));
 
 			itemCenter.AddY(80);
-			MenuItemStart = MenuItem::BuildMenuItem(itemCenter, buttonSize, "Game Start", FontHandle, normalStyle, hoverStyle);
+			StartButton = Button::BuildMenuItem(itemCenter, buttonSize, "Game Start", FontHandle, normalStyle, hoverStyle);
 
 			itemCenter.AddY(60);
-			MenuItemSetting = MenuItem::BuildMenuItem(itemCenter, buttonSize, "Setting", FontHandle, normalStyle, hoverStyle);
+			SettingButton = Button::BuildMenuItem(itemCenter, buttonSize, "Setting", FontHandle, normalStyle, hoverStyle);
 
 			itemCenter.AddY(60);
-			MenuItemClose = MenuItem::BuildMenuItem(itemCenter, buttonSize, "Close", FontHandle, normalStyle, hoverStyle);
+			CloseButton = Button::BuildMenuItem(itemCenter, buttonSize, "Close", FontHandle, normalStyle, hoverStyle);
 		}
 
 		if ((input.MouseState[0] == 1 || random.Next(0, 1000) < 4) && Ripples.size() <= 6)
@@ -77,17 +77,17 @@ public:
 				it++;
 		}
 
-		if (MenuItemStart.VerifyOnMouse() && input.MouseState[0] == 1)
+		if (StartButton.VerifyOnMouse() && input.MouseState[0] == 1)
 		{
 			DrawString(0, 0, "Game Start", 0xffffff);
 		}
 
-		if (MenuItemSetting.VerifyOnMouse() && input.MouseState[0] == 1)
+		if (SettingButton.VerifyOnMouse() && input.MouseState[0] == 1)
 		{
 			DrawString(0, 0, "Setting", 0xffffff);
 		}
 
-		if (MenuItemClose.VerifyOnMouse() && input.MouseState[0] == 1)
+		if (CloseButton.VerifyOnMouse() && input.MouseState[0] == 1)
 		{
 			DrawString(0, 0, "Close", 0xffffff);
 		}
@@ -117,9 +117,9 @@ public:
 			DrawGraph(logoLocation.GetX(), logoLocation.GetY(), LogoHandle, 1);
 
 			// メニュー
-			MenuItemStart.Draw();
-			MenuItemSetting.Draw();
-			MenuItemClose.Draw();
+			StartButton.Draw();
+			SettingButton.Draw();
+			CloseButton.Draw();
 		}
 	}
 };

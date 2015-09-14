@@ -4,7 +4,7 @@
 #include "../EntityInclude.hpp"
 #include "../HelperInclude.hpp"
 
-class MenuItemStyle
+class ButtonStyle
 {
 private:
 	int _Color;
@@ -12,9 +12,9 @@ private:
 	int _TextColor;
 
 public:
-	MenuItemStyle() { }
+	ButtonStyle() { }
 
-	MenuItemStyle(int color, bool isFill, int textColor)
+	ButtonStyle(int color, bool isFill, int textColor)
 	{
 		_Color = color;
 		_IsFill = isFill;
@@ -37,21 +37,21 @@ public:
 	}
 };
 
-class MenuItem
+class Button
 {
 private:
 	Rect _Box;
 	string _Text;
 	Point _TextLocation;
 	int _FontHandle;
-	MenuItemStyle _NormalStyle;
-	MenuItemStyle _HoverStyle;
+	ButtonStyle _NormalStyle;
+	ButtonStyle _HoverStyle;
 
 public:
-	MenuItem() { }
+	Button() { }
 
 	// 新しいインスタンスを初期化します
-	MenuItem(Rect box, string text, Point textLocation, int fontHandle, MenuItemStyle normalStyle, MenuItemStyle hoverStyle)
+	Button(Rect box, string text, Point textLocation, int fontHandle, ButtonStyle normalStyle, ButtonStyle hoverStyle)
 	{
 		_Box = box;
 		_Text = text;
@@ -64,7 +64,7 @@ public:
 	// 描画します
 	void Draw()
 	{
-		MenuItemStyle style;
+		ButtonStyle style;
 
 		if (!VerifyOnMouse())
 			style = _NormalStyle;
@@ -89,12 +89,12 @@ public:
 	}
 
 	// メニュー項目を構築します
-	static MenuItem BuildMenuItem(Point centerPosition, Size boxSize, const char *text, int fontHandle, MenuItemStyle normalStyle, MenuItemStyle hoverStyle)
+	static Button BuildMenuItem(Point centerPosition, Size boxSize, const char *text, int fontHandle, ButtonStyle normalStyle, ButtonStyle hoverStyle)
 	{
 		auto rect = Rect(centerPosition - boxSize.GetWidthHeightAsPoint() / 2, boxSize);
 		auto textSize = Size(GetDrawStringWidthToHandle(text, strlen(text), fontHandle), 25);
 		auto textLocation = centerPosition - textSize.GetWidthHeightAsPoint() / 2;
 
-		return MenuItem(rect, text, textLocation, fontHandle, normalStyle, hoverStyle);
+		return Button(rect, text, textLocation, fontHandle, normalStyle, hoverStyle);
 	}
 };

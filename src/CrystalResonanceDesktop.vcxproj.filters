@@ -48,14 +48,14 @@
     <ClInclude Include="Entity\Ripple.hpp">
       <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="Entity\MenuItem.hpp">
-      <Filter>Entity</Filter>
-    </ClInclude>
     <ClInclude Include="Helper\RandomHelper.hpp">
       <Filter>Helper</Filter>
     </ClInclude>
     <ClInclude Include="Helper\InputHelper.hpp">
       <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\Button.hpp">
+      <Filter>Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
