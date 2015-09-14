@@ -39,13 +39,13 @@ public:
 			auto itemCenter = (Core::GetInstance().ScreenSize / 2).GetWidthHeightAsPoint();
 
 			itemCenter.AddY(80);
-			MenuItemStart = MenuItem::BuildMenuItem(itemCenter, Size((Core::GetInstance().ScreenSize / 3).GetWidth(), 40), "Start", FontHandle);
+			MenuItemStart = MenuItem::BuildMenuItem(itemCenter, Size((Core::GetInstance().ScreenSize / 3).GetWidth(), 40), "Game Start", FontHandle);
 
 			itemCenter.AddY(60);
 			MenuItemSetting = MenuItem::BuildMenuItem(itemCenter, Size((Core::GetInstance().ScreenSize / 3).GetWidth(), 40), "Setting", FontHandle);
 
 			itemCenter.AddY(60);
-			MenuItemEnd = MenuItem::BuildMenuItem(itemCenter, Size((Core::GetInstance().ScreenSize / 3).GetWidth(), 40), "End", FontHandle);
+			MenuItemEnd = MenuItem::BuildMenuItem(itemCenter, Size((Core::GetInstance().ScreenSize / 3).GetWidth(), 40), "Close", FontHandle);
 		}
 
 		random_device r;
@@ -72,7 +72,7 @@ public:
 
 		if (MenuItemStart.VerifyOnMouse() && InputHelper::GetInstance().MouseState[0] == 1)
 		{
-			DrawString(0, 0, "Start", 0xffffff);
+			DrawString(0, 0, "Game Start", 0xffffff);
 		}
 
 		if (MenuItemSetting.VerifyOnMouse() && InputHelper::GetInstance().MouseState[0] == 1)
@@ -82,7 +82,7 @@ public:
 
 		if (MenuItemEnd.VerifyOnMouse() && InputHelper::GetInstance().MouseState[0] == 1)
 		{
-			DrawString(0, 0, "End", 0xffffff);
+			DrawString(0, 0, "Close", 0xffffff);
 		}
 	}
 
