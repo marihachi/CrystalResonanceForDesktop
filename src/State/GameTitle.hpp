@@ -28,6 +28,11 @@ public:
 	// 更新(ターゲット時のみ)
 	void Update()
 	{
+		auto core = Core::GetInstance();
+		auto random = RandomHelper::GetInstance();
+		auto input = InputHelper::GetInstance();
+
+		// 初期化
 		if (IsInitial)
 		{
 			IsInitial = false;
@@ -36,27 +41,25 @@ public:
 			FontHandle = CreateFontToHandle("メイリオ", 25, 5, DX_FONTTYPE_ANTIALIASING_8X8);
 
 			// メニュー
-			auto itemCenter = (Core::GetInstance().ScreenSize / 2).GetWidthHeightAsPoint();
+
+			auto itemCenter = (core.ScreenSize / 2).GetWidthHeightAsPoint();
 
 			itemCenter.AddY(80);
-			MenuItemStart = MenuItem::BuildMenuItem(itemCenter, Size((Core::GetInstance().ScreenSize / 3).GetWidth(), 40), "Game Start", FontHandle);
+			MenuItemStart = MenuItem::BuildMenuItem(itemCenter, Size((core.ScreenSize / 3).GetWidth(), 40), "Game Start", FontHandle);
 
 			itemCenter.AddY(60);
-			MenuItemSetting = MenuItem::BuildMenuItem(itemCenter, Size((Core::GetInstance().ScreenSize / 3).GetWidth(), 40), "Setting", FontHandle);
+			MenuItemSetting = MenuItem::BuildMenuItem(itemCenter, Size((core.ScreenSize / 3).GetWidth(), 40), "Setting", FontHandle);
 
 			itemCenter.AddY(60);
-			MenuItemEnd = MenuItem::BuildMenuItem(itemCenter, Size((Core::GetInstance().ScreenSize / 3).GetWidth(), 40), "Close", FontHandle);
+			MenuItemEnd = MenuItem::BuildMenuItem(itemCenter, Size((core.ScreenSize / 3).GetWidth(), 40), "Close", FontHandle);
 		}
 
-		random_device r;
-
-		int rVal = (int)((double)r() / 0xffffffff * 1000);
-		if ((rVal < 3 && Ripples.size() < 4) || (rVal < 100 && Ripples.size() == 0))
+		if ((input.MouseState[0] == 1 || random.Next(0, 1000) < 4) && Ripples.size() <= 6)
 		{
-			int x = (int)((double)r() / 0xffffffff * 1280);
-			int y = (int)((double)r() / 0xffffffff * 720);
+			int x = random.Next(0, 1280);
+			int y = random.Next(0, 720);
 
-			Ripples.push_back(Ripple(Point(x, y), 0));
+			Ripples.push_back(Ripple(Point(x, y)));
 		}
 
 		auto it = Ripples.begin();
@@ -70,17 +73,17 @@ public:
 				it++;
 		}
 
-		if (MenuItemStart.VerifyOnMouse() && InputHelper::GetInstance().MouseState[0] == 1)
+		if (MenuItemStart.VerifyOnMouse() && input.MouseState[0] == 1)
 		{
 			DrawString(0, 0, "Game Start", 0xffffff);
 		}
 
-		if (MenuItemSetting.VerifyOnMouse() && InputHelper::GetInstance().MouseState[0] == 1)
+		if (MenuItemSetting.VerifyOnMouse() && input.MouseState[0] == 1)
 		{
 			DrawString(0, 0, "Setting", 0xffffff);
 		}
 
-		if (MenuItemEnd.VerifyOnMouse() && InputHelper::GetInstance().MouseState[0] == 1)
+		if (MenuItemEnd.VerifyOnMouse() && input.MouseState[0] == 1)
 		{
 			DrawString(0, 0, "Close", 0xffffff);
 		}
@@ -89,12 +92,14 @@ public:
 	// 描画(常時)
 	void Draw(StateEventArgs e)
 	{
+		auto core = Core::GetInstance();
+
 		if (e.IsActive())
 		{
 			for (auto ripple : Ripples)
 				ripple.Draw();
 
-			auto screenRightBottom = Core::GetInstance().ScreenSize.GetWidthHeightAsPoint();
+			auto screenRightBottom = core.ScreenSize.GetWidthHeightAsPoint();
 			auto screenCenter = screenRightBottom / 2;
 
 			int imageSize[2];

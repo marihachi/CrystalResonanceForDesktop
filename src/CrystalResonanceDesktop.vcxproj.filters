@@ -31,9 +31,6 @@
     <ClInclude Include="Core.hpp" />
     <ClInclude Include="StateInterface.hpp" />
     <ClInclude Include="StandardInclude.hpp" />
-    <ClInclude Include="Helper\InputHelper.h">
-      <Filter>Helper</Filter>
-    </ClInclude>
     <ClInclude Include="Entity\Size.hpp">
       <Filter>Entity</Filter>
     </ClInclude>
@@ -53,6 +50,12 @@
     </ClInclude>
     <ClInclude Include="Entity\MenuItem.hpp">
       <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Helper\RandomHelper.hpp">
+      <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Helper\InputHelper.hpp">
+      <Filter>Helper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

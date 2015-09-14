@@ -91,8 +91,9 @@
     <ClInclude Include="Entity\Point.hpp" />
     <ClInclude Include="Entity\Ripple.hpp" />
     <ClInclude Include="HelperInclude.hpp" />
+    <ClInclude Include="Helper\RandomHelper.hpp" />
     <ClInclude Include="State\GameMusicSelect.hpp" />
-    <ClInclude Include="Helper\InputHelper.h" />
+    <ClInclude Include="Helper\InputHelper.hpp" />
     <ClInclude Include="Entity\Size.hpp" />
     <ClInclude Include="Entity\Rect.hpp" />
     <ClInclude Include="StandardInclude.hpp" />

@@ -10,7 +10,7 @@ public:
 	int Radius;
 
 	// 新しいインスタンスを初期化します
-	Ripple(Point location, int radius)
+	Ripple(Point location, int radius = 0)
 	{
 		Location = location;
 		Radius = radius;

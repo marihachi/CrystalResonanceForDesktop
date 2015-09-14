@@ -1,3 +1,4 @@
 #pragma once
 
-#include "Helper\InputHelper.h"
+#include "Helper\InputHelper.hpp"
+#include "Helper\RandomHelper.hpp"
