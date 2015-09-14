@@ -2,7 +2,7 @@
 
 #include "../EntityInclude.hpp"
 
-// 座標を表します
+// 座標位置を表します
 class Point
 {
 private:

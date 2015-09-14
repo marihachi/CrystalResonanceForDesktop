@@ -2,7 +2,7 @@
 
 #include "../EntityInclude.hpp"
 
-// サイズを表します
+// 縦横の大きさを表します
 class Size
 {
 private:
