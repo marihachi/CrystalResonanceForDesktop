@@ -80,12 +80,13 @@ public:
 
 		if (_StartButton.VerifyOnMouse() && input.MouseState[0] == 1)
 		{
+			//core.SetNowStateName("MusicSelect");
 			core.SetNowStateName("Main");
 		}
 
 		if (_SettingButton.VerifyOnMouse() && input.MouseState[0] == 1)
 		{
-			
+			core.SetNowStateName("Setting");
 		}
 
 		if (_CloseButton.VerifyOnMouse() && input.MouseState[0] == 1)
