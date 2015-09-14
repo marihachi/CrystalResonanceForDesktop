@@ -64,12 +64,12 @@ public:
 		_HoverStyle = hoverStyle;
 	}
 
-	// 描画します
+	// ボタンを描画します
 	void Draw()
 	{
 		ButtonStyle style;
 
-		if (!VerifyOnMouse())
+		if (!IsOnMouse())
 			style = _NormalStyle;
 		else
 			style = _HoverStyle;
@@ -82,7 +82,7 @@ public:
 	}
 
 	// 項目上にマウスポインタがあるかどうかを検証します
-	bool VerifyOnMouse()
+	bool IsOnMouse()
 	{
 		auto mp = InputHelper::GetInstance().MousePos;
 		auto p1 = _Box.LocationLeftTop();
@@ -91,8 +91,8 @@ public:
 		return mp >= p1 && mp <= p2;
 	}
 
-	// メニュー項目を構築します
-	static Button BuildMenuItem(Point centerPosition, Size boxSize, const char *text, int fontHandle, ButtonStyle normalStyle, ButtonStyle hoverStyle)
+	// ボタンを構築してインスタンスを生成します
+	static Button BuildButton(Point centerPosition, Size boxSize, const char *text, int fontHandle, ButtonStyle normalStyle, ButtonStyle hoverStyle)
 	{
 		auto rect = Rect(centerPosition - boxSize.GetWidthHeightAsPoint() / 2, boxSize);
 		auto textSize = Size(GetDrawStringWidthToHandle(text, strlen(text), fontHandle), 25);

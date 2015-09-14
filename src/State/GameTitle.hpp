@@ -51,13 +51,13 @@ public:
 			auto hoverStyle = ButtonStyle(0xffffff, true, GetColor(82, 195, 202));
 
 			itemCenter.AddY(80);
-			_StartButton = Button::BuildMenuItem(itemCenter, buttonSize, "Game Start", _FontHandle, normalStyle, hoverStyle);
+			_StartButton = Button::BuildButton(itemCenter, buttonSize, "Game Start", _FontHandle, normalStyle, hoverStyle);
 
 			itemCenter.AddY(60);
-			_SettingButton = Button::BuildMenuItem(itemCenter, buttonSize, "Setting", _FontHandle, normalStyle, hoverStyle);
+			_SettingButton = Button::BuildButton(itemCenter, buttonSize, "Setting", _FontHandle, normalStyle, hoverStyle);
 
 			itemCenter.AddY(60);
-			_CloseButton = Button::BuildMenuItem(itemCenter, buttonSize, "Quit", _FontHandle, normalStyle, hoverStyle);
+			_CloseButton = Button::BuildButton(itemCenter, buttonSize, "Quit", _FontHandle, normalStyle, hoverStyle);
 		}
 
 		if ((input.MouseState[0] == 1 || random.Next(0, 1000) < 4) && _Ripples.size() <= 6)
@@ -79,18 +79,18 @@ public:
 				it++;
 		}
 
-		if (_StartButton.VerifyOnMouse() && input.MouseState[0] == 1)
+		if (_StartButton.IsOnMouse() && input.MouseState[0] == 1)
 		{
 			//core.SetNowStateName("MusicSelect");
 			core.SetNowStateName("Main");
 		}
 
-		if (_SettingButton.VerifyOnMouse() && input.MouseState[0] == 1)
+		if (_SettingButton.IsOnMouse() && input.MouseState[0] == 1)
 		{
 			core.SetNowStateName("Setting");
 		}
 
-		if (_CloseButton.VerifyOnMouse() && input.MouseState[0] == 1)
+		if (_CloseButton.IsOnMouse() && input.MouseState[0] == 1)
 		{
 			core.SetNowStateName("Quit");
 		}
