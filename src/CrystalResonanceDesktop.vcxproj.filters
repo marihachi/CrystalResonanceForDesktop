@@ -57,6 +57,7 @@
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="IState.hpp" />
+    <ClInclude Include="IUpdateable.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Start.cpp" />

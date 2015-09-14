@@ -92,6 +92,7 @@
     <ClInclude Include="Entity\Ripple.hpp" />
     <ClInclude Include="HelperInclude.hpp" />
     <ClInclude Include="Helper\RandomHelper.hpp" />
+    <ClInclude Include="IUpdateable.hpp" />
     <ClInclude Include="State\GameMusicSelect.hpp" />
     <ClInclude Include="Helper\InputHelper.hpp" />
     <ClInclude Include="Entity\Size.hpp" />

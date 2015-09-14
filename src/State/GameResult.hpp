@@ -18,15 +18,23 @@ public:
 		return "Result";
 	}
 
+	string UpdateId()
+	{
+		return StateName();
+	}
+
 	// 更新(ターゲット時のみ)
 	void Update()
 	{
 		auto &core = Core::GetInstance();
 		auto &input = InputHelper::GetInstance();
 
-		if (input.Key[KEY_INPUT_ESCAPE] == 1)
+		if (Core::GetInstance().GetNowStateName() == StateName())
 		{
-			core.SetNowStateName("Title");
+			if (input.Key[KEY_INPUT_ESCAPE] == 1)
+			{
+				core.SetNowStateName("Title");
+			}
 		}
 	}
 

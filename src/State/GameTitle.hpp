@@ -27,6 +27,11 @@ public:
 		return "Title";
 	}
 
+	string UpdateId()
+	{
+		return StateName();
+	}
+
 	// 更新(ターゲット時のみ)
 	void Update()
 	{
@@ -34,65 +39,68 @@ public:
 		auto &random = RandomHelper::GetInstance();
 		auto &input = InputHelper::GetInstance();
 
-		// 初期化
-		if (_IsInitial)
+		if (Core::GetInstance().GetNowStateName() == StateName())
 		{
-			_IsInitial = false;
+			// 初期化
+			if (_IsInitial)
+			{
+				_IsInitial = false;
 
-			_LogoHandle = LoadGraph("Image/logo.png", 1);
-			_FontHandle = CreateFontToHandle("メイリオ", 25, 5, DX_FONTTYPE_ANTIALIASING_8X8);
+				_LogoHandle = LoadGraph("Image/logo.png", 1);
+				_FontHandle = CreateFontToHandle("メイリオ", 25, 5, DX_FONTTYPE_ANTIALIASING_8X8);
 
-			// メニュー
+				// メニュー
 
-			auto itemCenter = (core.ScreenSize() / 2).GetWidthHeightAsPoint();
+				auto itemCenter = (core.ScreenSize() / 2).GetWidthHeightAsPoint();
 
-			auto buttonSize = Size((core.ScreenSize() / 3).Width(), 40);
-			auto normalStyle = ButtonStyle(0xffffff, false, 0xffffff);
-			auto hoverStyle = ButtonStyle(0xffffff, true, GetColor(82, 195, 202));
+				auto buttonSize = Size((core.ScreenSize() / 3).Width(), 40);
+				auto normalStyle = ButtonStyle(0xffffff, false, 0xffffff);
+				auto hoverStyle = ButtonStyle(0xffffff, true, GetColor(82, 195, 202));
 
-			itemCenter.AddY(80);
-			_StartButton = Button::BuildButton(itemCenter, buttonSize, "Game Start", _FontHandle, normalStyle, hoverStyle);
+				itemCenter.AddY(80);
+				_StartButton = Button::BuildButton(itemCenter, buttonSize, "Game Start", _FontHandle, normalStyle, hoverStyle);
 
-			itemCenter.AddY(60);
-			_SettingButton = Button::BuildButton(itemCenter, buttonSize, "Setting", _FontHandle, normalStyle, hoverStyle);
+				itemCenter.AddY(60);
+				_SettingButton = Button::BuildButton(itemCenter, buttonSize, "Setting", _FontHandle, normalStyle, hoverStyle);
 
-			itemCenter.AddY(60);
-			_CloseButton = Button::BuildButton(itemCenter, buttonSize, "Quit", _FontHandle, normalStyle, hoverStyle);
-		}
+				itemCenter.AddY(60);
+				_CloseButton = Button::BuildButton(itemCenter, buttonSize, "Quit", _FontHandle, normalStyle, hoverStyle);
+			}
 
-		if ((input.MouseLeft == 1 || random.Next(0, 1000) < 4) && _Ripples.size() <= 6)
-		{
-			int x = random.Next(0, 1280);
-			int y = random.Next(0, 720);
+			if ((input.MouseLeft == 1 || random.Next(0, 1000) < 4) && _Ripples.size() <= 6)
+			{
+				int x = random.Next(0, 1280);
+				int y = random.Next(0, 720);
 
-			_Ripples.push_back(Ripple(Point(x, y)));
-		}
+				_Ripples.push_back(Ripple(Point(x, y)));
+			}
 
-		auto it = _Ripples.begin();
-		while (it != _Ripples.end())
-		{
-			(*it).AddRadius(2);
+			auto it = _Ripples.begin();
+			while (it != _Ripples.end())
+			{
+				(*it).AddRadius(2);
 
-			if ((*it).Radius() > 1280 * 1.42)
-				it = _Ripples.erase(it);
-			else
-				it++;
-		}
+				if ((*it).Radius() > 1280 * 1.42)
+					it = _Ripples.erase(it);
+				else
+					it++;
+			}
 
-		if (_StartButton.IsOnMouse() && input.MouseLeft == 1)
-		{
-			//core.SetNowStateName("MusicSelect");
-			core.SetNowStateName("Main");
-		}
+			if (_StartButton.IsOnMouse() && input.MouseLeft == 1)
+			{
+				//core.SetNowStateName("MusicSelect");
+				core.SetNowStateName("Main");
+			}
 
-		if (_SettingButton.IsOnMouse() && input.MouseLeft == 1)
-		{
-			core.SetNowStateName("Setting");
-		}
+			if (_SettingButton.IsOnMouse() && input.MouseLeft == 1)
+			{
+				core.SetNowStateName("Setting");
+			}
 
-		if (_CloseButton.IsOnMouse() && input.MouseLeft == 1)
-		{
-			core.SetNowStateName("Quit");
+			if (_CloseButton.IsOnMouse() && input.MouseLeft == 1)
+			{
+				core.SetNowStateName("Quit");
+			}
 		}
 	}
 

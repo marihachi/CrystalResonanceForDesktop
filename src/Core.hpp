@@ -13,16 +13,54 @@ public: static Core &GetInstance(void) { static Core instance; return instance; 
 private: Core() { }
 
 private:
+	vector<IUpdateable*> _UpdateableList;
 	vector<IState*> _StateList;
 	string _NowStateName;
 	Size _ScreenSize = Size(0, 0);
 
 public:
 
+	// 更新処理を追加します
+	// ※例外が発生する可能性のあるメソッドです
+	void AddUpdate(IUpdateable* updateable)
+	{
+		bool isFound = false;
+		for (auto item : _UpdateableList)
+		{
+			if (item->UpdateId() == updateable->UpdateId())
+			{
+				isFound = true;
+				break;
+			}
+		}
+
+		if (!isFound)
+			_UpdateableList.push_back(updateable);
+		else
+			throw exception(("更新処理の追加に失敗しました(UpdateId: " + updateable->UpdateId() + ")").c_str());
+	}
+
 	// 場面を追加します
+	// ※例外が発生する可能性のあるメソッドです
 	void AddState(IState* state)
 	{
+		bool isFound = false;
+		for (auto item : _StateList)
+		{
+			if (item->StateName() == state->StateName())
+			{
+				throw exception(("場面の追加に失敗しました(StateName: " + state->StateName() + ")").c_str());
+			}
+		}
 		_StateList.push_back(state);
+		try
+		{
+			AddUpdate(state);
+		}
+		catch (exception ex)
+		{
+			throw exception(("場面の更新処理の追加に失敗しました(StateName: " + state->StateName() + ")").c_str());
+		}
 	}
 
 	// 現在の場面名を設定します
@@ -42,16 +80,24 @@ public:
 		return _ScreenSize;
 	}
 
-	// 対象場面のUpdateメソッドを呼び出します
+	// 登録されている全てのUpdateメソッドを呼び出します
 	void UpdateTriger()
 	{
-		for (auto state : _StateList)
-			if (state->StateName() == _NowStateName)
-			{
-				state->Update();
-				return;
-			}
-		throw exception((_NowStateName + "という場面は見つかりませんでした。").c_str());
+		for (auto updateable : _UpdateableList)
+		{
+			updateable->Update();
+
+			bool isFound = false;
+			for (auto state : _StateList)
+				if (updateable->UpdateId() == state->UpdateId())
+				{
+					isFound = true;
+					break;
+				}
+
+			if (!isFound)
+				throw exception((_NowStateName + "という場面は見つかりませんでした。").c_str());
+		}
 	}
 
 	// 登録されている全ての場面のDrawメソッドを呼び出します
@@ -80,6 +126,12 @@ public:
 
 		if (ChangeWindowMode(true) != DX_CHANGESCREEN_OK)
 			return false;
+
+		SetUse3DFlag(false);
+
+		SetDoubleStartValidFlag(true);
+
+		SetOutApplicationLogValidFlag(false);
 
 		if (DxLib_Init() != 0)
 			return false;
