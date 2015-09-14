@@ -4,54 +4,97 @@
 #include "../EntityInclude.hpp"
 #include "../HelperInclude.hpp"
 
+class MenuItemStyle
+{
+private:
+	int _Color;
+	bool _IsFill;
+	int _TextColor;
+
+public:
+	MenuItemStyle() { }
+
+	MenuItemStyle(int color, bool isFill, int textColor)
+	{
+		_Color = color;
+		_IsFill = isFill;
+		_TextColor = textColor;
+	}
+
+	int Color()
+	{
+		return _Color;
+	}
+
+	bool IsFill()
+	{
+		return _IsFill;
+	}
+
+	int TextColor()
+	{
+		return _TextColor;
+	}
+};
+
 class MenuItem
 {
+private:
+	Rect _Box;
+	string _Text;
+	Point _TextLocation;
+	int _FontHandle;
+	MenuItemStyle _NormalStyle;
+	MenuItemStyle _HoverStyle;
+
 public:
-	// 矩形です
-	Rect Box;
-
-	// 文字列です
-	string Text;
-
-	// 文字列の位置です
-	Point TextLocation;
-
 	MenuItem() { }
 
 	// 新しいインスタンスを初期化します
-	MenuItem(Rect box, string text, Point textRelativeLocation)
+	MenuItem(Rect box, string text, Point textLocation, int fontHandle, MenuItemStyle normalStyle, MenuItemStyle hoverStyle)
 	{
-		Box = box;
-		Text = text;
-		TextLocation = textRelativeLocation;
+		_Box = box;
+		_Text = text;
+		_TextLocation = textLocation;
+		_FontHandle = fontHandle;
+		_NormalStyle = normalStyle;
+		_HoverStyle = hoverStyle;
 	}
 
 	// 描画します
-	void Draw(int boxColor,bool isFill, int textColor, int fontHandle)
+	void Draw()
 	{
+		MenuItemStyle style;
+
+		if (!VerifyOnMouse())
+			style = _NormalStyle;
+		else
+			style = _HoverStyle;
+
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)(255 * 0.7));
-		Box.Draw(boxColor, isFill);
+		_Box.Draw(style.Color(), style.IsFill());
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-		DrawStringToHandle(TextLocation.GetX(), TextLocation.GetY(), Text.c_str(), textColor, fontHandle);
+		DrawStringToHandle(_TextLocation.GetX(), _TextLocation.GetY(), _Text.c_str(), style.TextColor(), _FontHandle);
 	}
 
 	// 項目上にマウスポインタがあるかどうかを検証します
 	bool VerifyOnMouse()
 	{
 		auto mp = InputHelper::GetInstance().MousePos;
-		auto p1 = Box.GetLocationLeftTop();
-		auto p2 = Box.GetLocationRightBottom();
+		auto p1 = _Box.GetLocationLeftTop();
+		auto p2 = _Box.GetLocationRightBottom();
 
 		return mp >= p1 && mp <= p2;
 	}
 
 	// メニュー項目を構築します
-	static MenuItem BuildMenuItem(Point centerPosition, Size boxSize, const char *text, int fontHandle)
+	static MenuItem BuildMenuItem(Point centerPosition, Size boxSize, const char *text, int fontHandle, MenuItemStyle normalStyle, MenuItemStyle hoverStyle)
 	{
-		Rect rect(centerPosition - boxSize.GetWidthHeightAsPoint() / 2, boxSize);
-		Size textSize(GetDrawStringWidthToHandle(text, strlen(text), fontHandle), 25);
+		auto rect = Rect(centerPosition - boxSize.GetWidthHeightAsPoint() / 2, boxSize);
+		auto textSize = Size(GetDrawStringWidthToHandle(text, strlen(text), fontHandle), 25);
 		auto textLocation = centerPosition - textSize.GetWidthHeightAsPoint() / 2;
-		return MenuItem(rect, text, textLocation);
+
+		return MenuItem(rect, text, textLocation, fontHandle, normalStyle, hoverStyle);
 	}
 };

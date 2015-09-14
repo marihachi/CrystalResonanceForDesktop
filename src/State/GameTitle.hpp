@@ -17,7 +17,7 @@ public:
 	vector<Ripple> Ripples;
 	MenuItem MenuItemStart;
 	MenuItem MenuItemSetting;
-	MenuItem MenuItemEnd;
+	MenuItem MenuItemClose;
 
 	// 場面名を取得します
 	string StateName()
@@ -44,14 +44,18 @@ public:
 
 			auto itemCenter = (core.ScreenSize / 2).GetWidthHeightAsPoint();
 
+			auto buttonSize = Size((core.ScreenSize / 3).GetWidth(), 40);
+			auto normalStyle = MenuItemStyle(0xffffff, false, 0xffffff);
+			auto hoverStyle = MenuItemStyle(0xffffff, true, GetColor(82, 195, 202));
+
 			itemCenter.AddY(80);
-			MenuItemStart = MenuItem::BuildMenuItem(itemCenter, Size((core.ScreenSize / 3).GetWidth(), 40), "Game Start", FontHandle);
+			MenuItemStart = MenuItem::BuildMenuItem(itemCenter, buttonSize, "Game Start", FontHandle, normalStyle, hoverStyle);
 
 			itemCenter.AddY(60);
-			MenuItemSetting = MenuItem::BuildMenuItem(itemCenter, Size((core.ScreenSize / 3).GetWidth(), 40), "Setting", FontHandle);
+			MenuItemSetting = MenuItem::BuildMenuItem(itemCenter, buttonSize, "Setting", FontHandle, normalStyle, hoverStyle);
 
 			itemCenter.AddY(60);
-			MenuItemEnd = MenuItem::BuildMenuItem(itemCenter, Size((core.ScreenSize / 3).GetWidth(), 40), "Close", FontHandle);
+			MenuItemClose = MenuItem::BuildMenuItem(itemCenter, buttonSize, "Close", FontHandle, normalStyle, hoverStyle);
 		}
 
 		if ((input.MouseState[0] == 1 || random.Next(0, 1000) < 4) && Ripples.size() <= 6)
@@ -83,7 +87,7 @@ public:
 			DrawString(0, 0, "Setting", 0xffffff);
 		}
 
-		if (MenuItemEnd.VerifyOnMouse() && input.MouseState[0] == 1)
+		if (MenuItemClose.VerifyOnMouse() && input.MouseState[0] == 1)
 		{
 			DrawString(0, 0, "Close", 0xffffff);
 		}
@@ -113,20 +117,9 @@ public:
 			DrawGraph(logoLocation.GetX(), logoLocation.GetY(), LogoHandle, 1);
 
 			// メニュー
-			if (!MenuItemStart.VerifyOnMouse())
-				MenuItemStart.Draw(0xffffff, false, 0xffffff, FontHandle);
-			else
-				MenuItemStart.Draw(0xffffff, true, GetColor(82, 195, 202), FontHandle);
-
-			if (!MenuItemSetting.VerifyOnMouse())
-				MenuItemSetting.Draw(0xffffff, false, 0xffffff, FontHandle);
-			else
-				MenuItemSetting.Draw(0xffffff, true, GetColor(82, 195, 202), FontHandle);
-
-			if (!MenuItemEnd.VerifyOnMouse())
-				MenuItemEnd.Draw(0xffffff, false, 0xffffff, FontHandle);
-			else
-				MenuItemEnd.Draw(0xffffff, true, GetColor(82, 195, 202), FontHandle);
+			MenuItemStart.Draw();
+			MenuItemSetting.Draw();
+			MenuItemClose.Draw();
 		}
 	}
 };
