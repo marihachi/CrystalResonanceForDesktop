@@ -104,7 +104,7 @@ public:
 		if (ClearDrawScreen() != 0)
 			return false;
 
-		if (_NowStateName == "Close")
+		if (_NowStateName == "Quit")
 			return false;
 
 		InputHelper::GetInstance().UpdateKeyInputTime();
