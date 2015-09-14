@@ -56,7 +56,7 @@ public:
 			_SettingButton = Button::BuildMenuItem(itemCenter, buttonSize, "Setting", _FontHandle, normalStyle, hoverStyle);
 
 			itemCenter.AddY(60);
-			_CloseButton = Button::BuildMenuItem(itemCenter, buttonSize, "Close", _FontHandle, normalStyle, hoverStyle);
+			_CloseButton = Button::BuildMenuItem(itemCenter, buttonSize, "Quit", _FontHandle, normalStyle, hoverStyle);
 		}
 
 		if ((input.MouseState[0] == 1 || random.Next(0, 1000) < 4) && _Ripples.size() <= 6)
@@ -91,7 +91,7 @@ public:
 
 		if (_CloseButton.VerifyOnMouse() && input.MouseState[0] == 1)
 		{
-			core.SetNowStateName("Close");
+			core.SetNowStateName("Quit");
 		}
 	}
 
