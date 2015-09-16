@@ -32,7 +32,7 @@ public:
 		{
 			if (_IsInitial)
 			{
-				_DetectionBoxImageHandle = LoadGraph("Image/detectionBox.png", 1);
+				_DetectionBoxImageHandle = LoadGraph("Image/detectionFrame.png", 1);
 			}
 
 			if (input.Key[KEY_INPUT_ESCAPE] == 1)
