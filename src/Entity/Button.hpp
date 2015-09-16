@@ -84,7 +84,7 @@ public:
 	// 項目上にマウスポインタがあるかどうかを検証します
 	bool IsOnMouse()
 	{
-		auto &input = InputHelper::GetInstance();
+		auto &input = InputHelper::Instance();
 		auto p1 = _Box.LocationLeftTop();
 		auto p2 = _Box.LocationRightBottom();
 
@@ -94,9 +94,9 @@ public:
 	// ボタンを構築してインスタンスを生成します
 	static Button BuildButton(Point centerPosition, Size boxSize, const char *text, int fontHandle, ButtonStyle normalStyle, ButtonStyle hoverStyle)
 	{
-		auto rect = Rect(centerPosition - boxSize.GetWidthHeightAsPoint() / 2, boxSize);
+		auto rect = Rect(centerPosition - boxSize.WidthHeightAsPoint() / 2, boxSize);
 		auto textSize = Size(GetDrawStringWidthToHandle(text, strlen(text), fontHandle), 25);
-		auto textLocation = centerPosition - textSize.GetWidthHeightAsPoint() / 2;
+		auto textLocation = centerPosition - textSize.WidthHeightAsPoint() / 2;
 
 		return Button(rect, text, textLocation, fontHandle, normalStyle, hoverStyle);
 	}

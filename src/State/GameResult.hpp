@@ -8,7 +8,7 @@
 // 結果画面の場面を表します
 class GameResult : public IState
 {
-public: static GameResult &GetInstance(void) { static auto instance = GameResult(); return instance; }
+public: static GameResult &Instance() { static auto instance = GameResult(); return instance; }
 private: GameResult() { }
 
 public:
@@ -18,22 +18,17 @@ public:
 		return "Result";
 	}
 
-	string UpdateId()
-	{
-		return StateName();
-	}
-
 	// 更新(ターゲット時のみ)
 	void Update()
 	{
-		auto &core = Core::GetInstance();
-		auto &input = InputHelper::GetInstance();
+		auto &core = Core::Instance();
+		auto &input = InputHelper::Instance();
 
-		if (Core::GetInstance().GetNowStateName() == StateName())
+		if (Core::Instance().NowStateName() == StateName())
 		{
 			if (input.Key[KEY_INPUT_ESCAPE] == 1)
 			{
-				core.SetNowStateName("Title");
+				core.NowStateName("Title");
 			}
 		}
 	}

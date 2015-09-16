@@ -119,13 +119,13 @@ public:
 	}
 
 	// _X座標を設定します
-	void SetX(int value)
+	void X(int value)
 	{
 		_X = value;
 	}
 
 	// _Y座標を設定します
-	void SetY(int value)
+	void Y(int value)
 	{
 		_Y = value;
 	}

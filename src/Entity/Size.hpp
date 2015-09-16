@@ -52,19 +52,19 @@ public:
 	}
 
 	// 幅と高さを座標として取得します
-	Point GetWidthHeightAsPoint()
+	Point WidthHeightAsPoint()
 	{
 		return Point(_Width, _Height);
 	}
 
 	// 幅を設定します
-	void SetWidth(int value)
+	void Width(int value)
 	{
 		_Width = value;
 	}
 
 	// 高さを設定します
-	void SetHeight(int value)
+	void Height(int value)
 	{
 		_Height = value;
 	}

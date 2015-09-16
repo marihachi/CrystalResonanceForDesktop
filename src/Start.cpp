@@ -11,39 +11,59 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	auto &core = Core::GetInstance();
+	auto &core = Core::Instance();
+	auto &input = InputHelper::Instance();
 
 	// 初期化
 	if (!core.Initialize("Crystal Resonance for Desktop", Size(1280, 720), 82, 195, 202))
 		return -1;
 
 	// 場面の追加
-	core.AddState(&GameTitle::GetInstance());
-	core.AddState(&GameMusicSelect::GetInstance());
-	core.AddState(&GameMain::GetInstance());
-	core.AddState(&GameResult::GetInstance());
-	core.AddState(&GameSetting::GetInstance());
+	try
+	{
+		core.AddState(&GameTitle::Instance());
+		core.AddState(&GameMusicSelect::Instance());
+		core.AddState(&GameMain::Instance());
+		core.AddState(&GameResult::Instance());
+		core.AddState(&GameSetting::Instance());
+	}
+	catch (exception ex)
+	{
+		MessageBox(
+			DxLib::GetMainWindowHandle(),
+			("AddStateメソッドで例外が発生しました\n(詳細: " + string(ex.what()) + ")").c_str(),
+			"エラー",
+			MB_OK);
+		return -1;
+	}
 
 	// 現在の場面を設定
-	core.SetNowStateName("Title");
+	core.NowStateName("Title");
 
 	// ゲームループ
 	while (core.ProcessContext())
 	{
+		input.UpdateKeyInputTime();
+
+		input.UpdateMouseInputTime();
+
+		core.TrigerUpdate();
+
 		try
 		{
-			core.UpdateTriger();
+			core.TrigerStateUpdate();
 		}
 		catch (exception ex)
 		{
 			MessageBox(
 				DxLib::GetMainWindowHandle(),
-				("UpdateTrigerメソッドで例外が発生しました\n(詳細: " + string(ex.what()) + ")").c_str(),
+				("StateUpdateTrigerメソッドで例外が発生しました\n(詳細: " + string(ex.what()) + ")").c_str(),
 				"エラー",
 				MB_OK);
-			break;
+			return -1;
 		}
-		core.DrawTriger();
+
+		core.TrigerDraw();
 	}
 
 	// 解放

@@ -9,7 +9,7 @@
 // 場面の制御などを提供します
 class Core
 {
-public: static Core &GetInstance(void) { static Core instance; return instance; }
+public: static Core &Instance() { static Core instance; return instance; }
 private: Core() { }
 
 private:
@@ -19,58 +19,36 @@ private:
 	Size _ScreenSize = Size(0, 0);
 
 public:
-
 	// 更新処理を追加します
 	// ※例外が発生する可能性のあるメソッドです
 	void AddUpdate(IUpdateable* updateable)
 	{
-		bool isFound = false;
 		for (auto item : _UpdateableList)
-		{
 			if (item->UpdateId() == updateable->UpdateId())
-			{
-				isFound = true;
-				break;
-			}
-		}
+				throw exception(("更新処理の追加に失敗しました(UpdateId: " + updateable->UpdateId() + ")").c_str());
 
-		if (!isFound)
-			_UpdateableList.push_back(updateable);
-		else
-			throw exception(("更新処理の追加に失敗しました(UpdateId: " + updateable->UpdateId() + ")").c_str());
+		_UpdateableList.push_back(updateable);
 	}
 
 	// 場面を追加します
 	// ※例外が発生する可能性のあるメソッドです
 	void AddState(IState* state)
 	{
-		bool isFound = false;
 		for (auto item : _StateList)
-		{
 			if (item->StateName() == state->StateName())
-			{
 				throw exception(("場面の追加に失敗しました(StateName: " + state->StateName() + ")").c_str());
-			}
-		}
+
 		_StateList.push_back(state);
-		try
-		{
-			AddUpdate(state);
-		}
-		catch (exception ex)
-		{
-			throw exception(("場面の更新処理の追加に失敗しました(StateName: " + state->StateName() + ")").c_str());
-		}
 	}
 
 	// 現在の場面名を設定します
-	void SetNowStateName(string nowStateName)
+	void NowStateName(string nowStateName)
 	{
 		_NowStateName = nowStateName;
 	}
 
 	// 現在の場面名を取得します
-	string GetNowStateName()
+	string NowStateName()
 	{
 		return _NowStateName;
 	}
@@ -80,34 +58,38 @@ public:
 		return _ScreenSize;
 	}
 
-	// 登録されている全てのUpdateメソッドを呼び出します
-	void UpdateTriger()
+	// 登録されている全てのIUpdateableのUpdateメソッドを呼び出します
+	void TrigerUpdate()
 	{
 		for (auto updateable : _UpdateableList)
-		{
 			updateable->Update();
+	}
 
-			bool isFound = false;
-			for (auto state : _StateList)
-				if (updateable->UpdateId() == state->UpdateId())
-				{
-					isFound = true;
-					break;
-				}
+	// 登録されている全ての場面のUpdateメソッドを呼び出します
+	// ※例外が発生する可能性のあるメソッドです
+	void TrigerStateUpdate()
+	{
+		IState *targetState;
+		bool isFound = false;
+		for (auto state : _StateList)
+			if (state->StateName() == _NowStateName)
+			{
+				isFound = true;
+				targetState = state;
+				break;
+			}
 
-			if (!isFound)
-				throw exception((_NowStateName + "という場面は見つかりませんでした。").c_str());
-		}
+		if (!isFound)
+			throw exception((_NowStateName + "という場面は見つかりませんでした。").c_str());
+		else
+			targetState->Update();
 	}
 
 	// 登録されている全ての場面のDrawメソッドを呼び出します
-	void DrawTriger()
+	void TrigerDraw()
 	{
 		for (auto state : _StateList)
-		{
-			StateEventArgs e(state->StateName() == _NowStateName);
-			state->Draw(e);
-		}
+			state->Draw(StateEventArgs(state->StateName() == _NowStateName));
 	}
 
 	// インスタンスを初期化します
@@ -146,7 +128,7 @@ public:
 	// 毎フレーム呼び出す必要がある基本処理を呼び出します
 	bool ProcessContext()
 	{
-		auto &input = InputHelper::GetInstance();
+		auto &input = InputHelper::Instance();
 
 		if (ScreenFlip() != 0)
 			return false;
@@ -159,10 +141,6 @@ public:
 
 		if (_NowStateName == "Quit")
 			return false;
-
-		input.UpdateKeyInputTime();
-
-		input.UpdateMouseInputTime();
 
 		return true;
 	}

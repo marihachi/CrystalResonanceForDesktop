@@ -8,7 +8,7 @@
 // 設定画面の場面を表します
 class GameSetting : public IState
 {
-public: static GameSetting &GetInstance(void) { static auto instance = GameSetting(); return instance; }
+public: static GameSetting &Instance() { static auto instance = GameSetting(); return instance; }
 private: GameSetting() { }
 
 public:
@@ -18,22 +18,17 @@ public:
 		return "Setting";
 	}
 
-	string UpdateId()
-	{
-		return StateName();
-	}
-
 	// 更新(ターゲット時のみ)
 	void Update()
 	{
-		auto &core = Core::GetInstance();
-		auto &input = InputHelper::GetInstance();
+		auto &core = Core::Instance();
+		auto &input = InputHelper::Instance();
 
-		if (Core::GetInstance().GetNowStateName() == StateName())
+		if (Core::Instance().NowStateName() == StateName())
 		{
 			if (input.Key[KEY_INPUT_ESCAPE] == 1)
 			{
-				core.SetNowStateName("Title");
+				core.NowStateName("Title");
 			}
 		}
 	}

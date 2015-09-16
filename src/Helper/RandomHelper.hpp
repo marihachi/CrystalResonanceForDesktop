@@ -6,7 +6,7 @@
 // —””­¶‚É‚Â‚¢‚Ä‚Ì‘€ì‚ğ’ñ‹Ÿ‚µ‚Ü‚·
 class RandomHelper
 {
-public: static RandomHelper &GetInstance(void) { static auto instance = RandomHelper(); return instance; }
+public: static RandomHelper &Instance() { static auto instance = RandomHelper(); return instance; }
 private: RandomHelper() { }
 
 public:

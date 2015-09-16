@@ -8,7 +8,7 @@
 // プレイ画面の場面を表します
 class GameMain : public IState
 {
-public: static GameMain &GetInstance(void) { static auto instance = GameMain(); return instance; }
+public: static GameMain &Instance() { static auto instance = GameMain(); return instance; }
 private: GameMain() { }
 
 public:
@@ -18,22 +18,17 @@ public:
 		return "Main";
 	}
 
-	string UpdateId()
-	{
-		return StateName();
-	}
-
 	// 更新(ターゲット時のみ)
 	void Update()
 	{
-		auto &core = Core::GetInstance();
-		auto &input = InputHelper::GetInstance();
+		auto &core = Core::Instance();
+		auto &input = InputHelper::Instance();
 
-		if (Core::GetInstance().GetNowStateName() == StateName())
+		if (Core::Instance().NowStateName() == StateName())
 		{
 			if (input.Key[KEY_INPUT_ESCAPE] == 1)
 			{
-				core.SetNowStateName("Title");
+				core.NowStateName("Title");
 			}
 		}
 	}
@@ -41,12 +36,12 @@ public:
 	// 描画(常時)
 	void Draw(StateEventArgs e)
 	{
-		auto &core = Core::GetInstance();
-		auto &input = InputHelper::GetInstance();
+		auto &core = Core::Instance();
+		auto &input = InputHelper::Instance();
 
 		if (e.IsActive())
 		{
-			auto screenRightBottom = core.ScreenSize().GetWidthHeightAsPoint();
+			auto screenRightBottom = core.ScreenSize().WidthHeightAsPoint();
 			auto screenCenter = screenRightBottom / 2;
 
 			int boxSize = 100;

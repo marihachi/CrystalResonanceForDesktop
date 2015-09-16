@@ -8,7 +8,7 @@
 // タイトル画面の場面を表します
 class GameTitle : public IState
 {
-public: static GameTitle &GetInstance(void) { static auto instance = GameTitle(); return instance; }
+public: static GameTitle &Instance() { static auto instance = GameTitle(); return instance; }
 private: GameTitle() { }
 
 private:
@@ -27,19 +27,14 @@ public:
 		return "Title";
 	}
 
-	string UpdateId()
-	{
-		return StateName();
-	}
-
 	// 更新(ターゲット時のみ)
 	void Update()
 	{
-		auto &core = Core::GetInstance();
-		auto &random = RandomHelper::GetInstance();
-		auto &input = InputHelper::GetInstance();
+		auto &core = Core::Instance();
+		auto &random = RandomHelper::Instance();
+		auto &input = InputHelper::Instance();
 
-		if (Core::GetInstance().GetNowStateName() == StateName())
+		if (Core::Instance().NowStateName() == StateName())
 		{
 			// 初期化
 			if (_IsInitial)
@@ -51,7 +46,7 @@ public:
 
 				// メニュー
 
-				auto itemCenter = (core.ScreenSize() / 2).GetWidthHeightAsPoint();
+				auto itemCenter = (core.ScreenSize() / 2).WidthHeightAsPoint();
 
 				auto buttonSize = Size((core.ScreenSize() / 3).Width(), 40);
 				auto normalStyle = ButtonStyle(0xffffff, false, 0xffffff);
@@ -89,17 +84,17 @@ public:
 			if (_StartButton.IsOnMouse() && input.MouseLeft == 1)
 			{
 				//core.SetNowStateName("MusicSelect");
-				core.SetNowStateName("Main");
+				core.NowStateName("Main");
 			}
 
 			if (_SettingButton.IsOnMouse() && input.MouseLeft == 1)
 			{
-				core.SetNowStateName("Setting");
+				core.NowStateName("Setting");
 			}
 
 			if (_CloseButton.IsOnMouse() && input.MouseLeft == 1)
 			{
-				core.SetNowStateName("Quit");
+				core.NowStateName("Quit");
 			}
 		}
 	}
@@ -107,14 +102,14 @@ public:
 	// 描画(常時)
 	void Draw(StateEventArgs e)
 	{
-		auto &core = Core::GetInstance();
+		auto &core = Core::Instance();
 
 		if (e.IsActive())
 		{
 			for (auto ripple : _Ripples)
 				ripple.Draw();
 
-			auto screenRightBottom = core.ScreenSize().GetWidthHeightAsPoint();
+			auto screenRightBottom = core.ScreenSize().WidthHeightAsPoint();
 			auto screenCenter = screenRightBottom / 2;
 
 			int imageSize[2];
