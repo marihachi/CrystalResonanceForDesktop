@@ -11,6 +11,10 @@ class GameMain : public IState
 public: static GameMain &Instance() { static auto instance = GameMain(); return instance; }
 private: GameMain() { }
 
+private:
+	bool _IsInitial = true;
+	int _DetectionBoxImageHandle;
+
 public:
 	// 場面名を取得します
 	string StateName()
@@ -26,6 +30,11 @@ public:
 
 		if (Core::Instance().NowStateName() == StateName())
 		{
+			if (_IsInitial)
+			{
+				_DetectionBoxImageHandle = LoadGraph("Image/detectionBox.png", 1);
+			}
+
 			if (input.Key[KEY_INPUT_ESCAPE] == 1)
 			{
 				core.NowStateName("Title");
@@ -44,17 +53,14 @@ public:
 			auto screenRightBottom = core.ScreenSize().WidthHeightAsPoint();
 			auto screenCenter = screenRightBottom / 2;
 
-			int boxSize = 100;
-			auto top = screenCenter - Point(boxSize * -sqrt(2.0), 0);
-			auto left = screenCenter - Point(0, boxSize * -sqrt(2.0));
-			auto bottom = screenCenter - Point(boxSize * sqrt(2.0), 0);
-			auto right = screenCenter - Point(0, boxSize * sqrt(2.0));
+			int imageSize[2];
+			GetGraphSize(_DetectionBoxImageHandle, &imageSize[0], &imageSize[1]);
+			auto detectionBoxRightBottom = Point(imageSize[0], imageSize[1]);
+			auto detectionBoxCenter = detectionBoxRightBottom / 2;
 
-			DrawLine(top.X(), top.Y(), left.X(), left.Y(), 0xffffff, 2);
-			DrawLine(left.X(), left.Y(), bottom.X(), bottom.Y(), 0xffffff, 2);
-			DrawLine(bottom.X(), bottom.Y(), right.X(), right.Y(), 0xffffff, 2);
-			DrawLine(right.X(), right.Y(), top.X(), top.Y(), 0xffffff, 2);
-
+			// 中央のひし形
+			auto detectionBoxLocation = screenCenter - detectionBoxCenter;
+			DrawGraph(detectionBoxLocation.X(), detectionBoxLocation.Y(), _DetectionBoxImageHandle, 1);
 
 			auto p = screenCenter - input.MousePos;
 			DrawFormatString(0, 0, 0xffffff, "Mouse Position(Center): %d, %d", p.X(), p.Y());
