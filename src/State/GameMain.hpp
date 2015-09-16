@@ -2,7 +2,7 @@
 
 #include "../StandardInclude.hpp"
 #include "../EntityInclude.hpp"
-#include <math.h>
+
 #include "../IState.hpp"
 
 // プレイ画面の場面を表します

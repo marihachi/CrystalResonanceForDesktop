@@ -1,8 +1,10 @@
 ﻿#pragma once
 
 #include "DxLib.h"
+
+#include <math.h>
 #include <string>
-#include <vector>
 #include <random>
+#include <vector>
 
 using namespace std;
