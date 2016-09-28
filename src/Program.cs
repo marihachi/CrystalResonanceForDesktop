@@ -20,6 +20,7 @@ namespace CrystalResonanceDesktop
 					sceneManager.TargetScene = sceneManager.FindByName("Title");
 
 					FontStorage.Instance.Add("メイリオ16", new DxSharp.Data.Font("メイリオ", 16));
+					FontStorage.Instance.Add("メイリオ20", new DxSharp.Data.Font("メイリオ", 20));
 
 					while (core.Update())
 					{

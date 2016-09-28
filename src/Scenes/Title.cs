@@ -28,7 +28,7 @@ namespace CrystalResonanceDesktop.Scenes
 					new Size(400, 50),
 					DxSharp.Data.Enum.Position.CenterMiddle,
 					20,
-					FontStorage.Instance.Item("メイリオ16"),
+					FontStorage.Instance.Item("メイリオ20"),
 					new ButtonStyle(Color.FromArgb(160, 255, 255, 255), Color.Transparent, Color.FromArgb(160, 255, 255, 255)),
 					new ButtonStyle(Color.FromArgb(200, 255, 255, 255), Color.Transparent, Color.FromArgb(200, 255, 255, 255)),
 					new ButtonStyle(Color.FromArgb(255, 255, 255, 255), Color.Transparent, Color.FromArgb(255, 255, 255, 255)));
@@ -42,7 +42,7 @@ namespace CrystalResonanceDesktop.Scenes
 					// game start
 					if (e.ItemIndex == 0)
 					{
-						SceneStorage.Instance.TargetScene = SceneStorage.Instance.FindByName("GameMain");
+						SceneStorage.Instance.TargetScene = SceneStorage.Instance.FindByName("GameMusicSelect");
 					}
 
 					// setting

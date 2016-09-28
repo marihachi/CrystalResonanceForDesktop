@@ -27,7 +27,7 @@ namespace CrystalResonanceDesktop.Scenes
 
 			if (Input.Instance.GetKey(KeyType.Escape).InputTime == 1)
 			{
-				SceneStorage.Instance.TargetScene = SceneStorage.Instance.FindByName("Title");
+				SceneStorage.Instance.TargetScene = SceneStorage.Instance.FindByName("GameMusicSelect");
 			}
 		}
 

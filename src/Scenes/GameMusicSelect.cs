@@ -5,6 +5,8 @@ using DxSharp.Storage;
 using CrystalResonanceDesktop.Utility;
 using CrystalResonanceDesktop.Data;
 using System;
+using DxSharp.Utility;
+using DxSharp.Data.Enum;
 
 namespace CrystalResonanceDesktop.Scenes
 {
@@ -21,6 +23,10 @@ namespace CrystalResonanceDesktop.Scenes
 				_IsInitial = false;
 			}
 
+			if (Input.Instance.GetKey(KeyType.Escape).InputTime == 1)
+			{
+				SceneStorage.Instance.TargetScene = SceneStorage.Instance.FindByName("Title");
+			}
 		}
 
 		public void Draw()
