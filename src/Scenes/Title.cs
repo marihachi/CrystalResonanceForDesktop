@@ -34,16 +34,25 @@ namespace CrystalResonanceDesktop.Scenes
 					new ButtonStyle(Color.FromArgb(255, 255, 255, 255), Color.Transparent, Color.FromArgb(255, 255, 255, 255)));
 
 				_TitleMenu.Add("Game Start");
+				_TitleMenu.Add("Setting");
 				_TitleMenu.Add("Close");
 
 				_TitleMenu.ItemClick += (s, e) =>
 				{
+					// game start
 					if (e.ItemIndex == 0)
 					{
 						SceneStorage.Instance.TargetScene = SceneStorage.Instance.FindByName("GameMain");
 					}
 
+					// setting
 					if (e.ItemIndex == 1)
+					{
+						SceneStorage.Instance.TargetScene = SceneStorage.Instance.FindByName("Setting");
+					}
+
+					// close
+					if (e.ItemIndex == 2)
 					{
 						SystemCore.Instance.Close();
 					}
