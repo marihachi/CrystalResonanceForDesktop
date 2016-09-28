@@ -11,7 +11,7 @@ namespace CrystalResonanceDesktop
 	{
 		static void Main(string[] args)
 		{
-			using (var core = SystemCore.Initialize(new Size(1280, 720), Color.LightSeaGreen, "Crystal Resonance Desktop"))
+			using (var core = SystemCore.Initialize(new Size(1280, 720), Color.FromArgb(82, 195, 202), "Crystal Resonance Desktop"))
 			{
 				try
 				{
