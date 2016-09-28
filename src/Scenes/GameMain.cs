@@ -31,12 +31,7 @@ namespace CrystalResonanceDesktop.Scenes
 
 		public void Draw()
 		{
-			var core = SystemCore.Instance;
-
-			var detectionFrame = ImageStorage.Instance.Item("detectionFrame");
-
-			// 中央のひし形
-			detectionFrame.Draw(new Point(0, 0));
+			ImageStorage.Instance.Item("detectionFrame").Draw(new Point(0, 0)); // 中央のひし形
 		}
 	}
 }
