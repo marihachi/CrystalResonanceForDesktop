@@ -1,4 +1,5 @@
 ﻿using DxSharp;
+using DxSharp.Data;
 using DxSharp.Storage;
 using System;
 using System.Drawing;
@@ -10,20 +11,19 @@ namespace CrystalResonanceDesktop
 	{
 		static void Main(string[] args)
 		{
-			using (var core = SystemCore.Initialize(new Size(1280, 720), "Crystal Resonance Desktop"))
+			using (var core = SystemCore.Initialize(new Size(1280, 720), Color.LightSeaGreen, "Crystal Resonance Desktop"))
 			{
 				try
 				{
-					var sceneManager = new SceneStorage();
-					sceneManager.TargetScene = sceneManager.FindByName("TestScene");
+					var sceneManager = SceneStorage.Instance;
 
-					SystemCore.Instance.FontStorage.Add("てすと", "メイリオ", 16);
+					sceneManager.TargetScene = sceneManager.FindByName("Title");
+
+					FontStorage.Instance.Add("メイリオ16", new DxSharp.Data.Font("メイリオ", 16));
 
 					while (core.Update())
 					{
 						sceneManager.Update();
-						sceneManager.Draw();
-
 						Utility.FpsHelper.Instance.Wait();
 					}
 				}

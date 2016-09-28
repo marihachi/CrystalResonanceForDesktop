@@ -1,5 +1,6 @@
 ﻿using DxSharp;
 using DxSharp.Data;
+using DxSharp.Storage;
 using System.Drawing;
 
 namespace CrystalResonanceDesktop.Scenes
@@ -15,7 +16,7 @@ namespace CrystalResonanceDesktop.Scenes
 
 		public void Draw()
 		{
-			SystemCore.Instance.FontStorage.Item("てすと").Draw(new Point(0, 100), $"カウント値: {count}", Color.Black);
+			FontStorage.Instance.Item("メイリオ16").Draw(new Point(0, 100), $"カウント値: {count}", Color.Black);
 		}
 	}
 }
