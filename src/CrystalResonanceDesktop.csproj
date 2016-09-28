@@ -50,7 +50,9 @@
     <Compile Include="Data\Button.cs" />
     <Compile Include="Data\Menu.cs" />
     <Compile Include="Scenes\GameMain.cs" />
-    <Compile Include="Scenes\TestScene.cs" />
+    <Compile Include="Scenes\GameMusicSelect.cs" />
+    <Compile Include="Scenes\GameResult.cs" />
+    <Compile Include="Scenes\Setting.cs" />
     <Compile Include="Scenes\Title.cs" />
     <Compile Include="Utility\FpsHelper.cs" />
     <Compile Include="Utility\PointHelper.cs" />
