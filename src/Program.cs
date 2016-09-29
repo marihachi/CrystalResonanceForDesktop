@@ -28,10 +28,10 @@ namespace CrystalResonanceDesktop
 						Utility.FpsHelper.Instance.Wait();
 					}
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					MessageBox.Show($"[内容]:\r\n{ex.Message}\r\n\r\n[スタックトレース]:\r\n{ex.StackTrace}", $"実行時エラー({ex.GetType()})", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+				}
 			}
 		}
 	}

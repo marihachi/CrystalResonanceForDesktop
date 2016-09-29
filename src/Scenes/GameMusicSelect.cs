@@ -27,11 +27,16 @@ namespace CrystalResonanceDesktop.Scenes
 			{
 				SceneStorage.Instance.TargetScene = SceneStorage.Instance.FindByName("Title");
 			}
+
+			if (Input.Instance.GetKey(KeyType.Enter).InputTime == 1)
+			{
+				SceneStorage.Instance.TargetScene = SceneStorage.Instance.FindByName("GameMain");
+			}
 		}
 
 		public void Draw()
 		{
-
+			FontStorage.Instance.Item("メイリオ20").Draw(new Point(0, 0), "Enter: 開発用演奏テスト", Color.White, Position.CenterMiddle);
 		}
 	}
 }
