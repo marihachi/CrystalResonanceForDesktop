@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Data\Button.cs" />
     <Compile Include="Data\Menu.cs" />
+    <Compile Include="Data\Ripple.cs" />
     <Compile Include="Scenes\GameMain.cs" />
     <Compile Include="Scenes\GameMusicSelect.cs" />
     <Compile Include="Scenes\GameResult.cs" />

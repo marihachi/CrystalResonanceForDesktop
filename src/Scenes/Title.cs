@@ -5,6 +5,9 @@ using DxSharp.Storage;
 using CrystalResonanceDesktop.Utility;
 using CrystalResonanceDesktop.Data;
 using System;
+using System.Collections.Generic;
+using DxSharp.Utility;
+using System.Linq;
 
 namespace CrystalResonanceDesktop.Scenes
 {
@@ -12,6 +15,8 @@ namespace CrystalResonanceDesktop.Scenes
 	{
 		private bool _IsInitial { get; set; } = true;
 		private Menu _TitleMenu { get; set; }
+		private List<Ripple> _Ripples { get; set; } = new List<Ripple>();
+		private Random _Random { get; set; } = new Random();
 
 		public void Update()
 		{
@@ -59,6 +64,25 @@ namespace CrystalResonanceDesktop.Scenes
 				};
 			}
 
+			if ((Input.Instance.MouseLeft == 1 || _Random.Next(0, 1000) < 4) && _Ripples.Count <= 6)
+			{
+				var x = _Random.Next(0, 1280);
+				var y = _Random.Next(0, 720);
+
+				_Ripples.Add(new Ripple(new Point(x, y)));
+			}
+
+			for(var i = 0; i < _Ripples.Count; i++)
+			{
+				_Ripples[i].AddRadius(2);
+
+				if (_Ripples[i].Radius > 1280 * 1.42)
+				{
+					_Ripples.RemoveAt(i);
+					i--;
+				}
+			}
+
 			_TitleMenu.Update();
 		}
 
@@ -68,6 +92,9 @@ namespace CrystalResonanceDesktop.Scenes
 			logo.Draw(new Point(0, -150));
 
 			_TitleMenu.Draw();
+
+			foreach (var ripple in _Ripples)
+				ripple.Draw();
 		}
 	}
 }
