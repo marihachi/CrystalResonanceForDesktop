@@ -76,7 +76,7 @@ namespace CrystalResonanceDesktop.Scenes
 			{
 				_Ripples[i].AddRadius(2);
 
-				if (_Ripples[i].Radius > 1280 * 1.42)
+				if (_Ripples[i].Radius > 1280 * 1.21)
 				{
 					_Ripples.RemoveAt(i);
 					i--;
