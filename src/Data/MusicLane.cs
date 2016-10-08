@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace CrystalResonanceDesktop.Data
 {
 	public class MusicLane
 	{
 		/// <summary>
-		/// このレーンに属している小節を取得または設定します
+		/// このレーンに属している小節の一覧を取得します
 		/// </summary>
-		public List<MusicBar> Bars { get; set; }
+		public List<MusicBar> Bars { get; } = new List<MusicBar>();
 	}
 }
