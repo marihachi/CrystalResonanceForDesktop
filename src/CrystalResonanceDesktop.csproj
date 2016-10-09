@@ -51,6 +51,7 @@
     <Compile Include="Data\Enum\MusicNoteType.cs" />
     <Compile Include="Data\MusicLane.cs" />
     <Compile Include="Data\Menu.cs" />
+    <Compile Include="Data\MusicManager.cs" />
     <Compile Include="Data\Ripple.cs" />
     <Compile Include="Data\MusicScore.cs" />
     <Compile Include="Data\MusicBar.cs" />

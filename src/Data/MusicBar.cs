@@ -24,7 +24,7 @@ namespace CrystalResonanceDesktop.Data
 		public uint Count { get; set; }
 
 		/// <summary>
-		/// この小節の長さの倍率を取得または設定します
+		/// この小節の4/4拍子を基準とした長さの倍率を取得または設定します
 		/// </summary>
 		/// <example>4/4拍子なら1</example>
 		/// <example>3/4拍子なら0.75</example>

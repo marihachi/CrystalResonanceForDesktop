@@ -5,10 +5,11 @@ namespace CrystalResonanceDesktop.Data
 {
 	public class MusicScore
 	{
-		public MusicScore(string songTitle, int bpm)
+		public MusicScore(string songTitle, int bpm, double offset = 0)
 		{
 			SongTitle = songTitle;
 			BPM = bpm;
+			Offset = offset;
 		}
 
 		/// <summary>
@@ -25,6 +26,11 @@ namespace CrystalResonanceDesktop.Data
 		/// テンポ
 		/// </summary>
 		public int BPM { get; set; }
+
+		/// <summary>
+		/// タイミングを調整するための値を取得または設定します(ミリ秒単位)
+		/// </summary>
+		public double Offset { get; set; }
 
 		/// <summary>
 		/// このスコアに属しているレーンを取得または設定します
