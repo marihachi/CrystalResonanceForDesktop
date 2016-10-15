@@ -1,6 +1,8 @@
 ﻿using DxSharp;
 using DxSharp.Data;
+using DxSharp.Data.Enum;
 using DxSharp.Storage;
+using DxSharp.Utility;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -26,6 +28,9 @@ namespace CrystalResonanceDesktop
 
 					while (core.Update())
 					{
+						if (Input.Instance.GetKey(KeyType.LShift).InputTime > 0 && Input.Instance.GetKey(KeyType.D).InputTime == 1)
+							core.IsShowDebugImageBorder ^= true;
+
 						sceneManager.Update();
 						Utility.FpsHelper.Instance.Wait();
 					}

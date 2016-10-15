@@ -1,18 +1,19 @@
-﻿using DxSharp;
+﻿using CrystalResonanceDesktop.Data;
+using DxSharp;
 using DxSharp.Data;
-using System.Drawing;
-using DxSharp.Storage;
-using CrystalResonanceDesktop.Utility;
-using CrystalResonanceDesktop.Data;
-using System;
 using DxSharp.Data.Enum;
+using DxSharp.Storage;
 using DxSharp.Utility;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CrystalResonanceDesktop.Scenes
 {
 	class GameMain : IScene
 	{
 		private bool _IsInitial { get; set; } = true;
+
+		private MusicManager Manager { get; set; }
 
 		public void Update()
 		{
@@ -22,18 +23,24 @@ namespace CrystalResonanceDesktop.Scenes
 			{
 				_IsInitial = false;
 
-				ImageStorage.Instance.Add("detectionFrame", new DxSharp.Data.Image("Resource/detectionFrame.png", 100, Position.CenterMiddle));
+				ImageStorage.Instance.Add("note", new Image("Resource/note.png", 100, Position.LeftTop));
+
+				Manager = new MusicManager();
+				Manager.LoadScore();
+				Manager.Start();
 			}
 
 			if (Input.Instance.GetKey(KeyType.Escape).InputTime == 1)
 			{
 				SceneStorage.Instance.TargetScene = SceneStorage.Instance.FindByName("GameMusicSelect");
 			}
+
+			Manager.Update();
 		}
 
 		public void Draw()
 		{
-			ImageStorage.Instance.Item("detectionFrame").Draw(new Point(0, 0)); // 中央のひし形
+			Manager.Draw();
 		}
 	}
 }

@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Data\Button.cs" />
     <Compile Include="Data\Enum\MusicNoteType.cs" />
+    <Compile Include="Data\LaneStatus.cs" />
     <Compile Include="Data\MusicLane.cs" />
     <Compile Include="Data\Menu.cs" />
     <Compile Include="Data\MusicManager.cs" />

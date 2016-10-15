@@ -1,15 +1,18 @@
 ﻿using DxSharp.Data;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CrystalResonanceDesktop.Data
 {
 	public class MusicScore
 	{
-		public MusicScore(string songTitle, int bpm, double offset = 0)
+		public MusicScore(string songTitle, int bpm, Sound song, double offset = 0, IEnumerable<MusicLane> lanes = null)
 		{
 			SongTitle = songTitle;
 			BPM = bpm;
+			Song = song;
 			Offset = offset;
+			Lanes = lanes?.ToList() ?? new List<MusicLane>();
 		}
 
 		/// <summary>
@@ -35,6 +38,6 @@ namespace CrystalResonanceDesktop.Data
 		/// <summary>
 		/// このスコアに属しているレーンを取得または設定します
 		/// </summary>
-		public List<MusicLane> Lanes { get; set; } = new List<MusicLane>();
+		public List<MusicLane> Lanes { get; set; }
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace CrystalResonanceDesktop.Data
 {
@@ -7,16 +8,17 @@ namespace CrystalResonanceDesktop.Data
 	/// </summary>
 	public class MusicBar
 	{
-		public MusicBar(uint count = 4, double span = 1.0)
+		public MusicBar(uint count = 4, double span = 1.0, IEnumerable<MusicNote> notes = null)
 		{
 			Count = count;
 			Span = span;
+			Notes = notes?.ToList() ?? new List<MusicNote>();
 		}
 
 		/// <summary>
 		/// この小節に属しているノートの一覧を取得します
 		/// </summary>
-		public List<MusicNote> Notes { get; } = new List<MusicNote>();
+		public List<MusicNote> Notes { get; private set; }
 
 		/// <summary>
 		/// この小節の1から始まるカウント数を取得または設定します
