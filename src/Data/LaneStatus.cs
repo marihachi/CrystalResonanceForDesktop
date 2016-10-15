@@ -15,7 +15,7 @@ namespace CrystalResonanceDesktop.Data
 
 		public MusicLane TargetLane { get; private set; }
 
-		public int BarIndex
+		public double BarLocation
 		{
 			get
 			{
@@ -23,9 +23,11 @@ namespace CrystalResonanceDesktop.Data
 				var spanSum = 0.0;
 				foreach (var i in Enumerable.Range(0, TargetLane.Bars.Count))
 					spanSum += TargetLane.Bars[i].Span;
-				return (int)(TargetLane.Bars.Count * BeatIndex / (4 * spanSum));
+				return (TargetLane.Bars.Count * BeatIndex / (4 * spanSum));
 			}
 		}
+		public int BarIndex { get { return (int)BarLocation; } }
+		public double BarOffset { get { return BarBeatLocation / (NowBar.Span * 4); } }
 
 		public MusicBar NowBar { get { return TargetLane.Bars[BarIndex]; } }
 
