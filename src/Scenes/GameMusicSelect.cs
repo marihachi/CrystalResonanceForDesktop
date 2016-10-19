@@ -1,12 +1,9 @@
 ﻿using DxSharp;
 using DxSharp.Data;
-using System.Drawing;
-using DxSharp.Storage;
-using CrystalResonanceDesktop.Utility;
-using CrystalResonanceDesktop.Data;
-using System;
-using DxSharp.Utility;
 using DxSharp.Data.Enum;
+using DxSharp.Storage;
+using DxSharp.Utility;
+using System.Drawing;
 
 namespace CrystalResonanceDesktop.Scenes
 {

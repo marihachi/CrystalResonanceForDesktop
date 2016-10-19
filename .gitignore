@@ -1,5 +1,6 @@
 Debug/
 src/*.sln
+src/packages
 *.vcxproj.user
 *.suo
 *.sdf
