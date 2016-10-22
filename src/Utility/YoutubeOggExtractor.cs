@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using YoutubeExtractor;
 
@@ -30,7 +29,8 @@ namespace CrystalResonanceDesktop.Utility
 			if (watchPageUrl == null)
 				throw new ArgumentNullException("watchPageUrl");
 
-			var videoInfo = await Task.Run(() => {
+			var videoInfo = await Task.Run(() =>
+			{
 				var infos = DownloadUrlResolver.GetDownloadUrls(watchPageUrl.AbsoluteUri);
 				var info = (from i in infos where i.AudioType == AudioType.Vorbis orderby i.AudioBitrate descending select i).First();
 
@@ -44,7 +44,8 @@ namespace CrystalResonanceDesktop.Utility
 
 			var outputFilePath = $"{Path.GetTempPath()}{unixtime}_{Random.Next(1000, 10000)}{videoInfo.AudioExtension}";
 
-			await Task.Run(() => {
+			await Task.Run(() =>
+			{
 				var psi = new ProcessStartInfo(FFmpegFilePath, $"-y -i {videoInfo.DownloadUrl} -acodec copy -map 0:1 {outputFilePath}");
 				psi.WindowStyle = ProcessWindowStyle.Hidden;
 
