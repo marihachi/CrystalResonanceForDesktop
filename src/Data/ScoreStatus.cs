@@ -2,18 +2,17 @@
 
 namespace CrystalResonanceDesktop.Data
 {
-	public class LaneStatus
+	public class ScoreStatus
 	{
-		public LaneStatus(double beatLocation, MusicLane targetLane)
+		public ScoreStatus(double beatLocation, MusicScore targetScore)
 		{
 			BeatLocation = beatLocation;
-			TargetLane = targetLane;
+			TargetScore = targetScore;
 		}
 
 		public double BeatLocation { get; private set; }
 
-
-		public MusicLane TargetLane { get; private set; }
+		public MusicScore TargetScore { get; private set; }
 
 		public double BarLocation
 		{
@@ -21,15 +20,15 @@ namespace CrystalResonanceDesktop.Data
 			{
 				// 現在の小節インデックスを求める
 				var spanSum = 0.0;
-				foreach (var i in Enumerable.Range(0, TargetLane.Bars.Count))
-					spanSum += TargetLane.Bars[i].Span;
-				return (TargetLane.Bars.Count * BeatIndex / (4 * spanSum));
+				foreach (var i in Enumerable.Range(0, TargetScore.Bars.Count))
+					spanSum += TargetScore.Bars[i].Span;
+				return (TargetScore.Bars.Count * BeatIndex / (4 * spanSum));
 			}
 		}
 		public int BarIndex { get { return (int)BarLocation; } }
 		public double BarOffset { get { return BarBeatLocation / (NowBar.Span * 4); } }
 
-		public MusicBar NowBar { get { return TargetLane.Bars[BarIndex]; } }
+		public MusicBar NowBar { get { return TargetScore.Bars[BarIndex]; } }
 
 		public int BeatIndex { get { return (int)BeatLocation; } }
 		public double BeatOffset { get { return BeatLocation - BeatIndex; } }
@@ -44,9 +43,9 @@ namespace CrystalResonanceDesktop.Data
 			BeatLocation = value;
 		}
 
-		public void SetTargetLane(MusicLane value)
+		public void SetTargetScore(MusicScore value)
 		{
-			TargetLane = value;
+			TargetScore = value;
 		}
 	}
 }

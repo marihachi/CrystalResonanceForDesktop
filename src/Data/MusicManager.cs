@@ -33,9 +33,9 @@ namespace CrystalResonanceDesktop.Data
 		private int NoteSpeedBase { get; set; } = 200;
 
 		/// <summary>
-		/// レーン毎の状態の一覧を取得します
+		/// 譜面の状態を取得します
 		/// </summary>
-		private List<LaneStatus> LaneStatuses { get; } = new List<LaneStatus>();
+		private ScoreStatus ScoreStatus { get; set; }
 
 		/// <summary>
 		/// 
@@ -48,32 +48,20 @@ namespace CrystalResonanceDesktop.Data
 			File.Delete(filepath);
 
 			// 仮
-			var lane_sim = new MusicLane();
-			var bar_sim = new MusicBar(8, 1, new List<MusicNote> { new MusicNote(1) });
+			var lane_sim = new MusicLane(new List<MusicNote> { new MusicNote(1) });
+			var lane_hi = new MusicLane(new List<MusicNote> { new MusicNote(2), new MusicNote(3), new MusicNote(4), new MusicNote(5), new MusicNote(6), new MusicNote(7), new MusicNote(8) });
+			var lane_kick = new MusicLane(new List<MusicNote> { new MusicNote(1), new MusicNote(5) });
+			var lane_sn = new MusicLane(new List<MusicNote> { new MusicNote(3), new MusicNote(7) });
+
+			var bar = new MusicBar(8, 1, new List<MusicLane> { lane_sn, lane_kick, lane_hi, lane_sim });
+
+			Score = new MusicScore("ウラココロ", 120, sound, -500 * 5 / 16);
+
 			foreach (int i in Enumerable.Range(0, 256))
-				lane_sim.Bars.Add(bar_sim);
+				Score.Bars.Add(bar);
 
-			var lane_hi = new MusicLane();
-			var bar_hi = new MusicBar(8, 1, new List<MusicNote> { new MusicNote(2), new MusicNote(4), new MusicNote(5), new MusicNote(6), new MusicNote(8) });
-			foreach (int i in Enumerable.Range(0, 256))
-				lane_hi.Bars.Add(bar_hi);
-
-			var lane_kick = new MusicLane();
-			var bar_kick = new MusicBar(8, 1, new List<MusicNote> { new MusicNote(1), new MusicNote(5) });
-			foreach (int i in Enumerable.Range(0, 256))
-				lane_kick.Bars.Add(bar_kick);
-
-			var lane_sn = new MusicLane();
-			var bar_sn = new MusicBar(8, 1, new List<MusicNote> { new MusicNote(3), new MusicNote(7) });
-			foreach (int i in Enumerable.Range(0, 256))
-				lane_sn.Bars.Add(bar_sn);
-
-			Score = new MusicScore("ウラココロ", 120, sound, -500 * 5 / 16, new List<MusicLane> { lane_sn, lane_kick, lane_hi, lane_sim });
-
-			// レーンの数のステータスを作成
-			LaneStatuses.Clear();
-			foreach (var i in Score.Lanes)
-				LaneStatuses.Add(new LaneStatus(0, i));
+			// 譜面のステータスを作成
+			ScoreStatus = new ScoreStatus(0, Score);
 		}
 
 		/// <summary>
@@ -98,13 +86,10 @@ namespace CrystalResonanceDesktop.Data
 			// 再生時間がマイナスなら処理しない
 			if (songSec > 0)
 			{
-				foreach (var laneIndex in Enumerable.Range(0, Score.Lanes.Count))
-				{
-					// 最初から現在の再生位置までの拍数
-					var beatLocation = songSec * bps;
+				// 最初から現在の再生位置までの拍数
+				var beatLocation = songSec * bps;
 
-					LaneStatuses[laneIndex].SetBeatLocation(beatLocation);
-				}
+				ScoreStatus.SetBeatLocation(beatLocation);
 			}
 		}
 
@@ -116,46 +101,43 @@ namespace CrystalResonanceDesktop.Data
 			var font = FontStorage.Instance.Item("メイリオ16");
 			var noteImage = ImageStorage.Instance.Item("note");
 
-			foreach (var laneIndex in Enumerable.Range(0, Score.Lanes.Count))
+			// 表示する小節の範囲
+			foreach (int i in Enumerable.Range(-1, 4))
 			{
-				var status = LaneStatuses[laneIndex];
+				var targetBarIndex = ScoreStatus.BarIndex + i;
 
-				// 表示する小節の範囲
-				foreach (int i in Enumerable.Range(-1, 4))
+				// 小節のインデックスがマイナスなら処理しない
+				if (targetBarIndex > 0)
 				{
-					var targetBarIndex = status.BarIndex + i;
-
-					// 小節のインデックスがマイナスなら処理しない
-					if (targetBarIndex > 0)
+					foreach (var laneIndex in Enumerable.Range(0, Score.Bars[targetBarIndex].Lanes.Count))
 					{
-						var bar = status.TargetLane.Bars[targetBarIndex];
+						var targetLane = Score.Bars[targetBarIndex].Lanes[laneIndex];
+						var bar = ScoreStatus.TargetScore.Bars[targetBarIndex];
 						var barDisplaySize = NoteSpeedBase * 4 * bar.Span;
 						var laneX = 280 + 144 * (laneIndex + 1);
-						var rightBottom = new Point(SystemCore.Instance.WindowSize.Width, SystemCore.Instance.WindowSize.Height);
-						var center = new Point(rightBottom.X / 2, rightBottom.Y / 2);
+						// var rightBottom = new Point(SystemCore.Instance.WindowSize.Width, SystemCore.Instance.WindowSize.Height);
+						// var center = new Point(rightBottom.X / 2, rightBottom.Y / 2);
 
 						DX.DrawLine(0, 650, SystemCore.Instance.WindowSize.Width, 650, 0xffffff);
 
-						foreach (var noteIndex in Enumerable.Range(0, bar.Notes.Count))
+						foreach (var noteIndex in Enumerable.Range(0, targetLane.Notes.Count))
 						{
-							var location = barDisplaySize * bar.Notes[noteIndex].LocationCount / bar.Count - barDisplaySize * status.BarOffset + (i) * barDisplaySize;
+							var location = barDisplaySize * targetLane.Notes[noteIndex].LocationCount / bar.Count - barDisplaySize * ScoreStatus.BarOffset + (i) * barDisplaySize;
 
 							noteImage.Draw(new Point(laneX - noteImage.Size.Width / 2, (int)(650 - location - noteImage.Size.Height / 2.0)));
 						}
 					}
 				}
+			}
 
-				if (SystemCore.Instance.IsShowDebugImageBorder)
-				{
-					font.Draw(new Point(180 * laneIndex, 20 * 1), $"Score.Lanes[{laneIndex}]", Color.White);
-					font.Draw(new Point(180 * laneIndex, 20 * 2), $"beatLocation: {status.BeatLocation:00.0}", Color.White);
-					font.Draw(new Point(180 * laneIndex, 20 * 3), $"barIndex: {status.BarIndex}", Color.White);
-					font.Draw(new Point(180 * laneIndex, 20 * 4), $"BarOffset: {status.BarOffset:00.0}", Color.White);
-					font.Draw(new Point(180 * laneIndex, 20 * 5), $"barBeatLocation: {status.BarBeatLocation:00.0}", Color.White);
-					font.Draw(new Point(180 * laneIndex, 20 * 6), $"countLocation: {status.CountLocation:00.0}", Color.White);
-				}
+			if (SystemCore.Instance.IsShowDebugImageBorder)
+			{
+				font.Draw(new Point(5, 20 * 1), $"beatLocation: {ScoreStatus.BeatLocation:00.0}", Color.White);
+				font.Draw(new Point(5, 20 * 2), $"barIndex: {ScoreStatus.BarIndex}", Color.White);
+				font.Draw(new Point(5, 20 * 3), $"BarOffset: {ScoreStatus.BarOffset:00.0}", Color.White);
+				font.Draw(new Point(5, 20 * 4), $"barBeatLocation: {ScoreStatus.BarBeatLocation:00.0}", Color.White);
+				font.Draw(new Point(5, 20 * 5), $"countLocation: {ScoreStatus.CountLocation:00.0}", Color.White);
 			}
 		}
-
 	}
 }

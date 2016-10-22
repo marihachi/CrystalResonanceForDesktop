@@ -5,14 +5,14 @@ namespace CrystalResonanceDesktop.Data
 {
 	public class MusicLane
 	{
-		public MusicLane(IEnumerable<MusicBar> bars = null)
+		public MusicLane(IEnumerable<MusicNote> notes = null)
 		{
-			Bars = bars?.ToList() ?? new List<MusicBar>();
+			Notes = notes?.ToList() ?? new List<MusicNote>();
 		}
 
 		/// <summary>
 		/// このレーンに属している小節の一覧を取得します
 		/// </summary>
-		public List<MusicBar> Bars { get; }
+		public List<MusicNote> Notes { get; }
 	}
 }
