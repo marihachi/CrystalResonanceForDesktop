@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Data\Button.cs" />
     <Compile Include="Data\Enum\MusicNoteType.cs" />
+    <Compile Include="Data\KeyConfig.cs" />
     <Compile Include="Data\ScoreStatus.cs" />
     <Compile Include="Data\MusicLane.cs" />
     <Compile Include="Data\Menu.cs" />
@@ -91,7 +92,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="Resource\detectionFrame.png">
+    <Content Include="Resource\detectFrameEffect.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resource\logo.png">

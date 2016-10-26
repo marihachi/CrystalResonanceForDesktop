@@ -9,13 +9,16 @@ using System.Threading.Tasks;
 
 namespace CrystalResonanceDesktop.Scenes
 {
-	class GameMain : IScene
+	public class GameMain : IScene
 	{
 		private bool _IsInitial { get; set; } = true;
 
 		private Task task { get; set; }
 
 		private MusicManager Manager { get; set; }
+
+		private Box SideBar { get; set; }
+		private Box MessageBox { get; set; }
 
 		public void Update()
 		{
@@ -25,35 +28,54 @@ namespace CrystalResonanceDesktop.Scenes
 			{
 				_IsInitial = false;
 
-				ImageStorage.Instance.Add("note", new DxSharp.Data.Image("Resource/note.png", 100, Position.LeftTop));
-
 				Manager = new MusicManager();
+
+				MessageBox = new Box(new Point(0, 0), new Size(core.WindowSize.Width, 0), Color.White, true, 0, Position.LeftMiddle);
 
 				task = Task.Run(async () =>
 				{
+					MessageBox.FadeSize(new Size(core.WindowSize.Width, 200), 0.5);
+					MessageBox.FadeOpacity(60, 0.5);
+
 					await Manager.LoadScoreAsync();
 
 					Manager.Start();
+
+					MessageBox.FadeOpacity(0, 0.5);
+					MessageBox.FadeSize(new Size(core.WindowSize.Width, 0), 0.5);
 				});
+
+				SideBar = new Box(new Point(0, 0), new Size(0, core.WindowSize.Height), Color.White, true, 0);
+				SideBar.FadeOpacity(20);
+				SideBar.FadeSize(new Size(200, core.WindowSize.Height));
 			}
 
 			if (Input.Instance.GetKey(KeyType.Escape).InputTime == 1)
 			{
 				SceneStorage.Instance.TargetScene = SceneStorage.Instance.FindByName("GameMusicSelect");
+
+				Manager.Score.Song.Stop();
 			}
 
 			if (task?.IsCompleted ?? false)
 			{
 				Manager.Update();
 			}
+
+			SideBar.Update();
+			MessageBox.Update();
 		}
 
 		public void Draw()
 		{
-			if (task?.IsCompleted ?? false)
-				Manager.Draw();
-			else
-				FontStorage.Instance.Item("メイリオ16").Draw(new Point(0, 0), "Now Loading ...", Color.White);
+			Manager.Draw();
+
+			SideBar.Draw();
+
+			MessageBox.Draw();
+
+			if (!(task?.IsCompleted ?? false) && !MessageBox.IsFading)
+				FontStorage.Instance.Item("メイリオ20").Draw(new Point(0, 0), "Now Loading ...", SystemCore.Instance.BackColor, Position.CenterMiddle);
 		}
 	}
 }

@@ -1,12 +1,12 @@
-﻿using CrystalResonanceDesktop.Utility;
-using DxLibDLL;
+﻿using DxLibDLL;
 using DxSharp;
 using DxSharp.Data;
+using DxSharp.Data.Enum;
 using DxSharp.Storage;
+using DxSharp.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,7 +19,12 @@ namespace CrystalResonanceDesktop.Data
 	{
 		public MusicManager()
 		{
+			ImageStorage.Instance.Add("note", new DxSharp.Data.Image("Resource/note.png", 100, Position.LeftTop));
 
+			var effect = new DxSharp.Data.Image("Resource/detectFrameEffect.png", 0, Position.LeftTop);
+			ImageStorage.Instance.Add("detectFrameEffect1", effect);
+			foreach (var i in Enumerable.Range(2, 5))
+				ImageStorage.Instance.Add($"detectFrameEffect{i}", (DxSharp.Data.Image)effect.Clone());
 		}
 
 		/// <summary>
@@ -30,7 +35,7 @@ namespace CrystalResonanceDesktop.Data
 		/// <summary>
 		/// 
 		/// </summary>
-		private int NoteSpeedBase { get; set; } = 200;
+		private int NoteSpeedBase { get; set; } = 350;
 
 		/// <summary>
 		/// 譜面の状態を取得します
@@ -42,11 +47,6 @@ namespace CrystalResonanceDesktop.Data
 		/// </summary>
 		public async Task LoadScoreAsync()
 		{
-			var extractor = new YoutubeOggExtractor();
-			var filepath = await extractor.Extract(new Uri("https://www.youtube.com/watch?v=qo1v9oiMolM"));
-			var sound = new Sound(filepath);
-			File.Delete(filepath);
-
 			// 仮
 			var lane_sim = new MusicLane(new List<MusicNote> { new MusicNote(1) });
 			var lane_hi = new MusicLane(new List<MusicNote> { new MusicNote(2), new MusicNote(3), new MusicNote(4), new MusicNote(5), new MusicNote(6), new MusicNote(7), new MusicNote(8) });
@@ -55,7 +55,8 @@ namespace CrystalResonanceDesktop.Data
 
 			var bar = new MusicBar(8, 1, new List<MusicLane> { lane_sn, lane_kick, lane_hi, lane_sim });
 
-			Score = new MusicScore("ウラココロ", 120, sound, -500 * 5 / 16);
+			Score = new MusicScore("ウラココロ", 120, new Uri("https://www.youtube.com/watch?v=qo1v9oiMolM"), -500 * 5 / 16);
+			await Score.ExtractSong();
 
 			foreach (int i in Enumerable.Range(0, 256))
 				Score.Bars.Add(bar);
@@ -77,6 +78,8 @@ namespace CrystalResonanceDesktop.Data
 		/// </summary>
 		public void Update()
 		{
+			var image = ImageStorage.Instance;
+
 			// 1秒に何回か
 			var bps = Score.BPM / 60.0;
 
@@ -91,52 +94,106 @@ namespace CrystalResonanceDesktop.Data
 
 				ScoreStatus.SetBeatLocation(beatLocation);
 			}
+
+			foreach (var i in Enumerable.Range(1, 4))
+				image.Item($"detectFrameEffect{i}").Update();
+
+			if (SystemCore.Instance.IsShowDebugImageBorder)
+			{
+				if (Input.Instance.GetKey(KeyType.Up).InputTime == 1)
+					NoteSpeedBase += 50;
+
+				if (Input.Instance.GetKey(KeyType.Down).InputTime == 1 && NoteSpeedBase > 100)
+					NoteSpeedBase -= 50;
+			}
+
+			Judgement();
 		}
 
 		/// <summary>
-		/// 描画します
+		/// 入力の判定をします
+		/// </summary>
+		private void Judgement()
+		{
+			var input = Input.Instance;
+
+			// TODO
+		}
+
+		/// <summary>
+		/// ノートを描画します
 		/// </summary>
 		public void Draw()
 		{
 			var font = FontStorage.Instance.Item("メイリオ16");
-			var noteImage = ImageStorage.Instance.Item("note");
+			var image = ImageStorage.Instance;
 
-			// 表示する小節の範囲
-			foreach (int i in Enumerable.Range(-1, 4))
+			if (Score != null && ScoreStatus != null)
 			{
-				var targetBarIndex = ScoreStatus.BarIndex + i;
-
-				// 小節のインデックスがマイナスなら処理しない
-				if (targetBarIndex > 0)
+				// 表示する小節の範囲
+				foreach (int i in Enumerable.Range(-1, 3))
 				{
-					foreach (var laneIndex in Enumerable.Range(0, Score.Bars[targetBarIndex].Lanes.Count))
+					var targetBarIndex = ScoreStatus.BarIndex + i;
+
+					// 小節のインデックスがマイナスなら処理しない
+					if (targetBarIndex > 0)
 					{
-						var targetLane = Score.Bars[targetBarIndex].Lanes[laneIndex];
-						var bar = ScoreStatus.TargetScore.Bars[targetBarIndex];
-						var barDisplaySize = NoteSpeedBase * 4 * bar.Span;
-						var laneX = 280 + 144 * (laneIndex + 1);
-						// var rightBottom = new Point(SystemCore.Instance.WindowSize.Width, SystemCore.Instance.WindowSize.Height);
-						// var center = new Point(rightBottom.X / 2, rightBottom.Y / 2);
-
-						DX.DrawLine(0, 650, SystemCore.Instance.WindowSize.Width, 650, 0xffffff);
-
-						foreach (var noteIndex in Enumerable.Range(0, targetLane.Notes.Count))
+						foreach (var laneIndex in Enumerable.Range(0, Score.Bars[targetBarIndex].Lanes.Count))
 						{
-							var location = barDisplaySize * targetLane.Notes[noteIndex].LocationCount / bar.Count - barDisplaySize * ScoreStatus.BarOffset + (i) * barDisplaySize;
+							var targetLane = Score.Bars[targetBarIndex].Lanes[laneIndex];
+							var bar = ScoreStatus.TargetScore.Bars[targetBarIndex];
+							var barDisplaySize = NoteSpeedBase * 4 * bar.Span;
+							var laneX = 200 + 100 + 176 * (laneIndex + 1);
 
-							noteImage.Draw(new Point(laneX - noteImage.Size.Width / 2, (int)(650 - location - noteImage.Size.Height / 2.0)));
+							foreach (var noteIndex in Enumerable.Range(0, targetLane.Notes.Count))
+							{
+								var count = (double)targetLane.Notes[noteIndex].LocationCount / bar.Count;
+								var location = barDisplaySize * (count - ScoreStatus.BarOffset + i);
+
+								image.Item("note").Draw(new Point((int)(laneX - image.Item("note").Size.Width / 2.0), (int)(650 - location - image.Item("note").Size.Height / 2.0)));
+							}
 						}
 					}
 				}
+
+				foreach (var laneIndex in Enumerable.Range(0, Score.Bars[ScoreStatus.BarIndex].Lanes.Count))
+				{
+					var laneX = 200 + 100 + 176 * (laneIndex + 1);
+
+					var effect = image.Item($"detectFrameEffect{laneIndex + 1}");
+
+					KeyType key = 0;
+					if (laneIndex == 0) key = KeyType.D;
+					if (laneIndex == 1) key = KeyType.F;
+					if (laneIndex == 2) key = KeyType.J;
+					if (laneIndex == 3) key = KeyType.K;
+
+
+					if (Input.Instance.GetKey(key).InputTime == 1)
+						effect.Fade(100, .01);
+					else if (Input.Instance.GetKey(key).InputTime == 0)
+						effect.Fade(0, .16);
+
+					effect.Draw(new Point(laneX - effect.Size.Width / 2, 650 - effect.Size.Height / 2));
+				}
 			}
+
+			DX.DrawLine(0, 650, SystemCore.Instance.WindowSize.Width, 650, 0xffffff);
 
 			if (SystemCore.Instance.IsShowDebugImageBorder)
 			{
-				font.Draw(new Point(5, 20 * 1), $"beatLocation: {ScoreStatus.BeatLocation:00.0}", Color.White);
-				font.Draw(new Point(5, 20 * 2), $"barIndex: {ScoreStatus.BarIndex}", Color.White);
-				font.Draw(new Point(5, 20 * 3), $"BarOffset: {ScoreStatus.BarOffset:00.0}", Color.White);
-				font.Draw(new Point(5, 20 * 4), $"barBeatLocation: {ScoreStatus.BarBeatLocation:00.0}", Color.White);
-				font.Draw(new Point(5, 20 * 5), $"countLocation: {ScoreStatus.CountLocation:00.0}", Color.White);
+				if (ScoreStatus != null)
+				{
+					font.Draw(new Point(5, 20 * 1), $"beatLocation: {ScoreStatus.BeatLocation:00.0}", Color.White);
+					font.Draw(new Point(5, 20 * 2), $"beatIndex: {ScoreStatus.BeatIndex}", Color.White);
+					font.Draw(new Point(5, 20 * 3), $"beatOffset: {ScoreStatus.BeatOffset:00.0}", Color.White);
+					font.Draw(new Point(5, 20 * 4), $"barLocation: {ScoreStatus.BarLocation:00.0}", Color.White);
+					font.Draw(new Point(5, 20 * 5), $"barIndex: {ScoreStatus.BarIndex}", Color.White);
+					font.Draw(new Point(5, 20 * 6), $"barOffset: {ScoreStatus.BarOffset:00.0}", Color.White);
+					font.Draw(new Point(5, 20 * 7), $"barBeatLocation1: {ScoreStatus.BarBeatLocation:00.0}", Color.White);
+					font.Draw(new Point(5, 20 * 8), $"countLocation: {ScoreStatus.CountLocation:00.0}", Color.White);
+				}
+				font.Draw(new Point(5, 20 * 9), $"NoteSpeedBase: {NoteSpeedBase}", Color.White);
 			}
 		}
 	}
