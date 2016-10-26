@@ -1,16 +1,12 @@
 ﻿using DxSharp;
 using DxSharp.Data;
-using System.Drawing;
 using DxSharp.Storage;
-using CrystalResonanceDesktop.Utility;
-using CrystalResonanceDesktop.Data;
-using System;
 using DxSharp.Utility;
 using DxSharp.Data.Enum;
 
 namespace CrystalResonanceDesktop.Scenes
 {
-	class Setting : IScene
+	public class Setting : IScene
 	{
 		private bool _IsInitial { get; set; } = true;
 

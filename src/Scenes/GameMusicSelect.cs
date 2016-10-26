@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace CrystalResonanceDesktop.Scenes
 {
-	class GameMusicSelect : IScene
+	public class GameMusicSelect : IScene
 	{
 		private bool _IsInitial { get; set; } = true;
 

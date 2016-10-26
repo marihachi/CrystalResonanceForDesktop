@@ -2,7 +2,6 @@
 using DxSharp.Data;
 using System.Drawing;
 using DxSharp.Storage;
-using CrystalResonanceDesktop.Utility;
 using CrystalResonanceDesktop.Data;
 using System;
 using System.Collections.Generic;
@@ -11,7 +10,7 @@ using System.Linq;
 
 namespace CrystalResonanceDesktop.Scenes
 {
-	class Title : IScene
+	public class Title : IScene
 	{
 		private bool _IsInitial { get; set; } = true;
 		private Menu _TitleMenu { get; set; }

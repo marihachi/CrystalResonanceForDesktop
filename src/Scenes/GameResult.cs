@@ -1,14 +1,9 @@
 ﻿using DxSharp;
 using DxSharp.Data;
-using System.Drawing;
-using DxSharp.Storage;
-using CrystalResonanceDesktop.Utility;
-using CrystalResonanceDesktop.Data;
-using System;
 
 namespace CrystalResonanceDesktop.Scenes
 {
-	class GameResult : IScene
+	public class GameResult : IScene
 	{
 		private bool _IsInitial { get; set; } = true;
 
