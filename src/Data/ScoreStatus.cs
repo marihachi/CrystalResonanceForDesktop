@@ -22,11 +22,11 @@ namespace CrystalResonanceDesktop.Data
 				var spanSum = 0.0;
 				foreach (var i in Enumerable.Range(0, TargetScore.Bars.Count))
 					spanSum += TargetScore.Bars[i].Span;
-				return (TargetScore.Bars.Count * BeatIndex / (4 * spanSum));
+				return (TargetScore.Bars.Count * BeatLocation / (4 * spanSum));
 			}
 		}
 		public int BarIndex { get { return (int)BarLocation; } }
-		public double BarOffset { get { return BarBeatLocation / (NowBar.Span * 4); } }
+		public double BarOffset { get { return BarLocation - BarIndex; } }
 
 		public MusicBar NowBar { get { return TargetScore.Bars[BarIndex]; } }
 
