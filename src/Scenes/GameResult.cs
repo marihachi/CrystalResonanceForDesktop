@@ -5,17 +5,14 @@ namespace CrystalResonanceDesktop.Scenes
 {
 	public class GameResult : IScene
 	{
-		private bool _IsInitial { get; set; } = true;
+		private bool IsInitialized { get; set; }
 
 		public void Update()
 		{
-			var core = SystemCore.Instance;
-
-			if (_IsInitial)
+			if (!IsInitialized)
 			{
-				_IsInitial = false;
+				IsInitialized = true;
 			}
-
 		}
 
 		public void Draw()

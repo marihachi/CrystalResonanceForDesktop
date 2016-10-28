@@ -19,12 +19,15 @@ namespace CrystalResonanceDesktop.Data
 	{
 		public MusicManager()
 		{
-			ImageStorage.Instance.Add("note", new DxSharp.Data.Image("Resource/note.png", 100, Position.LeftTop));
+			if (ImageStorage.Instance.Item("note") == null)
+				ImageStorage.Instance.Add("note", new DxSharp.Data.Image("Resource/note.png", 100, Position.LeftTop));
 
 			var effect = new DxSharp.Data.Image("Resource/detectFrameEffect.png", 0, Position.LeftTop);
-			ImageStorage.Instance.Add("detectFrameEffect1", effect);
+			if (ImageStorage.Instance.Item("detectFrameEffect1") == null)
+				ImageStorage.Instance.Add("detectFrameEffect1", effect);
 			foreach (var i in Enumerable.Range(2, 5))
-				ImageStorage.Instance.Add($"detectFrameEffect{i}", (DxSharp.Data.Image)effect.Clone());
+				if (ImageStorage.Instance.Item($"detectFrameEffect{i}") == null)
+					ImageStorage.Instance.Add($"detectFrameEffect{i}", (DxSharp.Data.Image)effect.Clone());
 		}
 
 		/// <summary>
@@ -78,6 +81,8 @@ namespace CrystalResonanceDesktop.Data
 		/// </summary>
 		public void Update()
 		{
+			var core = SystemCore.Instance;
+			var input = Input.Instance;
 			var image = ImageStorage.Instance;
 
 			// 1秒に何回か
@@ -98,12 +103,12 @@ namespace CrystalResonanceDesktop.Data
 			foreach (var i in Enumerable.Range(1, 4))
 				image.Item($"detectFrameEffect{i}").Update();
 
-			if (SystemCore.Instance.IsShowDebugImageBorder)
+			if (core.IsShowDebugImageBorder)
 			{
-				if (Input.Instance.GetKey(KeyType.Up).InputTime == 1)
+				if (input.GetKey(KeyType.Up).InputTime == 1)
 					NoteSpeedBase += 50;
 
-				if (Input.Instance.GetKey(KeyType.Down).InputTime == 1 && NoteSpeedBase > 100)
+				if (input.GetKey(KeyType.Down).InputTime == 1 && NoteSpeedBase > 100)
 					NoteSpeedBase -= 50;
 			}
 
@@ -125,8 +130,9 @@ namespace CrystalResonanceDesktop.Data
 		/// </summary>
 		public void Draw()
 		{
-			var font = FontStorage.Instance.Item("メイリオ16");
-			var image = ImageStorage.Instance;
+			var fonts = FontStorage.Instance;
+			var input = Input.Instance;
+			var images = ImageStorage.Instance;
 
 			if (Score != null && ScoreStatus != null)
 			{
@@ -150,7 +156,7 @@ namespace CrystalResonanceDesktop.Data
 								var count = (double)targetLane.Notes[noteIndex].LocationCount / bar.Count;
 								var location = barDisplaySize * (count - ScoreStatus.BarOffset + i);
 
-								image.Item("note").Draw(new Point((int)(laneX - image.Item("note").Size.Width / 2.0), (int)(650 - location - image.Item("note").Size.Height / 2.0)));
+								images.Item("note").Draw(new Point((int)(laneX - images.Item("note").Size.Width / 2.0), (int)(650 - location - images.Item("note").Size.Height / 2.0)));
 							}
 						}
 					}
@@ -160,7 +166,7 @@ namespace CrystalResonanceDesktop.Data
 				{
 					var laneX = 200 + 100 + 176 * (laneIndex + 1);
 
-					var effect = image.Item($"detectFrameEffect{laneIndex + 1}");
+					var effect = images.Item($"detectFrameEffect{laneIndex + 1}");
 
 					KeyType key = 0;
 					if (laneIndex == 0) key = KeyType.D;
@@ -169,9 +175,9 @@ namespace CrystalResonanceDesktop.Data
 					if (laneIndex == 3) key = KeyType.K;
 
 
-					if (Input.Instance.GetKey(key).InputTime == 1)
+					if (input.GetKey(key).InputTime == 1)
 						effect.Fade(100, .01);
-					else if (Input.Instance.GetKey(key).InputTime == 0)
+					else if (input.GetKey(key).InputTime == 0)
 						effect.Fade(0, .16);
 
 					effect.Draw(new Point(laneX - effect.Size.Width / 2, 650 - effect.Size.Height / 2));
@@ -182,6 +188,8 @@ namespace CrystalResonanceDesktop.Data
 
 			if (SystemCore.Instance.IsShowDebugImageBorder)
 			{
+				var font = fonts.Item("メイリオ16");
+
 				if (ScoreStatus != null)
 				{
 					font.Draw(new Point(5, 20 * 1), $"beatLocation: {ScoreStatus.BeatLocation:00.0}", Color.White);

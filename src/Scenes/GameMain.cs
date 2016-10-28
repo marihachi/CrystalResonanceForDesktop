@@ -11,55 +11,63 @@ namespace CrystalResonanceDesktop.Scenes
 {
 	public class GameMain : IScene
 	{
-		private bool _IsInitial { get; set; } = true;
+		private bool IsInitialized { get; set; }
 
-		private Task task { get; set; }
+		private Task LoadTask { get; set; }
 
 		private MusicManager Manager { get; set; }
 
 		private Box SideBar { get; set; }
 		private Box MessageBox { get; set; }
 
-		public void Update()
+		private void Initialize()
 		{
 			var core = SystemCore.Instance;
 
-			if (_IsInitial)
+			Manager = new MusicManager();
+
+			MessageBox = new Box(new Point(0, 0), new Size(core.WindowSize.Width, 0), Color.White, true, 0, Position.LeftMiddle);
+
+			LoadTask = Task.Run(async () =>
 			{
-				_IsInitial = false;
+				MessageBox.FadeSize(new Size(core.WindowSize.Width, 200), 0.5);
+				MessageBox.FadeOpacity(60, 0.5);
 
-				Manager = new MusicManager();
+				await Manager.LoadScoreAsync();
 
-				MessageBox = new Box(new Point(0, 0), new Size(core.WindowSize.Width, 0), Color.White, true, 0, Position.LeftMiddle);
+				Manager.Start();
 
-				task = Task.Run(async () =>
-				{
-					MessageBox.FadeSize(new Size(core.WindowSize.Width, 200), 0.5);
-					MessageBox.FadeOpacity(60, 0.5);
+				MessageBox.FadeOpacity(0, 0.5);
+				MessageBox.FadeSize(new Size(core.WindowSize.Width, 0), 0.5);
+			});
 
-					await Manager.LoadScoreAsync();
+			SideBar = new Box(new Point(0, 0), new Size(0, core.WindowSize.Height), Color.White, true, 0);
+			SideBar.FadeOpacity(20);
+			SideBar.FadeSize(new Size(200, core.WindowSize.Height));
+		}
 
-					Manager.Start();
+		public void Update()
+		{
+			var input = Input.Instance;
+			var scenes = SceneStorage.Instance;
 
-					MessageBox.FadeOpacity(0, 0.5);
-					MessageBox.FadeSize(new Size(core.WindowSize.Width, 0), 0.5);
-				});
+			if (!IsInitialized)
+			{
+				IsInitialized = true;
 
-				SideBar = new Box(new Point(0, 0), new Size(0, core.WindowSize.Height), Color.White, true, 0);
-				SideBar.FadeOpacity(20);
-				SideBar.FadeSize(new Size(200, core.WindowSize.Height));
+				Initialize();
 			}
 
-			if (Input.Instance.GetKey(KeyType.Escape).InputTime == 1)
-			{
-				SceneStorage.Instance.TargetScene = SceneStorage.Instance.FindByName("GameMusicSelect");
-
-				Manager.Score.Song.Stop();
-			}
-
-			if (task?.IsCompleted ?? false)
+			if (LoadTask.IsCompleted)
 			{
 				Manager.Update();
+
+				if (input.GetKey(KeyType.Escape).InputTime == 1)
+				{
+					scenes.TargetScene = scenes.FindByName("GameMusicSelect");
+					IsInitialized = false;
+					Manager.Score.Song.Stop();
+				}
 			}
 
 			SideBar.Update();
@@ -68,14 +76,17 @@ namespace CrystalResonanceDesktop.Scenes
 
 		public void Draw()
 		{
+			var fonts = FontStorage.Instance;
+			var core = SystemCore.Instance;
+
 			Manager.Draw();
 
 			SideBar.Draw();
 
 			MessageBox.Draw();
 
-			if (!(task?.IsCompleted ?? false) && !MessageBox.IsFading)
-				FontStorage.Instance.Item("メイリオ20").Draw(new Point(0, 0), "Now Loading ...", SystemCore.Instance.BackColor, Position.CenterMiddle);
+			if (!LoadTask.IsCompleted && !MessageBox.IsFading)
+				fonts.Item("メイリオ20").Draw(new Point(0, 0), "Now Loading ...",core.BackColor, Position.CenterMiddle);
 		}
 	}
 }

@@ -73,7 +73,7 @@ namespace CrystalResonanceDesktop.Data
 			get
 			{
 				var bounds = new Rectangle(AbsoluteLocation, Size);
-				return bounds.Contains(Input.Instance.MousePos);
+				return bounds.Contains(Input.Instance.Mouse.PointerLocation);
 			}
 		}
 
@@ -84,7 +84,7 @@ namespace CrystalResonanceDesktop.Data
 		{
 			get
 			{
-				return !isMouseDownOld ? IsHover && Input.Instance.MouseLeft == 1 : Input.Instance.MouseLeft >= 1;
+				return !isMouseDownOld ? IsHover && Input.Instance.Mouse.LeftInputTime == 1 : Input.Instance.Mouse.LeftInputTime >= 1;
 			}
 		}
 
@@ -152,8 +152,7 @@ namespace CrystalResonanceDesktop.Data
 		/// <param name="e"></param>
 		protected virtual void OnClick(EventArgs e)
 		{
-			if (Click != null)
-				Click(this, e);
+			Click?.Invoke(this, e);
 		}
 
 		/// <summary>

@@ -8,20 +8,23 @@ namespace CrystalResonanceDesktop.Scenes
 {
 	public class Setting : IScene
 	{
-		private bool _IsInitial { get; set; } = true;
+		private bool IsInitialized { get; set; }
 
 		public void Update()
 		{
 			var core = SystemCore.Instance;
+			var input = Input.Instance;
+			var scenes = SceneStorage.Instance;
 
-			if (_IsInitial)
+			if (!IsInitialized)
 			{
-				_IsInitial = false;
+				IsInitialized = true;
 			}
 
-			if (Input.Instance.GetKey(KeyType.Escape).InputTime == 1)
+			if (input.GetKey(KeyType.Escape).InputTime == 1)
 			{
-				SceneStorage.Instance.TargetScene = SceneStorage.Instance.FindByName("Title");
+				scenes.TargetScene = scenes.FindByName("Title");
+				IsInitialized = false;
 			}
 		}
 

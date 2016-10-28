@@ -9,31 +9,37 @@ namespace CrystalResonanceDesktop.Scenes
 {
 	public class GameMusicSelect : IScene
 	{
-		private bool _IsInitial { get; set; } = true;
+		private bool IsInitialized { get; set; }
 
 		public void Update()
 		{
 			var core = SystemCore.Instance;
+			var input = Input.Instance;
+			var scenes = SceneStorage.Instance;
 
-			if (_IsInitial)
+			if (!IsInitialized)
 			{
-				_IsInitial = false;
+				IsInitialized = true;
 			}
 
-			if (Input.Instance.GetKey(KeyType.Escape).InputTime == 1)
+			if (input.GetKey(KeyType.Escape).InputTime == 1)
 			{
-				SceneStorage.Instance.TargetScene = SceneStorage.Instance.FindByName("Title");
+				scenes.TargetScene = scenes.FindByName("Title");
+				IsInitialized = false;
 			}
 
-			if (Input.Instance.GetKey(KeyType.Enter).InputTime == 1)
+			if (input.GetKey(KeyType.Enter).InputTime == 1)
 			{
-				SceneStorage.Instance.TargetScene = SceneStorage.Instance.FindByName("GameMain");
+				scenes.TargetScene = scenes.FindByName("GameMain");
+				IsInitialized = false;
 			}
 		}
 
 		public void Draw()
 		{
-			FontStorage.Instance.Item("メイリオ20").Draw(new Point(0, 0), "Enter: 開発用演奏テスト", Color.White, Position.CenterMiddle);
+			var fonts = FontStorage.Instance;
+
+			fonts.Item("メイリオ20").Draw(new Point(0, 0), "Enter: 開発用演奏テスト", Color.White, Position.CenterMiddle);
 		}
 	}
 }
