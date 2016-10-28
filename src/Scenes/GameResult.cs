@@ -1,5 +1,4 @@
-﻿using DxSharp;
-using DxSharp.Data;
+﻿using DxSharp.Data;
 
 namespace CrystalResonanceDesktop.Scenes
 {
@@ -7,11 +6,18 @@ namespace CrystalResonanceDesktop.Scenes
 	{
 		private bool IsInitialized { get; set; }
 
+		private void Initialize()
+		{
+
+		}
+
 		public void Update()
 		{
 			if (!IsInitialized)
 			{
 				IsInitialized = true;
+
+				Initialize();
 			}
 		}
 

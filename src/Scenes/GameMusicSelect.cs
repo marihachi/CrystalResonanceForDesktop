@@ -11,6 +11,11 @@ namespace CrystalResonanceDesktop.Scenes
 	{
 		private bool IsInitialized { get; set; }
 
+		private void Initialize()
+		{
+
+		}
+
 		public void Update()
 		{
 			var core = SystemCore.Instance;
@@ -20,6 +25,8 @@ namespace CrystalResonanceDesktop.Scenes
 			if (!IsInitialized)
 			{
 				IsInitialized = true;
+
+				Initialize();
 			}
 
 			if (input.GetKey(KeyType.Escape).InputTime == 1)

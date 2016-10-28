@@ -26,12 +26,12 @@ namespace CrystalResonanceDesktop.Scenes
 
 			Manager = new MusicManager();
 
-			MessageBox = new Box(new Point(0, 0), new Size(core.WindowSize.Width, 0), Color.White, true, 0, Position.LeftMiddle);
+			MessageBox = new Box(new Point(0, 0), new Size(core.WindowSize.Width, 0), Color.FromArgb(186, 231, 234), true, 0, Position.LeftMiddle);
 
 			LoadTask = Task.Run(async () =>
 			{
 				MessageBox.FadeSize(new Size(core.WindowSize.Width, 200), 0.5);
-				MessageBox.FadeOpacity(60, 0.5);
+				MessageBox.FadeOpacity(100, 0.5);
 
 				await Manager.LoadScoreAsync();
 
