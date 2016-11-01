@@ -61,6 +61,8 @@ namespace CrystalResonanceDesktop.Data
 			Score = new MusicScore("ウラココロ", 120, new Uri("https://www.youtube.com/watch?v=qo1v9oiMolM"), -500 * 5 / 16);
 			await Score.ExtractSong();
 
+			Score.Song.Volume = 30;
+
 			foreach (int i in Enumerable.Range(0, 256))
 				Score.Bars.Add(bar);
 
@@ -115,14 +117,93 @@ namespace CrystalResonanceDesktop.Data
 			Judgement();
 		}
 
+		private class NoteDistanceInfo
+		{
+			public NoteDistanceInfo(int barIndex, int noteIndex, int noteDistance)
+			{
+				BarIndex = barIndex;
+				NoteIndex = noteIndex;
+				NoteDistance = noteDistance;
+			}
+
+			// 判定ラインから近いノートの小節インデックス(レーンごと)
+			public int BarIndex { get; set; }
+
+			// 判定ラインから近いノートの小節内でのインデックス(レーンごと)
+			public int NoteIndex { get; set; }
+
+			// 現在位置からの距離(x1000)
+			public int NoteDistance { get; set; }
+		}
+
 		/// <summary>
 		/// 入力の判定をします
 		/// </summary>
 		private void Judgement()
 		{
 			var input = Input.Instance;
+			var fonts = FontStorage.Instance;
 
-			// TODO
+			if (Score.Song.IsPlaying)
+			{
+				if (input.GetKey(KeyType.D).InputTime == 1) // TODO
+				{
+					var noteDistanceInfos = new List<NoteDistanceInfo>();
+
+					foreach (var barIndex in Enumerable.Range(ScoreStatus.BarIndex - 1, 3))
+					{
+						if (barIndex != -1)
+						{
+							foreach (var laneIndex in Enumerable.Range(0, Score.Bars[barIndex].Lanes.Count))
+							{
+								foreach (var noteIndex in Enumerable.Range(0, Score.Bars[barIndex].Lanes[laneIndex].Notes.Count))
+								{
+									var bar = Score.Bars[barIndex];
+									var note = bar.Lanes[laneIndex].Notes[noteIndex];
+
+									// 対象の小節の長さ
+									var barSize = bar.Span * 4;
+
+									// 現在の小節の位置
+									var nowLocation = ScoreStatus.NowBar.Span * 4 * ScoreStatus.CountLocation / ScoreStatus.NowBar.Count;
+
+									// 対象のノートの小節内位置
+									var noteLocation = barSize * note.CountLocation / bar.Count;
+
+									double distance;
+
+									if (ScoreStatus.BarIndex - barIndex == 1)
+										distance = barSize - noteLocation + nowLocation;
+									else if (ScoreStatus.BarIndex - barIndex == -1)
+										distance = ScoreStatus.NowBar.Span * 4 - nowLocation + noteLocation;
+									else
+										distance = Math.Abs(nowLocation - noteLocation);
+
+									distance *= 1000;
+
+									noteDistanceInfos.Add(new NoteDistanceInfo(barIndex, noteIndex, (int)distance));
+								}
+							}
+						}
+					}
+
+					NoteDistanceInfo minInfo = null;
+
+					foreach (var info in noteDistanceInfos)
+					{
+						if (minInfo != null)
+						{
+							if (info.NoteDistance < minInfo.NoteDistance)
+								minInfo = info;
+						}
+						else
+							minInfo = info;
+					}
+
+					if (minInfo != null)
+						Console.WriteLine($"{minInfo.NoteDistance}");
+				}
+			}
 		}
 
 		/// <summary>
@@ -153,7 +234,7 @@ namespace CrystalResonanceDesktop.Data
 
 							foreach (var noteIndex in Enumerable.Range(0, targetLane.Notes.Count))
 							{
-								var count = (double)targetLane.Notes[noteIndex].LocationCount / bar.Count;
+								var count = (double)targetLane.Notes[noteIndex].CountLocation / bar.Count;
 								var location = barDisplaySize * (count - ScoreStatus.BarOffset + i);
 
 								images.Item("note").Draw(new Point((int)(laneX - images.Item("note").Size.Width / 2.0), (int)(650 - location - images.Item("note").Size.Height / 2.0)));
