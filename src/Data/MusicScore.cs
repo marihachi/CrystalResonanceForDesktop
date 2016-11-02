@@ -10,11 +10,12 @@ namespace CrystalResonanceDesktop.Data
 {
 	public class MusicScore
 	{
-		public MusicScore(string songTitle, int bpm, Uri songUrl, double offset = 0, IEnumerable<MusicBar> bars = null)
+		public MusicScore(string songTitle, int bpm, Uri songUrl, int laneCount, double offset = 0, IEnumerable<MusicBar> bars = null)
 		{
 			SongTitle = songTitle;
 			BPM = bpm;
 			SongUrl = songUrl;
+			LaneCount = laneCount;
 			Offset = offset;
 			Bars = bars?.ToList() ?? new List<MusicBar>();
 		}
@@ -48,6 +49,11 @@ namespace CrystalResonanceDesktop.Data
 		/// このスコアに属しているレーンを取得または設定します
 		/// </summary>
 		public List<MusicBar> Bars { get; set; }
+
+		/// <summary>
+		/// レーン数
+		/// </summary>
+		public int LaneCount { get; set; }
 
 		/// <summary>
 		/// SongUrlから曲データを抽出します
