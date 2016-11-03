@@ -37,7 +37,7 @@ namespace CrystalResonanceDesktop
 				}
 				catch (Exception ex)
 				{
-					MessageBox.Show($"[内容]:\r\n{ex.Message}\r\n\r\n[スタックトレース]:\r\n{ex.StackTrace}", $"実行時エラー({ex.GetType()})", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show($"エラーが発生しました。お手数ですが開発元に報告してください。\r\n\r\n[内容]:\r\n{ex.Message}\r\n\r\n[スタックトレース]:\r\n{ex.StackTrace}", $"実行時エラー({ex.GetType()})", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 		}
