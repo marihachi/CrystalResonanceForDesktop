@@ -47,7 +47,7 @@ namespace CrystalResonanceDesktop.Data
 		private ScoreStatus ScoreStatus { get; set; }
 
 		/// <summary>
-		/// 
+		/// 非同期で譜面データを読み込みます
 		/// </summary>
 		public async Task LoadScoreAsync()
 		{
@@ -59,7 +59,7 @@ namespace CrystalResonanceDesktop.Data
 
 			var bar = new MusicBar(8, 1, new List<MusicLane> { lane_sn, lane_kick, lane_hi, lane_sim });
 
-			Score = new MusicScore("ウラココロ", 120, new Uri("https://www.youtube.com/watch?v=qo1v9oiMolM"), (int)bar.Lanes.Count, -500 * 5 / 16);
+			Score = new MusicScore("ウラココロ", 120, new Uri("https://www.youtube.com/watch?v=qo1v9oiMolM"), bar.Lanes.Count, -500 * 5 / 16);
 			await Score.ExtractSong();
 
 			Score.Song.Volume = 30;
@@ -108,10 +108,10 @@ namespace CrystalResonanceDesktop.Data
 
 			if (core.IsShowDebugImageBorder)
 			{
-				if (input.GetKey(KeyType.Up).InputTime == 1)
+				if (KeyConfig.Instance.Up.InputTime == 1)
 					NoteSpeedBase += 50;
 
-				if (input.GetKey(KeyType.Down).InputTime == 1 && NoteSpeedBase > 100)
+				if (KeyConfig.Instance.Down.InputTime == 1 && NoteSpeedBase > 100)
 					NoteSpeedBase -= 50;
 			}
 

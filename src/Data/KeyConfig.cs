@@ -34,18 +34,39 @@ namespace CrystalResonanceDesktop.Data
 
 		private KeyConfig() { }
 
-		private KeyConfig(KeyConfigItem ok, KeyConfigItem cancel, KeyConfigItem pause, IEnumerable<KeyConfigItem> lanes)
+		private KeyConfig(KeyConfigItem ok, KeyConfigItem cancel, KeyConfigItem pause, IEnumerable<KeyConfigItem> lanes = null)
 		{
 			OK = ok;
 			Cancel = cancel;
 			Pause = pause;
 
-			Lanes.AddRange(lanes);
+			if (lanes != null)
+				Lanes.AddRange(lanes);
+		}
+
+		private KeyConfig(KeyConfigItem ok, KeyConfigItem cancel, KeyConfigItem pause, KeyConfigItem up, KeyConfigItem down, KeyConfigItem right, KeyConfigItem left, IEnumerable<KeyConfigItem> lanes = null)
+		{
+			OK = ok;
+			Cancel = cancel;
+			Pause = pause;
+
+			Up = up;
+			Down = down;
+			Right = right;
+			Left = left;
+
+			if (lanes != null)
+				Lanes.AddRange(lanes);
 		}
 
 		public KeyConfigItem OK { get; set; }
 		public KeyConfigItem Cancel { get; set; }
 		public KeyConfigItem Pause { get; set; }
+
+		public KeyConfigItem Up { get; set; } = new KeyConfigItem(Input.Instance.GetKey(DxSharp.Data.Enum.KeyType.Up));
+		public KeyConfigItem Down { get; set; } = new KeyConfigItem(Input.Instance.GetKey(DxSharp.Data.Enum.KeyType.Down));
+		public KeyConfigItem Right { get; set; } = new KeyConfigItem(Input.Instance.GetKey(DxSharp.Data.Enum.KeyType.Right));
+		public KeyConfigItem Left { get; set; } = new KeyConfigItem(Input.Instance.GetKey(DxSharp.Data.Enum.KeyType.Left));
 
 		public List<KeyConfigItem> Lanes { get; set; } = new List<KeyConfigItem>() { // TODO: 仮設定
 			new KeyConfigItem(Input.Instance.GetKey(DxSharp.Data.Enum.KeyType.D)),
