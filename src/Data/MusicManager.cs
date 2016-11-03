@@ -6,6 +6,7 @@ using DxSharp.Storage;
 using DxSharp.Utility;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
@@ -50,7 +51,7 @@ namespace CrystalResonanceDesktop.Data
 		/// </summary>
 		public async Task LoadScoreAsync()
 		{
-			// 仮
+			// TODO: 仮
 			var lane_sim = new MusicLane(new List<MusicNote> { new MusicNote(1) });
 			var lane_hi = new MusicLane(new List<MusicNote> { new MusicNote(2), new MusicNote(3), new MusicNote(4), new MusicNote(5), new MusicNote(6), new MusicNote(7), new MusicNote(8) });
 			var lane_kick = new MusicLane(new List<MusicNote> { new MusicNote(1), new MusicNote(5) });
@@ -192,7 +193,7 @@ namespace CrystalResonanceDesktop.Data
 
 							distance *= 1000;
 
-							// Console.WriteLine($"laneIndex: {laneIndex}, barIndex: {barIndex}, noteIndex: {noteIndex}, distance: {distance}");
+							// Debug.WriteLine($"lane: {laneIndex}, bar: {barIndex}, note: {noteIndex}, distance: {distance}");
 
 							barInfos.Add(new NoteDistanceInfo(laneIndex, barIndex, noteIndex, (int)distance));
 						}
@@ -272,21 +273,21 @@ namespace CrystalResonanceDesktop.Data
 			if (Score.Song.IsPlaying)
 			{
 				var isInputted = false;
-
-				isInputted =
-					input.GetKey(KeyType.D).InputTime == 1 ||
-					input.GetKey(KeyType.F).InputTime == 1 ||
-					input.GetKey(KeyType.J).InputTime == 1 ||
-					input.GetKey(KeyType.K).InputTime == 1;
-
+				foreach (var laneInput in KeyConfig.Instance.Lanes)
+					if (laneInput.InputTime == 1)
+						isInputted = true;
+				
 				if (isInputted)
 				{
-					var distanceInfosList = CalcNoteDistance();
-					var minInfos = CalcNearestNotes(distanceInfosList);
+					var nearestNoteInfos = CalcNearestNotes(CalcNoteDistance());
 
-					foreach (var minInfo in minInfos)
-						if (minInfo != null)
-							Console.WriteLine($"lane {minInfo.LaneIndex + 1}: {minInfo.NoteDistance}");
+					var target = new List<KeyConfigItem>();
+
+					foreach (var laneInput in KeyConfig.Instance.Lanes)
+						if (laneInput.InputTime == 1)
+							target.Add(laneInput);
+
+					Debug.WriteLine($"target: {{ {string.Join(", ", target)} }}");
 				}
 			}
 		}
@@ -328,23 +329,21 @@ namespace CrystalResonanceDesktop.Data
 					}
 				}
 
-				foreach (var laneIndex in Enumerable.Range(0, Score.Bars[ScoreStatus.BarIndex].Lanes.Count))
+				foreach (var laneIndex in Enumerable.Range(0, KeyConfig.Instance.Lanes.Count))
 				{
+					var inputLane = KeyConfig.Instance.Lanes[laneIndex];
+
 					var laneX = 200 + 100 + 176 * (laneIndex + 1);
 
 					var effect = images.Item($"detectFrameEffect{laneIndex + 1}");
 
-					KeyType key = 0;
-					if (laneIndex == 0) key = KeyType.D;
-					if (laneIndex == 1) key = KeyType.F;
-					if (laneIndex == 2) key = KeyType.J;
-					if (laneIndex == 3) key = KeyType.K;
-
-
-					if (input.GetKey(key).InputTime == 1)
-						effect.Fade(100, .01);
-					else if (input.GetKey(key).InputTime == 0)
-						effect.Fade(0, .16);
+					if (inputLane.InputTime == 1)
+					{
+						effect.FinishFade();
+						effect.Opacity = 100;
+					}
+					else if (inputLane.InputTime == 0)
+						effect.Fade(0, .25);
 
 					effect.Draw(new Point(laneX - effect.Size.Width / 2, 650 - effect.Size.Height / 2));
 				}
