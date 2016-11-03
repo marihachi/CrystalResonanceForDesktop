@@ -9,5 +9,8 @@ image of game play:
 - DxSharp (closed source)
 - [YoutubeExtractor](https://github.com/flagbug/YoutubeExtractor)
 
+## Used binaries
+- [ffmpeg](https://ffmpeg.zeranoe.com)
+
 ## License
 Released under the [MIT license](LICENSE)
