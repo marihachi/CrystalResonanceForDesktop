@@ -1,4 +1,5 @@
 Debug/
+Release/
 src/*.sln
 src/packages
 *.vcxproj.user
