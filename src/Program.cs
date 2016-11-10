@@ -1,4 +1,5 @@
-﻿using DxSharp;
+﻿using DxLibDLL;
+using DxSharp;
 using DxSharp.Data;
 using DxSharp.Data.Enum;
 using DxSharp.Storage;
@@ -14,7 +15,8 @@ namespace CrystalResonanceDesktop
 		static void Main(string[] args)
 		{
 			using (var core = SystemCore.Initialize(new Size(1280, 720), Color.FromArgb(82, 195, 202), "Crystal Resonance Desktop", () => {
-				DxLibDLL.DX.SetAlwaysRunFlag(1);
+				DX.SetAlwaysRunFlag(1);
+				DX.SetWaitVSyncFlag(0);
 			}))
 			{
 				try
