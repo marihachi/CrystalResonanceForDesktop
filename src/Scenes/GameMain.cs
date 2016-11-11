@@ -1,10 +1,13 @@
 ﻿using CrystalResonanceDesktop.Data;
+using DxLibDLL;
 using DxSharp;
 using DxSharp.Data;
 using DxSharp.Data.Enum;
 using DxSharp.Storage;
 using DxSharp.Utility;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CrystalResonanceDesktop.Scenes
@@ -43,7 +46,7 @@ namespace CrystalResonanceDesktop.Scenes
 
 			SideBar = new Box(new Point(0, 0), new Size(0, core.WindowSize.Height), Color.White, true, 0);
 			SideBar.FadeOpacity(20);
-			SideBar.FadeSize(new Size(200, core.WindowSize.Height));
+			SideBar.FadeSize(new Size(280, core.WindowSize.Height));
 		}
 
 		public void Update()
@@ -79,9 +82,57 @@ namespace CrystalResonanceDesktop.Scenes
 			var fonts = FontStorage.Instance;
 			var core = SystemCore.Instance;
 
-			Manager.Draw();
+			var margin = 50;
+			var xCoodinates = new List<int>();
+			foreach (var i in Enumerable.Range(1, 4))
+				xCoodinates.Add(SideBar.Size.Width + margin + ((core.WindowSize.Width - SideBar.Size.Width - margin * 2) / 5) * i);
+
+			Manager.DrawNotes(xCoodinates);
+
+			var images = ImageStorage.Instance;
+
+			foreach (var laneIndex in Enumerable.Range(0, KeyConfig.Instance.Lanes.Count))
+			{
+				var inputLane = KeyConfig.Instance.Lanes[laneIndex];
+
+				var laneX = 200 + 100 + 176 * (laneIndex + 1);
+
+				var effect = images.Item($"detectFrameEffect{laneIndex + 1}");
+
+				if (inputLane.InputTime == 1)
+				{
+					effect.FinishFade();
+					effect.Opacity = 100;
+				}
+				else if (inputLane.InputTime == 0)
+					effect.Fade(0, .25);
+
+				effect.Draw(new Point(laneX - effect.Size.Width / 2, 650 - effect.Size.Height / 2));
+			}
+
+			DX.DrawLine(0, 650, SystemCore.Instance.WindowSize.Width, 650, 0xffffff);
+
+			if (SystemCore.Instance.IsShowDebugImageBorder)
+			{
+				var font = fonts.Item("メイリオ16");
+
+				if (Manager.ScoreStatus != null)
+				{
+					font.Draw(new Point(5, 20 * 1), $"beatLocation: {Manager.ScoreStatus.BeatLocation:00.0}", Color.White);
+					font.Draw(new Point(5, 20 * 2), $"beatIndex: {Manager.ScoreStatus.BeatIndex}", Color.White);
+					font.Draw(new Point(5, 20 * 3), $"beatOffset: {Manager.ScoreStatus.BeatOffset:00.0}", Color.White);
+					font.Draw(new Point(5, 20 * 4), $"barLocation: {Manager.ScoreStatus.BarLocation:00.0}", Color.White);
+					font.Draw(new Point(5, 20 * 5), $"barIndex: {Manager.ScoreStatus.BarIndex}", Color.White);
+					font.Draw(new Point(5, 20 * 6), $"barOffset: {Manager.ScoreStatus.BarOffset:00.0}", Color.White);
+					font.Draw(new Point(5, 20 * 7), $"barBeatLocation1: {Manager.ScoreStatus.BarBeatLocation:00.0}", Color.White);
+					font.Draw(new Point(5, 20 * 8), $"countLocation: {Manager.ScoreStatus.CountLocation:00.0}", Color.White);
+				}
+				font.Draw(new Point(5, 20 * 9), $"NoteSpeedBase: {Manager.NoteSpeedBase}", Color.White);
+			}
 
 			SideBar.Draw();
+			fonts.Item("メイリオ20").Draw(new Point(50, core.WindowSize.Height * 3 / 4 - 30), $"♪{Manager.Score.SongTitle}", Color.White, Position.LeftTop);
+			fonts.Item("メイリオ20").Draw(new Point(50, core.WindowSize.Height * 3/4), $"{Manager.Combo} combo", Color.White, Position.LeftTop);
 
 			MessageBox.Draw();
 

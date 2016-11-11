@@ -1,12 +1,11 @@
-﻿using DxLibDLL;
+﻿using CrystalResonanceDesktop.Data.Enum;
+using CrystalResonanceDesktop.Utility;
 using DxSharp;
 using DxSharp.Data;
 using DxSharp.Data.Enum;
 using DxSharp.Storage;
-using DxSharp.Utility;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,8 +23,10 @@ namespace CrystalResonanceDesktop.Data
 				ImageStorage.Instance.Add("note", new DxSharp.Data.Image("Resource/note.png", 100, Position.LeftTop));
 
 			var effect = new DxSharp.Data.Image("Resource/detectFrameEffect.png", 0, Position.LeftTop);
+
 			if (ImageStorage.Instance.Item("detectFrameEffect1") == null)
 				ImageStorage.Instance.Add("detectFrameEffect1", effect);
+
 			foreach (var i in Enumerable.Range(2, 5))
 				if (ImageStorage.Instance.Item($"detectFrameEffect{i}") == null)
 					ImageStorage.Instance.Add($"detectFrameEffect{i}", (DxSharp.Data.Image)effect.Clone());
@@ -37,14 +38,24 @@ namespace CrystalResonanceDesktop.Data
 		public MusicScore Score { get; set; }
 
 		/// <summary>
-		/// 
+		/// 譜面の状態を取得または設定します
 		/// </summary>
-		private int NoteSpeedBase { get; set; } = 350;
+		public ScoreStatus ScoreStatus { get; set; }
 
 		/// <summary>
-		/// 譜面の状態を取得します
+		/// 
 		/// </summary>
-		private ScoreStatus ScoreStatus { get; set; }
+		public int NoteSpeedBase { get; set; } = 350;
+
+		/// <summary>
+		/// 現在のコンボ数を取得または設定します
+		/// </summary>
+		public int Combo { get; set; }
+
+		/// <summary>
+		/// 現在のセッションの最大コンボ数を取得または設定します
+		/// </summary>
+		public int SessionMaxCombo { get; set; }
 
 		/// <summary>
 		/// 非同期で譜面データを読み込みます
@@ -85,7 +96,6 @@ namespace CrystalResonanceDesktop.Data
 		public void Update()
 		{
 			var core = SystemCore.Instance;
-			var input = Input.Instance;
 			var image = ImageStorage.Instance;
 
 			// 1秒に何回か
@@ -119,57 +129,10 @@ namespace CrystalResonanceDesktop.Data
 		}
 
 		/// <summary>
-		/// 判定ラインからのノートの距離情報を表します
-		/// </summary>
-		private class NoteDistanceInfo
-		{
-			public NoteDistanceInfo(MusicScore score, int laneIndex, int barIndex, int noteIndex, int noteDistance)
-			{
-				LaneIndex = laneIndex;
-				BarIndex = barIndex;
-				NoteIndex = noteIndex;
-				NoteDistance = noteDistance;
-				Score = score;
-			}
-
-			/// <summary>
-			/// レーンの0から始まるインデックス
-			/// </summary>
-			public int LaneIndex { get; set; }
-
-			/// <summary>
-			/// 小節の0から始まるインデックス
-			/// </summary>
-			public int BarIndex { get; set; }
-
-			/// <summary>
-			/// 小節内でのノートの0から始まるインデックス
-			/// </summary>
-			public int NoteIndex { get; set; }
-
-			/// <summary>
-			/// 現在位置からの距離(x1000)
-			/// </summary>
-			public int NoteDistance { get; set; }
-
-			public MusicScore Score { get; set; }
-
-			public MusicNote TargetNote { get { return Score.Bars[BarIndex].Lanes[LaneIndex].Notes[NoteIndex]; } }
-		}
-
-		private enum NotePushRating
-		{
-			Great,
-			Fine,
-			Bad,
-			Miss
-		}
-
-		/// <summary>
-		/// 現在の再生位置からの各ノートの距離を算出
+		/// 現在の再生位置からの各ノートの符号付の距離を算出
 		/// </summary>
 		/// <returns></returns>
-		private List<List<NoteDistanceInfo>> CalcNoteDistance()
+		private IEnumerable<IEnumerable<NoteDistanceInfo>> CalcNoteDistance()
 		{
 			var noteDistanceInfoLists = new List<List<NoteDistanceInfo>>(); // noteDistanceInfoLists[bar][lane]
 
@@ -211,17 +174,15 @@ namespace CrystalResonanceDesktop.Data
 							else if (ScoreStatus.BarIndex - barIndex == -1)
 							{
 								// 一つ前の小節
-								distance = barSize - noteLocation + nowLocation;
+								distance = -(barSize - noteLocation + nowLocation);
 							}
 							else
 							{
 								// 現在の小節
-								distance = Math.Abs(nowLocation - noteLocation);
+								distance = nowLocation - noteLocation;
 							}
 
 							distance *= 1000;
-
-							// Debug.WriteLine($"lane: {laneIndex}, bar: {barIndex}, note: {noteIndex}, distance: {distance}");
 
 							barInfos.Add(new NoteDistanceInfo(Score, laneIndex, barIndex, noteIndex, (int)distance));
 						}
@@ -237,26 +198,18 @@ namespace CrystalResonanceDesktop.Data
 		/// </summary>
 		/// <param name="noteDistanceInfosList"></param>
 		/// <returns></returns>
-		private List<List<NoteDistanceInfo>> ReconstructNoteDistance(List<List<NoteDistanceInfo>> noteDistanceInfosList)
+		private IEnumerable<IEnumerable<NoteDistanceInfo>> ReconstructNoteDistance(IEnumerable<IEnumerable<NoteDistanceInfo>> noteDistanceInfosList)
 		{
-			var resList = new List<List<NoteDistanceInfo>>(); // noteDistanceInfoLists2[lane][bar]
-
 			foreach (var laneLocation in Enumerable.Range(0, Score.LaneCount))
 			{
-				resList.Add(new List<NoteDistanceInfo>());
+				var infos = new List<NoteDistanceInfo>();
 
-				foreach (var barLocation in Enumerable.Range(0, noteDistanceInfosList.Count))
-				{
-					var noteDistanceInfos = noteDistanceInfosList[barLocation];
-
+				foreach (var noteDistanceInfos in noteDistanceInfosList)
 					foreach (var noteDistanceInfo in (from info in noteDistanceInfos where info.LaneIndex == laneLocation select info))
-					{
-						resList[laneLocation].Add(noteDistanceInfo);
-					}
-				}
-			}
+						infos.Add(noteDistanceInfo);
 
-			return resList;
+				yield return infos; // noteDistanceInfoLists2[lane][bar]
+			}
 		}
 
 		/// <summary>
@@ -264,36 +217,14 @@ namespace CrystalResonanceDesktop.Data
 		/// </summary>
 		/// <param name="noteDistanceInfosList"></param>
 		/// <returns></returns>
-		private List<NoteDistanceInfo> CalcNearestNotes(List<List<NoteDistanceInfo>> noteDistanceInfosList)
+		private IEnumerable<NoteDistanceInfo> CalcNearestNotes(IEnumerable<IEnumerable<NoteDistanceInfo>> noteDistanceInfosList)
 		{
 			noteDistanceInfosList = ReconstructNoteDistance(noteDistanceInfosList);
 
-			var resList = new List<NoteDistanceInfo>();
-
 			foreach (var noteDistanceInfos in noteDistanceInfosList)
 			{
-				NoteDistanceInfo minInfo = null;
-
-				foreach (var noteDistanceInfo in noteDistanceInfos)
-				{
-					if (!noteDistanceInfo.TargetNote.PushState)
-					{
-						if (minInfo == null)
-						{
-							minInfo = noteDistanceInfo;
-						}
-						else
-						{
-							if (noteDistanceInfo.NoteDistance < minInfo.NoteDistance)
-								minInfo = noteDistanceInfo;
-						}
-					}
-				}
-
-				resList.Add(minInfo);
+				yield return noteDistanceInfos.FindMin(i => Math.Abs(i.NoteDistance));
 			}
-
-			return resList;
 		}
 
 		/// <summary>
@@ -301,14 +232,9 @@ namespace CrystalResonanceDesktop.Data
 		/// </summary>
 		private void Judgement()
 		{
-			var input = Input.Instance;
-
 			if (Score.Song.IsPlaying)
 			{
-				var isInputted = false;
-				foreach (var laneInput in KeyConfig.Instance.Lanes)
-					if (laneInput.InputTime == 1)
-						isInputted = true;
+				var isInputted = (from l in KeyConfig.Instance.Lanes where l.InputTime == 1 select l).Count() != 0;
 				
 				if (isInputted)
 				{
@@ -322,34 +248,41 @@ namespace CrystalResonanceDesktop.Data
 
 					foreach (var targetLaneIndex in targetLaneIndexes)
 					{
-						var nearestNoteInfo = nearestNoteInfos[targetLaneIndex];
+						var nearestNoteInfo = nearestNoteInfos.ElementAt(targetLaneIndex);
 
 						if (nearestNoteInfo != null)
 						{
-							if (nearestNoteInfo.NoteDistance <= 220) // 判定の範囲内のとき
+							if (Math.Abs(nearestNoteInfo.NoteDistance) <= 220) // 判定の範囲内のとき
 							{
 								nearestNoteInfo.TargetNote.PushState = true;
 
 								NotePushRating rating;
 
-								if (nearestNoteInfo.NoteDistance <= 70) // great
+								if (Math.Abs(nearestNoteInfo.NoteDistance) <= 70) // perfect
 								{
-									rating = NotePushRating.Great;
+									rating = NotePushRating.Perfect;
+									Combo++;
 								}
-								else if (nearestNoteInfo.NoteDistance <= 130) // fine
+								else if (Math.Abs(nearestNoteInfo.NoteDistance) <= 130) // good
 								{
-									rating = NotePushRating.Fine;
+									rating = NotePushRating.Good;
+									Combo++;
 								}
-								else if (nearestNoteInfo.NoteDistance <= 180) // bad
+								else if (Math.Abs(nearestNoteInfo.NoteDistance) <= 180) // bad
 								{
 									rating = NotePushRating.Bad;
+									Combo = 0;
 								}
 								else // miss
 								{
 									rating = NotePushRating.Miss;
+									Combo = 0;
 								}
 
-								Debug.WriteLine($"rating: {rating}");
+								if (Combo > SessionMaxCombo)
+									SessionMaxCombo = Combo;
+
+								// Debug.WriteLine($"{Combo} {rating}: {nearestNoteInfo.NoteDistance}");
 							}
 						}
 					}
@@ -360,10 +293,8 @@ namespace CrystalResonanceDesktop.Data
 		/// <summary>
 		/// ノートを描画します
 		/// </summary>
-		public void Draw()
+		public void DrawNotes(List<int> laneXcoordinates)
 		{
-			var fonts = FontStorage.Instance;
-			var input = Input.Instance;
 			var images = ImageStorage.Instance;
 
 			if (Score != null && ScoreStatus != null)
@@ -381,57 +312,23 @@ namespace CrystalResonanceDesktop.Data
 							var targetLane = Score.Bars[targetBarIndex].Lanes[laneIndex];
 							var bar = ScoreStatus.TargetScore.Bars[targetBarIndex];
 							var barDisplaySize = NoteSpeedBase * 4 * bar.Span;
-							var laneX = 200 + 100 + 176 * (laneIndex + 1);
+							var laneX = laneXcoordinates[laneIndex];
 
 							foreach (var noteIndex in Enumerable.Range(0, targetLane.Notes.Count))
 							{
-								var count = (double)targetLane.Notes[noteIndex].CountLocation / bar.Count;
+								var note = targetLane.Notes[noteIndex];
+
+								var count = (double)note.CountLocation / bar.Count;
 								var location = barDisplaySize * (count - ScoreStatus.BarOffset + i);
 
-								images.Item("note").Draw(new Point((int)(laneX - images.Item("note").Size.Width / 2.0), (int)(650 - location - images.Item("note").Size.Height / 2.0)));
+								if (!note.PushState)
+								{
+									images.Item("note").Draw(new Point((int)(laneX - images.Item("note").Size.Width / 2.0), (int)(650 - location - images.Item("note").Size.Height / 2.0)));
+								}
 							}
 						}
 					}
 				}
-
-				foreach (var laneIndex in Enumerable.Range(0, KeyConfig.Instance.Lanes.Count))
-				{
-					var inputLane = KeyConfig.Instance.Lanes[laneIndex];
-
-					var laneX = 200 + 100 + 176 * (laneIndex + 1);
-
-					var effect = images.Item($"detectFrameEffect{laneIndex + 1}");
-
-					if (inputLane.InputTime == 1)
-					{
-						effect.FinishFade();
-						effect.Opacity = 100;
-					}
-					else if (inputLane.InputTime == 0)
-						effect.Fade(0, .25);
-
-					effect.Draw(new Point(laneX - effect.Size.Width / 2, 650 - effect.Size.Height / 2));
-				}
-			}
-
-			DX.DrawLine(0, 650, SystemCore.Instance.WindowSize.Width, 650, 0xffffff);
-
-			if (SystemCore.Instance.IsShowDebugImageBorder)
-			{
-				var font = fonts.Item("メイリオ16");
-
-				if (ScoreStatus != null)
-				{
-					font.Draw(new Point(5, 20 * 1), $"beatLocation: {ScoreStatus.BeatLocation:00.0}", Color.White);
-					font.Draw(new Point(5, 20 * 2), $"beatIndex: {ScoreStatus.BeatIndex}", Color.White);
-					font.Draw(new Point(5, 20 * 3), $"beatOffset: {ScoreStatus.BeatOffset:00.0}", Color.White);
-					font.Draw(new Point(5, 20 * 4), $"barLocation: {ScoreStatus.BarLocation:00.0}", Color.White);
-					font.Draw(new Point(5, 20 * 5), $"barIndex: {ScoreStatus.BarIndex}", Color.White);
-					font.Draw(new Point(5, 20 * 6), $"barOffset: {ScoreStatus.BarOffset:00.0}", Color.White);
-					font.Draw(new Point(5, 20 * 7), $"barBeatLocation1: {ScoreStatus.BarBeatLocation:00.0}", Color.White);
-					font.Draw(new Point(5, 20 * 8), $"countLocation: {ScoreStatus.CountLocation:00.0}", Color.White);
-				}
-				font.Draw(new Point(5, 20 * 9), $"NoteSpeedBase: {NoteSpeedBase}", Color.White);
 			}
 		}
 	}
