@@ -2,6 +2,7 @@
 {
 	public enum NotePushRating
 	{
+		None,
 		Perfect,
 		Good,
 		Bad,
