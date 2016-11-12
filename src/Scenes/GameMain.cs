@@ -44,8 +44,8 @@ namespace CrystalResonanceDesktop.Scenes
 				MessageBox.FadeSize(new Size(core.WindowSize.Width, 0), 0.5);
 			});
 
-			SideBar = new Box(new Point(0, 0), new Size(0, core.WindowSize.Height), Color.White, true, 0);
-			SideBar.FadeOpacity(20);
+			SideBar = new Box(new Point(0, 0), new Size(0, core.WindowSize.Height), Color.FromArgb(117, 207, 213), true, 0);
+			SideBar.FadeOpacity(100);
 			SideBar.FadeSize(new Size(280, core.WindowSize.Height));
 		}
 
@@ -82,15 +82,14 @@ namespace CrystalResonanceDesktop.Scenes
 			var fonts = FontStorage.Instance;
 			var core = SystemCore.Instance;
 
-			var margin = 50;
-			var xCoodinates = new List<int>();
-			foreach (var i in Enumerable.Range(1, 4))
-				xCoodinates.Add(SideBar.Size.Width + margin + ((core.WindowSize.Width - SideBar.Size.Width - margin * 2) / 5) * i);
-
-			Manager.DrawNotes(xCoodinates);
-
 			var images = ImageStorage.Instance;
 
+			// 判定ライン
+			DX.SetDrawBlendMode(DX.DX_BLENDMODE_ALPHA, (int)(255 * 0.5));
+			DX.DrawLine(0, 650, SystemCore.Instance.WindowSize.Width, 650, 0xffffff);
+			DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 0);
+
+			// エフェクト
 			foreach (var laneIndex in Enumerable.Range(0, KeyConfig.Instance.Lanes.Count))
 			{
 				var inputLane = KeyConfig.Instance.Lanes[laneIndex];
@@ -110,8 +109,29 @@ namespace CrystalResonanceDesktop.Scenes
 				effect.Draw(new Point(laneX - effect.Size.Width / 2, 650 - effect.Size.Height / 2));
 			}
 
-			DX.DrawLine(0, 650, SystemCore.Instance.WindowSize.Width, 650, 0xffffff);
+			// ノート
+			var margin = 50;
+			var xCoodinates = new List<int>();
+			foreach (var i in Enumerable.Range(1, 4))
+				xCoodinates.Add(SideBar.Size.Width + margin + ((core.WindowSize.Width - SideBar.Size.Width - margin * 2) / 5) * i);
 
+			Manager.DrawNotes(xCoodinates);
+
+			// サイドバー
+			SideBar.Draw();
+			if (SideBar.Opacity == 100)
+			{
+				fonts.Item("メイリオ20").Draw(new Point(50, core.WindowSize.Height * 3 / 4 - 30), $"♪{Manager.Score.SongTitle}", Color.White, Position.LeftTop);
+				fonts.Item("メイリオ20").Draw(new Point(50, core.WindowSize.Height * 3 / 4), $"{Manager.Combo} combo", Color.White, Position.LeftTop);
+			}
+
+			// メッセージ
+			MessageBox.Draw();
+
+			if (!LoadTask.IsCompleted && !MessageBox.IsFading)
+				fonts.Item("メイリオ20").Draw(new Point(0, 0), "Now Loading ...",core.BackColor, Position.CenterMiddle);
+
+			// デバッグ
 			if (SystemCore.Instance.IsShowDebugImageBorder)
 			{
 				var font = fonts.Item("メイリオ16");
@@ -129,15 +149,6 @@ namespace CrystalResonanceDesktop.Scenes
 				}
 				font.Draw(new Point(5, 20 * 9), $"NoteSpeedBase: {Manager.NoteSpeedBase}", Color.White);
 			}
-
-			SideBar.Draw();
-			fonts.Item("メイリオ20").Draw(new Point(50, core.WindowSize.Height * 3 / 4 - 30), $"♪{Manager.Score.SongTitle}", Color.White, Position.LeftTop);
-			fonts.Item("メイリオ20").Draw(new Point(50, core.WindowSize.Height * 3/4), $"{Manager.Combo} combo", Color.White, Position.LeftTop);
-
-			MessageBox.Draw();
-
-			if (!LoadTask.IsCompleted && !MessageBox.IsFading)
-				fonts.Item("メイリオ20").Draw(new Point(0, 0), "Now Loading ...",core.BackColor, Position.CenterMiddle);
 		}
 	}
 }
