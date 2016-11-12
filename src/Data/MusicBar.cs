@@ -8,12 +8,15 @@ namespace CrystalResonanceDesktop.Data
 	/// </summary>
 	public class MusicBar
 	{
-		public MusicBar(uint count = 4, double span = 1.0, IEnumerable<MusicLane> lanes = null)
+		public MusicBar(MusicScore parentScore, uint count = 4, double span = 1.0, IEnumerable<MusicLane> lanes = null)
 		{
+			ParentScore = parentScore;
 			Count = count;
 			Span = span;
 			Lanes = lanes?.ToList() ?? new List<MusicLane>();
 		}
+
+		public MusicScore ParentScore { get; set; }
 
 		/// <summary>
 		/// この小節に属しているノートの一覧を取得します

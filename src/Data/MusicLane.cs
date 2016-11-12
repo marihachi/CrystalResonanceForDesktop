@@ -5,8 +5,9 @@ namespace CrystalResonanceDesktop.Data
 {
 	public class MusicLane
 	{
-		public MusicLane(IEnumerable<MusicNote> notes = null)
+		public MusicLane(MusicBar parentBar, IEnumerable<MusicNote> notes = null)
 		{
+			ParentBar = parentBar;
 			Notes = notes?.ToList() ?? new List<MusicNote>();
 		}
 
@@ -14,5 +15,7 @@ namespace CrystalResonanceDesktop.Data
 		/// このレーンに属している小節の一覧を取得します
 		/// </summary>
 		public List<MusicNote> Notes { get; }
+
+		public MusicBar ParentBar { get; set; }
 	}
 }
