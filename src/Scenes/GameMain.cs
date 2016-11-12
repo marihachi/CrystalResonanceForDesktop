@@ -89,13 +89,18 @@ namespace CrystalResonanceDesktop.Scenes
 			DX.DrawLine(0, 650, SystemCore.Instance.WindowSize.Width, 650, 0xffffff);
 			DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 0);
 
+			// レーン軸の決定
+			var margin = 50;
+			var xCoodinates = new List<int>();
+			foreach (var i in Enumerable.Range(1, 4))
+				xCoodinates.Add(SideBar.Size.Width + margin + ((core.WindowSize.Width - SideBar.Size.Width - margin * 2) / 5) * i);
+
 			// エフェクト
 			foreach (var laneIndex in Enumerable.Range(0, KeyConfig.Instance.Lanes.Count))
 			{
 				var inputLane = KeyConfig.Instance.Lanes[laneIndex];
 
-				var laneX = 200 + 100 + 176 * (laneIndex + 1);
-
+				var laneX = xCoodinates[laneIndex];
 				var effect = images.Item($"detectFrameEffect{laneIndex + 1}");
 
 				if (inputLane.InputTime == 1)
@@ -110,11 +115,6 @@ namespace CrystalResonanceDesktop.Scenes
 			}
 
 			// ノート
-			var margin = 50;
-			var xCoodinates = new List<int>();
-			foreach (var i in Enumerable.Range(1, 4))
-				xCoodinates.Add(SideBar.Size.Width + margin + ((core.WindowSize.Width - SideBar.Size.Width - margin * 2) / 5) * i);
-
 			Manager.DrawNotes(xCoodinates);
 
 			// サイドバー
@@ -129,7 +129,7 @@ namespace CrystalResonanceDesktop.Scenes
 			MessageBox.Draw();
 
 			if (!LoadTask.IsCompleted && !MessageBox.IsFading)
-				fonts.Item("メイリオ20").Draw(new Point(0, 0), "Now Loading ...",core.BackColor, Position.CenterMiddle);
+				fonts.Item("メイリオ20").Draw(new Point(0, 0), "Now Loading ...", core.BackColor, Position.CenterMiddle);
 
 			// デバッグ
 			if (SystemCore.Instance.IsShowDebugImageBorder)

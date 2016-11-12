@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace CrystalResonanceDesktop.Data
 {
 	/// <summary>
-	/// 
+	/// ノートの描画や各種必要な情報の管理を行います
 	/// </summary>
 	public class MusicManager
 	{
@@ -211,27 +211,25 @@ namespace CrystalResonanceDesktop.Data
 								{
 									// 前の小節
 									distance = -(barSize - noteLocation) - nowLocation;
-									
+
 									// Debug.WriteLine($"prev: {{ {barIndex}:{noteIndex}, distance: {(int)(distance * 1000)} }} -({barSize} - {noteLocation}) + {nowLocation}");
 								}
 								else if (ScoreStatus.BarIndex - barIndex <= -1)
 								{
 									// 次の小節
 									distance = nowBarSize - nowLocation + noteLocation;
-									
+
 									// Debug.WriteLine($"next: {{ {barIndex}:{noteIndex}, distance: {(int)(distance * 1000)} }} {nowBarSize} - {nowLocation} + {noteLocation}");
 								}
 								else
 								{
 									// 現在の小節
 									distance = noteLocation - nowLocation;
-									
+
 									// Debug.WriteLine($"now: {{ {barIndex}:{noteIndex}, distance: {(int)(distance * 1000)} }} {noteLocation} - {nowLocation}");
 								}
 
 								distance *= 1000;
-
-								// Debug.WriteLine($"note[1,0,0].distance: {distance}");
 
 								barInfos.Add(new NoteDistanceInfo(Score, laneIndex, barIndex, noteIndex, (int)distance));
 							}
@@ -239,7 +237,7 @@ namespace CrystalResonanceDesktop.Data
 					}
 				}
 			}
-			
+
 			// Debug.WriteLine($"-- end CalcNoteDistance --");
 
 			return ReconstructNoteDistance(noteDistanceInfoLists);
@@ -318,7 +316,7 @@ namespace CrystalResonanceDesktop.Data
 						}
 					}
 				}
-				
+
 				foreach (var noteDistances in noteDistancesList)
 				{
 					foreach (var noteDistance in noteDistances)
@@ -335,7 +333,6 @@ namespace CrystalResonanceDesktop.Data
 						}
 					}
 				}
-				
 			}
 		}
 
@@ -354,7 +351,7 @@ namespace CrystalResonanceDesktop.Data
 					var targetBarIndex = ScoreStatus.BarIndex + i;
 
 					// 小節のインデックスがマイナスなら処理しない
-					if (targetBarIndex >= 0)
+					if (targetBarIndex > -1)
 					{
 						foreach (var laneIndex in Enumerable.Range(0, Score.Bars[targetBarIndex].Lanes.Count))
 						{
