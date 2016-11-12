@@ -354,7 +354,7 @@ namespace CrystalResonanceDesktop.Data
 					var targetBarIndex = ScoreStatus.BarIndex + i;
 
 					// 小節のインデックスがマイナスなら処理しない
-					if (targetBarIndex > 0)
+					if (targetBarIndex >= 0)
 					{
 						foreach (var laneIndex in Enumerable.Range(0, Score.Bars[targetBarIndex].Lanes.Count))
 						{
