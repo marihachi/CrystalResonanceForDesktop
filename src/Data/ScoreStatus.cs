@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 
 namespace CrystalResonanceDesktop.Data
 {
@@ -20,8 +21,10 @@ namespace CrystalResonanceDesktop.Data
 			{
 				// 現在の小節インデックスを求める
 				var spanSum = 0.0;
+
 				foreach (var i in Enumerable.Range(0, TargetScore.Bars.Count))
 					spanSum += TargetScore.Bars[i].Span;
+
 				return (TargetScore.Bars.Count * BeatLocation / (4 * spanSum));
 			}
 		}
