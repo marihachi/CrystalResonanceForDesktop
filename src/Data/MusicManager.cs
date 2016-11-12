@@ -6,6 +6,7 @@ using DxSharp.Data.Enum;
 using DxSharp.Storage;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
@@ -68,14 +69,31 @@ namespace CrystalResonanceDesktop.Data
 
 			foreach (int i in Enumerable.Range(0, 256))
 			{
-				var lane_sim = new MusicLane(new List<MusicNote> { new MusicNote(1) });
-				var lane_hi = new MusicLane(new List<MusicNote> { new MusicNote(2), new MusicNote(3), new MusicNote(4), new MusicNote(5), new MusicNote(6), new MusicNote(7), new MusicNote(8) });
-				var lane_kick = new MusicLane(new List<MusicNote> { new MusicNote(1), new MusicNote(5) });
-				var lane_sn = new MusicLane(new List<MusicNote> { new MusicNote(3), new MusicNote(7) });
+				var bar = new MusicBar(Score, 8, 1);
 
-				var bar = new MusicBar(8, 1, new List<MusicLane> { lane_sn, lane_kick, lane_hi, lane_sim });
+				var lane_sim = new MusicLane(bar);
+				lane_sim.Notes.AddRange(new List<MusicNote> { new MusicNote(1, lane_sim) });
 
+				var lane_hi = new MusicLane(bar);
+				lane_hi.Notes.AddRange(new List<MusicNote> { new MusicNote(2, lane_hi), new MusicNote(3, lane_hi), new MusicNote(4, lane_hi), new MusicNote(5, lane_hi), new MusicNote(6, lane_hi), new MusicNote(7, lane_hi), new MusicNote(8, lane_hi) });
+
+				var lane_kick = new MusicLane(bar);
+				lane_kick.Notes.AddRange(new List<MusicNote> { new MusicNote(1, lane_kick), new MusicNote(5, lane_kick) });
+
+				var lane_sn = new MusicLane(bar);
+				lane_sn.Notes.AddRange(new List<MusicNote> { new MusicNote(3, lane_sn), new MusicNote(7, lane_sn) });
+
+				bar.Lanes.AddRange(new List<MusicLane> { lane_sn, lane_kick, lane_hi, lane_sim });
 				Score.Bars.Add(bar);
+
+				var bar2 = new MusicBar(Score, 8, 1);
+
+				var lane2_sn = new MusicLane(bar2);
+				lane2_sn.Notes.AddRange(new List<MusicNote> { new MusicNote(3, lane2_sn), new MusicNote(7, lane2_sn) });
+
+				bar2.Lanes.AddRange(new List<MusicLane> { lane2_sn });
+
+				Score.Bars.Add(bar2);
 			}
 
 			// 譜面のステータスを作成
@@ -129,82 +147,17 @@ namespace CrystalResonanceDesktop.Data
 		}
 
 		/// <summary>
-		/// 現在の再生位置からの各ノートの符号付の距離を算出
+		/// 距離情報の構造をレーン毎の操作しやすい形式に最適化します (CalcNoteDistance内から呼ばれています)
 		/// </summary>
-		/// <returns></returns>
-		private IEnumerable<IEnumerable<NoteDistanceInfo>> CalcNoteDistance()
-		{
-			var noteDistanceInfoLists = new List<List<NoteDistanceInfo>>(); // noteDistanceInfoLists[bar][lane]
-
-			foreach (var barIndex in Enumerable.Range(ScoreStatus.BarIndex - 1, 3))
-			{
-				if (barIndex != -1)
-				{
-					var barInfos = new List<NoteDistanceInfo>();
-
-					if (noteDistanceInfoLists.Count <= barIndex)
-						noteDistanceInfoLists.Add(barInfos);
-
-					foreach (var laneIndex in Enumerable.Range(0, Score.Bars[barIndex].Lanes.Count))
-					{
-						foreach (var noteIndex in Enumerable.Range(0, Score.Bars[barIndex].Lanes[laneIndex].Notes.Count))
-						{
-							var bar = Score.Bars[barIndex];
-							var note = bar.Lanes[laneIndex].Notes[noteIndex];
-
-							// 対象小節の長さ
-							var barSize = bar.Span * 4;
-
-							// 現在小節の長さ
-							var nowBarSize = ScoreStatus.NowBar.Span * 4;
-
-							// 現在小節の位置
-							var nowLocation = nowBarSize * (1 - ScoreStatus.BarOffset);
-
-							// 対象ノートの小節内位置
-							var noteLocation = barSize * (1 - (double)note.CountLocation / bar.Count);
-
-							double distance;
-
-							if (ScoreStatus.BarIndex - barIndex == 1)
-							{
-								// 一つ次の小節
-								distance = nowBarSize - nowLocation + noteLocation;
-							}
-							else if (ScoreStatus.BarIndex - barIndex == -1)
-							{
-								// 一つ前の小節
-								distance = -(barSize - noteLocation + nowLocation);
-							}
-							else
-							{
-								// 現在の小節
-								distance = nowLocation - noteLocation;
-							}
-
-							distance *= 1000;
-
-							barInfos.Add(new NoteDistanceInfo(Score, laneIndex, barIndex, noteIndex, (int)distance));
-						}
-					}
-				}
-			}
-
-			return noteDistanceInfoLists;
-		}
-
-		/// <summary>
-		/// 距離情報の構造をレーン毎の操作しやすい形式に最適化します (CalcNearestNotes内から呼ばれています)
-		/// </summary>
-		/// <param name="noteDistanceInfosList"></param>
-		/// <returns></returns>
-		private IEnumerable<IEnumerable<NoteDistanceInfo>> ReconstructNoteDistance(IEnumerable<IEnumerable<NoteDistanceInfo>> noteDistanceInfosList)
+		/// <param name="noteDistancesList">小節毎に管理された最適化前のNoteDistanceInfoのリスト</param>
+		/// <returns>レーン毎に管理された最適化済みのNoteDistanceInfoのリスト</returns>
+		private IEnumerable<IEnumerable<NoteDistanceInfo>> ReconstructNoteDistance(IEnumerable<IEnumerable<NoteDistanceInfo>> noteDistancesList)
 		{
 			foreach (var laneLocation in Enumerable.Range(0, Score.LaneCount))
 			{
 				var infos = new List<NoteDistanceInfo>();
 
-				foreach (var noteDistanceInfos in noteDistanceInfosList)
+				foreach (var noteDistanceInfos in noteDistancesList)
 					foreach (var noteDistanceInfo in (from info in noteDistanceInfos where info.LaneIndex == laneLocation select info))
 						infos.Add(noteDistanceInfo);
 
@@ -213,17 +166,95 @@ namespace CrystalResonanceDesktop.Data
 		}
 
 		/// <summary>
+		/// 現在の再生位置からの各ノートの符号付の距離を算出
+		/// </summary>
+		/// <returns>レーン毎に管理された最適化済みのNoteDistanceInfoのリスト</returns>
+		private IEnumerable<IEnumerable<NoteDistanceInfo>> CalcNoteDistance()
+		{
+			var noteDistanceInfoLists = new List<List<NoteDistanceInfo>>(); // noteDistanceInfoLists[bar][lane]
+
+			// Debug.WriteLine($"-- CalcNoteDistance --");
+
+			if (ScoreStatus.BarIndex >= 0)
+			{
+				foreach (var barIndex in Enumerable.Range(ScoreStatus.BarIndex - 1, 3))
+				{
+					if (barIndex > -1)
+					{
+						var barInfos = new List<NoteDistanceInfo>();
+
+						if (noteDistanceInfoLists.Count <= barIndex)
+							noteDistanceInfoLists.Add(barInfos);
+
+						foreach (var laneIndex in Enumerable.Range(0, Score.Bars[barIndex].Lanes.Count))
+						{
+							foreach (var noteIndex in Enumerable.Range(0, Score.Bars[barIndex].Lanes[laneIndex].Notes.Count))
+							{
+								var bar = Score.Bars[barIndex];
+								var note = bar.Lanes[laneIndex].Notes[noteIndex];
+
+								// 対象小節の長さ
+								var barSize = bar.Span * 4;
+
+								// 現在小節の長さ
+								var nowBarSize = ScoreStatus.NowBar.Span * 4;
+
+								// 現在小節の位置
+								var nowLocation = nowBarSize * ScoreStatus.BarOffset;
+
+								// 対象ノートの小節内位置
+								var noteLocation = barSize * ((double)note.CountLocation / bar.Count);
+
+								double distance;
+
+								if (ScoreStatus.BarIndex - barIndex >= 1)
+								{
+									// 前の小節
+									distance = -(barSize - noteLocation) - nowLocation;
+									
+									// Debug.WriteLine($"prev: {{ {barIndex}:{noteIndex}, distance: {(int)(distance * 1000)} }} -({barSize} - {noteLocation}) + {nowLocation}");
+								}
+								else if (ScoreStatus.BarIndex - barIndex <= -1)
+								{
+									// 次の小節
+									distance = nowBarSize - nowLocation + noteLocation;
+									
+									// Debug.WriteLine($"next: {{ {barIndex}:{noteIndex}, distance: {(int)(distance * 1000)} }} {nowBarSize} - {nowLocation} + {noteLocation}");
+								}
+								else
+								{
+									// 現在の小節
+									distance = noteLocation - nowLocation;
+									
+									// Debug.WriteLine($"now: {{ {barIndex}:{noteIndex}, distance: {(int)(distance * 1000)} }} {noteLocation} - {nowLocation}");
+								}
+
+								distance *= 1000;
+
+								// Debug.WriteLine($"note[1,0,0].distance: {distance}");
+
+								barInfos.Add(new NoteDistanceInfo(Score, laneIndex, barIndex, noteIndex, (int)distance));
+							}
+						}
+					}
+				}
+			}
+			
+			// Debug.WriteLine($"-- end CalcNoteDistance --");
+
+			return ReconstructNoteDistance(noteDistanceInfoLists);
+		}
+
+		/// <summary>
 		/// レーン毎に最も近いノートを算出
 		/// </summary>
-		/// <param name="noteDistanceInfosList"></param>
-		/// <returns></returns>
-		private IEnumerable<NoteDistanceInfo> CalcNearestNotes(IEnumerable<IEnumerable<NoteDistanceInfo>> noteDistanceInfosList)
+		/// <param name="noteDistancesList">レーン毎に管理された最適化済みのNoteDistanceInfoのリスト</param>
+		/// <returns>レーン毎の最寄ノートの NoteDistanceInfo</returns>
+		private IEnumerable<NoteDistanceInfo> CalcNearestNotes(IEnumerable<IEnumerable<NoteDistanceInfo>> noteDistancesList)
 		{
-			noteDistanceInfosList = ReconstructNoteDistance(noteDistanceInfosList);
-
-			foreach (var noteDistanceInfos in noteDistanceInfosList)
+			foreach (var noteDistances in noteDistancesList)
 			{
-				yield return noteDistanceInfos.FindMin(i => Math.Abs(i.NoteDistance));
+				yield return noteDistances.FindMin(i => Math.Abs(i.NoteDistance));
 			}
 		}
 
@@ -234,11 +265,13 @@ namespace CrystalResonanceDesktop.Data
 		{
 			if (Score.Song.IsPlaying)
 			{
+				var noteDistancesList = CalcNoteDistance();
+
 				var isInputted = (from l in KeyConfig.Instance.Lanes where l.InputTime == 1 select l).Count() != 0;
-				
+
 				if (isInputted)
 				{
-					var nearestNoteInfos = CalcNearestNotes(CalcNoteDistance());
+					var nearestNoteDistances = CalcNearestNotes(noteDistancesList);
 
 					var targetLaneIndexes = new List<int>();
 
@@ -248,7 +281,7 @@ namespace CrystalResonanceDesktop.Data
 
 					foreach (var targetLaneIndex in targetLaneIndexes)
 					{
-						var nearestNoteInfo = nearestNoteInfos.ElementAt(targetLaneIndex);
+						var nearestNoteInfo = nearestNoteDistances.ElementAt(targetLaneIndex);
 
 						if (nearestNoteInfo != null)
 						{
@@ -256,37 +289,53 @@ namespace CrystalResonanceDesktop.Data
 							{
 								nearestNoteInfo.TargetNote.PushState = true;
 
-								NotePushRating rating;
-
 								if (Math.Abs(nearestNoteInfo.NoteDistance) <= 70) // perfect
 								{
-									rating = NotePushRating.Perfect;
+									nearestNoteInfo.TargetNote.Rating = NotePushRating.Perfect;
 									Combo++;
 								}
 								else if (Math.Abs(nearestNoteInfo.NoteDistance) <= 130) // good
 								{
-									rating = NotePushRating.Good;
+									nearestNoteInfo.TargetNote.Rating = NotePushRating.Good;
 									Combo++;
 								}
 								else if (Math.Abs(nearestNoteInfo.NoteDistance) <= 180) // bad
 								{
-									rating = NotePushRating.Bad;
+									nearestNoteInfo.TargetNote.Rating = NotePushRating.Bad;
 									Combo = 0;
 								}
 								else // miss
 								{
-									rating = NotePushRating.Miss;
+									nearestNoteInfo.TargetNote.Rating = NotePushRating.Miss;
 									Combo = 0;
 								}
 
 								if (Combo > SessionMaxCombo)
 									SessionMaxCombo = Combo;
 
-								// Debug.WriteLine($"{Combo} {rating}: {nearestNoteInfo.NoteDistance}");
+								Debug.WriteLine($"Judgement: {{ barIndex: {Score.Bars.IndexOf(nearestNoteInfo.TargetNote.ParentLane.ParentBar)}, distance: {nearestNoteInfo.NoteDistance} }}");
 							}
 						}
 					}
 				}
+				
+				foreach (var noteDistances in noteDistancesList)
+				{
+					foreach (var noteDistance in noteDistances)
+					{
+						if (!noteDistance.TargetNote.PushState)
+						{
+							// 判定範囲を超えてマイナス方向にあるとき
+							if (noteDistance.NoteDistance < -180 && noteDistance.TargetNote.Rating == NotePushRating.None)
+							{
+								Debug.WriteLine($"Judgement: {{ barIndex: {Score.Bars.IndexOf(noteDistance.TargetNote.ParentLane.ParentBar)}, distance: {noteDistance.NoteDistance} }}");
+								Combo = 0;
+								noteDistance.TargetNote.Rating = NotePushRating.Miss;
+							}
+						}
+					}
+				}
+				
 			}
 		}
 
@@ -321,7 +370,7 @@ namespace CrystalResonanceDesktop.Data
 								var count = (double)note.CountLocation / bar.Count;
 								var location = barDisplaySize * (count - ScoreStatus.BarOffset + i);
 
-								if (!note.PushState)
+								if (note.Rating == NotePushRating.None)
 								{
 									images.Item("note").Draw(new Point((int)(laneX - images.Item("note").Size.Width / 2.0), (int)(650 - location - images.Item("note").Size.Height / 2.0)));
 								}
