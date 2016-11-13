@@ -1,30 +1,21 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using YoutubeExtractor;
 
 namespace CrystalResonanceDesktop.Utility
 {
-	public class YoutubeOggExtractor
+	public class YoutubeOggExtractor : OggExtractor
 	{
-		public YoutubeOggExtractor() { }
-
-		public YoutubeOggExtractor(string ffmpegFilePath)
-		{
-			FFmpegFilePath = ffmpegFilePath;
-		}
-
-		private Random Random { get; set; } = new Random();
-		public string FFmpegFilePath { get; private set; } = @".\ffmpeg.exe";
+		public YoutubeOggExtractor() : base() { }
+		public YoutubeOggExtractor(string ffmpegFilePath) : base(ffmpegFilePath) { }
 
 		/// <summary>
 		/// Youtubeの動画をogg形式の音声ファイルとして抽出します
 		/// </summary>
 		/// <param name="watchPageUrl">視聴ページのURL</param>
 		/// <returns>一時フォルダ上のファイルパス</returns>
-		public async Task<string> Extract(Uri watchPageUrl)
+		public override async Task<string> Extract(Uri watchPageUrl)
 		{
 			if (watchPageUrl == null)
 				throw new ArgumentNullException("watchPageUrl");
@@ -40,22 +31,7 @@ namespace CrystalResonanceDesktop.Utility
 				return info;
 			});
 
-			var unixtime = (int)(DateTime.Now.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
-
-			var outputFilePath = $"{Path.GetTempPath()}{unixtime}_{Random.Next(1000, 10000)}{videoInfo.AudioExtension}";
-
-			await Task.Run(() =>
-			{
-				var psi = new ProcessStartInfo(FFmpegFilePath, $"-y -i {videoInfo.DownloadUrl} -acodec copy -map 0:1 {outputFilePath}");
-				psi.WindowStyle = ProcessWindowStyle.Hidden;
-
-				using (var ffmpeg = Process.Start(psi))
-				{
-					while (!ffmpeg.HasExited) ;
-				}
-			});
-
-			return outputFilePath;
+			return await Convert(videoInfo.DownloadUrl, 1, true);
 		}
 	}
 }

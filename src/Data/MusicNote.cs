@@ -7,7 +7,7 @@ namespace CrystalResonanceDesktop.Data
 	/// </summary>
 	public class MusicNote
 	{
-		public MusicNote(uint countLocation, MusicLane parentLane, MusicNoteType type = MusicNoteType.Normal, bool pushState = false, NotePushRating rating = NotePushRating.None)
+		public MusicNote(int countLocation, MusicLane parentLane, MusicNoteType type = MusicNoteType.Normal, bool pushState = false, NotePushRating rating = NotePushRating.None)
 		{
 			ParentLane = parentLane;
 			Type = type;
@@ -16,6 +16,9 @@ namespace CrystalResonanceDesktop.Data
 			Rating = rating;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public MusicLane ParentLane { get; set; }
 
 		/// <summary>
@@ -26,7 +29,7 @@ namespace CrystalResonanceDesktop.Data
 		/// <summary>
 		/// カウント上の位置を取得または設定します
 		/// </summary>
-		public uint CountLocation { get; set; }
+		public int CountLocation { get; set; }
 
 		/// <summary>
 		/// 押されたかどうかの状態を取得または設定します

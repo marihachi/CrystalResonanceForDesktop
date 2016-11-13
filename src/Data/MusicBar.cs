@@ -8,7 +8,7 @@ namespace CrystalResonanceDesktop.Data
 	/// </summary>
 	public class MusicBar
 	{
-		public MusicBar(MusicScore parentScore, uint count = 4, double span = 1.0, IEnumerable<MusicLane> lanes = null)
+		public MusicBar(MusicScore parentScore, int count = 4, double span = 1.0, IEnumerable<MusicLane> lanes = null)
 		{
 			ParentScore = parentScore;
 			Count = count;
@@ -16,6 +16,9 @@ namespace CrystalResonanceDesktop.Data
 			Lanes = lanes?.ToList() ?? new List<MusicLane>();
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public MusicScore ParentScore { get; set; }
 
 		/// <summary>
@@ -26,7 +29,7 @@ namespace CrystalResonanceDesktop.Data
 		/// <summary>
 		/// この小節の1から始まるカウント数を取得または設定します
 		/// </summary>
-		public uint Count { get; set; }
+		public int Count { get; set; }
 
 		/// <summary>
 		/// この小節の4/4拍子を基準とした長さの倍率を取得または設定します
@@ -34,5 +37,10 @@ namespace CrystalResonanceDesktop.Data
 		/// <example>4/4拍子なら1</example>
 		/// <example>3/4拍子なら0.75</example>
 		public double Span { get; set; }
+
+		/// <summary>
+		/// この小節で発生する特殊命令(イベント)の一覧を取得します
+		/// </summary>
+		public List<MusicEvent> Events { get; private set; }
 	}
 }

@@ -31,7 +31,13 @@ namespace CrystalResonanceDesktop.Data
 		public int BarIndex { get { return (int)BarLocation; } }
 		public double BarOffset { get { return BarLocation - BarIndex; } }
 
-		public MusicBar NowBar { get { return TargetScore.Bars[BarIndex]; } }
+		public MusicBar NowBar
+		{
+			get
+			{
+				return TargetScore.Bars?[BarIndex];
+			}
+		}
 
 		public int BeatIndex { get { return (int)BeatLocation; } }
 		public double BeatOffset { get { return BeatLocation - BeatIndex; } }

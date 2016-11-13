@@ -5,7 +5,9 @@ using DxSharp.Data;
 using DxSharp.Data.Enum;
 using DxSharp.Storage;
 using DxSharp.Utility;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +19,7 @@ namespace CrystalResonanceDesktop.Scenes
 		private bool IsInitialized { get; set; }
 
 		private Task LoadTask { get; set; }
+		private Exception LoadTaskException { get; set; }
 
 		private MusicManager Manager { get; set; }
 
@@ -33,15 +36,22 @@ namespace CrystalResonanceDesktop.Scenes
 
 			LoadTask = Task.Run(async () =>
 			{
-				MessageBox.FadeSize(new Size(core.WindowSize.Width, 200), 0.5);
-				MessageBox.FadeOpacity(100, 0.5);
+				try
+				{
+					MessageBox.FadeSize(new Size(core.WindowSize.Width, 200), 0.5);
+					MessageBox.FadeOpacity(100, 0.5);
 
-				await Manager.LoadScoreAsync();
+					await Manager.LoadScoreAsync("Song/test/score.json");
 
-				Manager.Start();
+					Manager.Start();
 
-				MessageBox.FadeOpacity(0, 0.5);
-				MessageBox.FadeSize(new Size(core.WindowSize.Width, 0), 0.5);
+					MessageBox.FadeOpacity(0, 0.5);
+					MessageBox.FadeSize(new Size(core.WindowSize.Width, 0), 0.5);
+				}
+				catch (Exception e)
+				{
+					LoadTaskException = e;
+				}
 			});
 
 			SideBar = new Box(new Point(0, 0), new Size(0, core.WindowSize.Height), Color.FromArgb(117, 207, 213), true, 0);
@@ -57,9 +67,11 @@ namespace CrystalResonanceDesktop.Scenes
 			if (!IsInitialized)
 			{
 				IsInitialized = true;
-
 				Initialize();
 			}
+
+			if (LoadTaskException != null)
+				throw LoadTaskException;
 
 			if (LoadTask.IsCompleted)
 			{
@@ -69,7 +81,7 @@ namespace CrystalResonanceDesktop.Scenes
 				{
 					scenes.TargetScene = scenes.FindByName("GameMusicSelect");
 					IsInitialized = false;
-					Manager.Score.Song.Stop();
+					Manager.Score?.Song?.Stop();
 				}
 			}
 
@@ -95,34 +107,37 @@ namespace CrystalResonanceDesktop.Scenes
 			foreach (var i in Enumerable.Range(1, 4))
 				xCoodinates.Add(SideBar.Size.Width + margin + ((core.WindowSize.Width - SideBar.Size.Width - margin * 2) / 5) * i);
 
-			// エフェクト
-			foreach (var laneIndex in Enumerable.Range(0, KeyConfig.Instance.Lanes.Count))
+			if (Manager.Score != null)
 			{
-				var inputLane = KeyConfig.Instance.Lanes[laneIndex];
-
-				var laneX = xCoodinates[laneIndex];
-				var effect = images.Item($"detectFrameEffect{laneIndex + 1}");
-
-				if (inputLane.InputTime == 1)
+				// エフェクト
+				foreach (var laneIndex in Enumerable.Range(0, Manager.Score.LaneCount))
 				{
-					effect.FinishFade();
-					effect.Opacity = 100;
+					var inputLane = KeyConfig.Instance.Lanes[laneIndex];
+
+					var laneX = xCoodinates[laneIndex];
+					var effect = images.Item($"detectFrameEffect{laneIndex + 1}");
+
+					if (inputLane.InputTime == 1)
+					{
+						effect.FinishFade();
+						effect.Opacity = 100;
+					}
+					else if (inputLane.InputTime == 0)
+						effect.Fade(0, .25);
+
+					effect.Draw(new Point(laneX - effect.Size.Width / 2, 650 - effect.Size.Height / 2));
 				}
-				else if (inputLane.InputTime == 0)
-					effect.Fade(0, .25);
 
-				effect.Draw(new Point(laneX - effect.Size.Width / 2, 650 - effect.Size.Height / 2));
-			}
+				// ノート
+				Manager.DrawNotes(xCoodinates);
 
-			// ノート
-			Manager.DrawNotes(xCoodinates);
-
-			// サイドバー
-			SideBar.Draw();
-			if (SideBar.Opacity == 100)
-			{
-				fonts.Item("メイリオ20").Draw(new Point(50, core.WindowSize.Height * 3 / 4 - 30), $"♪{Manager.Score.SongTitle}", Color.White, Position.LeftTop);
-				fonts.Item("メイリオ20").Draw(new Point(50, core.WindowSize.Height * 3 / 4), $"{Manager.Combo} combo", Color.White, Position.LeftTop);
+				// サイドバー
+				SideBar.Draw();
+				if (SideBar.Opacity == 100)
+				{
+					fonts.Item("メイリオ20").Draw(new Point(50, core.WindowSize.Height * 3 / 4 - 30), $"♪{Manager.Score.SongTitle}", Color.White, Position.LeftTop);
+					fonts.Item("メイリオ20").Draw(new Point(50, core.WindowSize.Height * 3 / 4), $"{Manager.Combo} combo", Color.White, Position.LeftTop);
+				}
 			}
 
 			// メッセージ

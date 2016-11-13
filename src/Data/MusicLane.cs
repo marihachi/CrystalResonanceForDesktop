@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace CrystalResonanceDesktop.Data
 {
+	/// <summary>
+	/// レーンを表します
+	/// </summary>
 	public class MusicLane
 	{
 		public MusicLane(MusicBar parentBar, IEnumerable<MusicNote> notes = null)
@@ -16,6 +19,9 @@ namespace CrystalResonanceDesktop.Data
 		/// </summary>
 		public List<MusicNote> Notes { get; }
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public MusicBar ParentBar { get; set; }
 	}
 }

@@ -43,6 +43,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -57,9 +58,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Button.cs" />
+    <Compile Include="Data\Enum\MusicEventType.cs" />
     <Compile Include="Data\Enum\MusicNoteType.cs" />
     <Compile Include="Data\Enum\NotePushRating.cs" />
     <Compile Include="Data\KeyConfig.cs" />
+    <Compile Include="Data\MusicEvent.cs" />
     <Compile Include="Data\NoteDistanceInfo.cs" />
     <Compile Include="Data\ScoreStatus.cs" />
     <Compile Include="Data\MusicLane.cs" />
@@ -69,6 +72,7 @@
     <Compile Include="Data\MusicScore.cs" />
     <Compile Include="Data\MusicBar.cs" />
     <Compile Include="Data\MusicNote.cs" />
+    <Compile Include="DynamicJson.cs" />
     <Compile Include="Scenes\GameMain.cs" />
     <Compile Include="Scenes\GameMusicSelect.cs" />
     <Compile Include="Scenes\GameResult.cs" />
@@ -76,6 +80,8 @@
     <Compile Include="Scenes\Title.cs" />
     <Compile Include="Utility\FpsHelper.cs" />
     <Compile Include="Utility\IEnumerableExtensions.cs" />
+    <Compile Include="Utility\OggExtractor.cs" />
+    <Compile Include="Utility\SoundCloudExtractor.cs" />
     <Compile Include="Utility\YoutubeOggExtractor.cs" />
     <Compile Include="Utility\PointHelper.cs" />
     <Compile Include="Program.cs" />
