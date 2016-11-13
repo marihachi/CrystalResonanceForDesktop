@@ -13,7 +13,7 @@ namespace CrystalResonanceDesktop.Utility
 		/// <summary>
 		/// SoundCloudのトラックをogg形式の音声ファイルとして抽出します
 		/// </summary>
-		/// <param name="watchPageUrl">視聴ページのURL</param>
+		/// <param name="listenPageUrl">視聴ページのURL</param>
 		/// <returns>一時フォルダ上のファイルパス</returns>
 		public override async Task<string> Extract(Uri listenPageUrl)
 		{
