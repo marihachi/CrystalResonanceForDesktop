@@ -1,4 +1,5 @@
 ﻿using CrystalResonanceDesktop.Data;
+using CrystalResonanceDesktop.Utility;
 using DxLibDLL;
 using DxSharp;
 using DxSharp.Data;
@@ -7,7 +8,6 @@ using DxSharp.Storage;
 using DxSharp.Utility;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
