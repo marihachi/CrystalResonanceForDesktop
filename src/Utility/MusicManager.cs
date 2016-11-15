@@ -19,17 +19,19 @@ namespace CrystalResonanceDesktop.Utility
 	{
 		public MusicManager()
 		{
-			if (ImageStorage.Instance.Item("note") == null)
-				ImageStorage.Instance.Add("note", new DxSharp.Data.Image("Resource/note.png", 100, Position.LeftTop));
+			var images = ImageStorage.Instance;
+
+			if (images.Item("note") == null)
+				images.Add("note", new DxSharp.Data.Image("Resource/note.png", 100, Position.LeftTop));
 
 			var effect = new DxSharp.Data.Image("Resource/detectFrameEffect.png", 0, Position.LeftTop);
 
-			if (ImageStorage.Instance.Item("detectFrameEffect1") == null)
-				ImageStorage.Instance.Add("detectFrameEffect1", effect);
+			if (images.Item("detectFrameEffect1") == null)
+				images.Add("detectFrameEffect1", effect);
 
 			foreach (var i in Enumerable.Range(2, 5))
-				if (ImageStorage.Instance.Item($"detectFrameEffect{i}") == null)
-					ImageStorage.Instance.Add($"detectFrameEffect{i}", (DxSharp.Data.Image)effect.Clone());
+				if (images.Item($"detectFrameEffect{i}") == null)
+					images.Add($"detectFrameEffect{i}", (DxSharp.Data.Image)effect.Clone());
 		}
 
 		/// <summary>
@@ -81,7 +83,8 @@ namespace CrystalResonanceDesktop.Utility
 		public void Update()
 		{
 			var core = SystemCore.Instance;
-			var image = ImageStorage.Instance;
+			var images = ImageStorage.Instance;
+			var keyConfig = KeyConfig.Instance;
 
 			if (Score != null)
 			{
@@ -102,14 +105,14 @@ namespace CrystalResonanceDesktop.Utility
 			}
 
 			foreach (var i in Enumerable.Range(1, 4))
-				image.Item($"detectFrameEffect{i}").Update();
+				images.Item($"detectFrameEffect{i}").Update();
 
 			if (core.IsShowDebugImageBorder)
 			{
-				if (KeyConfig.Instance.Up.InputTime == 1)
+				if (keyConfig.Up.InputTime == 1)
 					NoteSpeedBase += 50;
 
-				if (KeyConfig.Instance.Down.InputTime == 1 && NoteSpeedBase > 100)
+				if (keyConfig.Down.InputTime == 1 && NoteSpeedBase > 100)
 					NoteSpeedBase -= 50;
 			}
 
@@ -117,7 +120,7 @@ namespace CrystalResonanceDesktop.Utility
 		}
 
 		/// <summary>
-		/// 距離情報の構造をレーン毎の操作しやすい形式に最適化します (CalcNoteDistance内から呼ばれています)
+		/// 距離情報の構造をレーン毎の操作しやすい形式に最適化します (CalcNoteDistance内から呼ばれます)
 		/// </summary>
 		/// <param name="noteDistancesList">小節毎に管理された最適化前のNoteDistanceInfoのリスト</param>
 		/// <returns>レーン毎に管理された最適化済みのNoteDistanceInfoのリスト</returns>
@@ -158,14 +161,14 @@ namespace CrystalResonanceDesktop.Utility
 						{
 							foreach (var noteIndex in Enumerable.Range(0, Score.Bars[barIndex].Lanes[laneIndex].Notes.Count))
 							{
+								if (ScoreStatus.NowBar == null)
+									return ReconstructNoteDistance(noteDistanceInfoLists);
+
 								var bar = Score.Bars[barIndex];
 								var note = bar.Lanes[laneIndex].Notes[noteIndex];
 
 								// 対象小節の長さ
 								var barSize = bar.Span * 4;
-
-								if (ScoreStatus.NowBar == null)
-									break;
 
 								// 現在小節の長さ
 								var nowBarSize = ScoreStatus.NowBar.Span * 4;
@@ -199,18 +202,10 @@ namespace CrystalResonanceDesktop.Utility
 
 								barInfos.Add(new NoteDistanceInfo(Score, laneIndex, barIndex, noteIndex, (int)distance));
 							}
-
-							if (ScoreStatus.NowBar == null)
-								break;
 						}
 					}
-
-					if (ScoreStatus.NowBar == null)
-						break;
 				}
 			}
-
-			// Debug.WriteLine($"-- end CalcNoteDistance --");
 
 			return ReconstructNoteDistance(noteDistanceInfoLists);
 		}
@@ -234,11 +229,13 @@ namespace CrystalResonanceDesktop.Utility
 		/// </summary>
 		private void Judgement()
 		{
+			var keyConfig = KeyConfig.Instance;
+
 			if (Score?.Song.IsPlaying ?? false)
 			{
 				var noteDistancesList = CalcNoteDistance();
 
-				var isInputted = (from l in KeyConfig.Instance.Lanes where l.InputTime == 1 select l).Count() != 0;
+				var isInputted = (from l in keyConfig.Lanes where l.InputTime == 1 select l).Count() != 0;
 
 				if (isInputted)
 				{
@@ -249,7 +246,7 @@ namespace CrystalResonanceDesktop.Utility
 						var targetLaneIndexes = new List<int>();
 
 						foreach (var laneInputIndex in Enumerable.Range(0, Score.LaneCount))
-							if (KeyConfig.Instance.Lanes[laneInputIndex].InputTime == 1)
+							if (keyConfig.Lanes[laneInputIndex].InputTime == 1)
 								targetLaneIndexes.Add(laneInputIndex);
 
 						foreach (var targetLaneIndex in targetLaneIndexes)
@@ -285,8 +282,6 @@ namespace CrystalResonanceDesktop.Utility
 
 									if (Combo > SessionMaxCombo)
 										SessionMaxCombo = Combo;
-
-									// Debug.WriteLine($"Judgement: {{ barIndex: {Score.Bars.IndexOf(nearestNoteInfo.TargetNote.ParentLane.ParentBar)}, distance: {nearestNoteInfo.NoteDistance} }}");
 								}
 							}
 						}
@@ -302,7 +297,6 @@ namespace CrystalResonanceDesktop.Utility
 							// 判定範囲を超えてマイナス方向にあるとき
 							if (noteDistance.NoteDistance < -180 && noteDistance.TargetNote.Rating == NotePushRating.None)
 							{
-								// Debug.WriteLine($"Lost: {{ barIndex: {Score.Bars.IndexOf(noteDistance.TargetNote.ParentLane.ParentBar)}, distance: {noteDistance.NoteDistance} }}");
 								Combo = 0;
 								noteDistance.TargetNote.Rating = NotePushRating.Miss;
 							}
