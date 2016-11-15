@@ -27,8 +27,6 @@ namespace CrystalResonanceDesktop.Utility
 			var resolveUrl = "http://api.soundcloud.com/resolve.json?url={0}&client_id={1}";
 			var trackStreamUrl = "http://api.soundcloud.com/i1/tracks/{0}/streams?client_id={1}";
 
-			string downloadUrl;
-
 			using (var client = new HttpClient())
 			{
 				// get track id
@@ -43,7 +41,7 @@ namespace CrystalResonanceDesktop.Utility
 				var trackStreamJsonString = await res.Content.ReadAsStringAsync();
 				var trackStreamJson = DynamicJson.Parse(trackStreamJsonString);
 
-				downloadUrl = trackStreamJson.http_mp3_128_url;
+				string downloadUrl = trackStreamJson.http_mp3_128_url;
 
 				return await Convert(downloadUrl, 0, false);
 			}
