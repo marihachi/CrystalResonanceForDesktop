@@ -25,7 +25,7 @@ namespace CrystalResonanceDesktop.Utility
 
 			await Task.Run(() =>
 			{
-				var psi = new ProcessStartInfo(FFmpegFilePath, $"-y -i {downloadUrl} {(isCopy ? "- acodec copy " : "")}-map 0:{targetStreamNum} {outputFilePath}");
+				var psi = new ProcessStartInfo(FFmpegFilePath, $"-y -i {downloadUrl} {(isCopy ? "-acodec copy " : "")}-map 0:{targetStreamNum} {outputFilePath}");
 				psi.WindowStyle = ProcessWindowStyle.Hidden;
 
 				using (var ffmpeg = Process.Start(psi))

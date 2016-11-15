@@ -8,3 +8,5 @@ src/packages
 *.opensdf
 Log.txt
 *.TMP
+*.csproj.user
+DynamicJson.cs
