@@ -1,5 +1,5 @@
-﻿using CrystalResonanceDesktop.Data.Enum;
-using CrystalResonanceDesktop.Utility;
+﻿using CrystalResonanceDesktop.Data;
+using CrystalResonanceDesktop.Data.Enum;
 using DxSharp;
 using DxSharp.Data;
 using DxSharp.Data.Enum;
@@ -10,7 +10,7 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CrystalResonanceDesktop.Data
+namespace CrystalResonanceDesktop.Utility
 {
 	/// <summary>
 	/// ノートの描画や各種必要な情報の管理を行います

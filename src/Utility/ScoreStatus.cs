@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
+﻿using CrystalResonanceDesktop.Data;
 using System.Linq;
 
-namespace CrystalResonanceDesktop.Data
+namespace CrystalResonanceDesktop.Utility
 {
 	public class ScoreStatus
 	{

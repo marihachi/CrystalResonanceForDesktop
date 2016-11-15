@@ -64,10 +64,10 @@
     <Compile Include="Data\KeyConfig.cs" />
     <Compile Include="Data\MusicEvent.cs" />
     <Compile Include="Data\NoteDistanceInfo.cs" />
-    <Compile Include="Data\ScoreStatus.cs" />
+    <Compile Include="Utility\ScoreStatus.cs" />
     <Compile Include="Data\MusicLane.cs" />
     <Compile Include="Data\Menu.cs" />
-    <Compile Include="Data\MusicManager.cs" />
+    <Compile Include="Utility\MusicManager.cs" />
     <Compile Include="Data\Ripple.cs" />
     <Compile Include="Data\MusicScore.cs" />
     <Compile Include="Data\MusicBar.cs" />
