@@ -1,4 +1,5 @@
-﻿using DxLibDLL;
+﻿using CrystalResonanceDesktop.Utility;
+using DxLibDLL;
 using DxSharp;
 using DxSharp.Data;
 using DxSharp.Data.Enum;
@@ -14,6 +15,9 @@ namespace CrystalResonanceDesktop
 	{
 		static void Main(string[] args)
 		{
+			var fonts = FontStorage.Instance;
+			var inputs = Input.Instance;
+
 			using (var core = SystemCore.Initialize(new Size(1280, 720), Color.FromArgb(82, 195, 202), "Crystal Resonance Desktop", () => {
 				DX.SetAlwaysRunFlag(1);
 				DX.SetWaitVSyncFlag(0);
@@ -25,16 +29,16 @@ namespace CrystalResonanceDesktop
 
 					sceneManager.TargetScene = sceneManager.FindByName("Title");
 
-					FontStorage.Instance.Add("メイリオ16", new DxSharp.Data.Font("メイリオ", 16));
-					FontStorage.Instance.Add("メイリオ20", new DxSharp.Data.Font("メイリオ", 20));
+					fonts.Add("メイリオ16", new DxSharp.Data.Font("メイリオ", 16));
+					fonts.Add("メイリオ20", new DxSharp.Data.Font("メイリオ", 20));
 
 					while (core.Update())
 					{
-						if (Input.Instance.GetKey(KeyType.LShift).InputTime > 0 && Input.Instance.GetKey(KeyType.D).InputTime == 1)
+						if (inputs.GetKey(KeyType.LShift).InputTime > 0 && inputs.GetKey(KeyType.D).InputTime == 1)
 							core.IsShowDebugImageBorder ^= true;
 
 						sceneManager.Update();
-						Utility.FpsHelper.Instance.Wait();
+						FpsHelper.Instance.Wait();
 					}
 				}
 				catch (Exception ex)
