@@ -43,6 +43,8 @@ namespace CrystalResonanceDesktop.Scenes
 
 					await Manager.LoadScoreAsync("Song/test/score.json");
 
+					Manager.Score.CurrentDifficultyType = Data.Enum.MusicDifficultyType.Easy;
+
 					Manager.Start();
 
 					MessageBox.FadeOpacity(0, 0.5);
@@ -110,7 +112,7 @@ namespace CrystalResonanceDesktop.Scenes
 			if (Manager.Score != null)
 			{
 				// エフェクト
-				foreach (var laneIndex in Enumerable.Range(0, Manager.Score.LaneCount))
+				foreach (var laneIndex in Enumerable.Range(0, Manager.Score.CurrentDifficulty.LaneCount))
 				{
 					var inputLane = KeyConfig.Instance.Lanes[laneIndex];
 

@@ -16,15 +16,14 @@ namespace CrystalResonanceDesktop.Data
 	/// </summary>
 	public class MusicScore
 	{
-		public MusicScore(string songTitle, int bpm, Uri songUrl, int laneCount, double offset = 0, IEnumerable<string> tags = null, IEnumerable<MusicBar> bars = null)
+		public MusicScore(string songTitle, int bpm, Uri songUrl, double offset = 0, IEnumerable<string> tags = null, IEnumerable<MusicDifficulty> difficulties = null)
 		{
 			SongTitle = songTitle;
 			BPM = bpm;
 			SongUrl = songUrl;
-			LaneCount = laneCount;
 			Offset = offset;
 			Tags = tags?.ToList() ?? new List<string>();
-			Bars = bars?.ToList() ?? new List<MusicBar>();
+			Difficulties = new List<MusicDifficulty>(difficulties);
 		}
 
 		/// <summary>
@@ -58,14 +57,19 @@ namespace CrystalResonanceDesktop.Data
 		public List<string> Tags { get; private set; }
 
 		/// <summary>
-		/// このスコアに属しているレーンを取得または設定します
+		/// 難易度の一覧を取得します。
 		/// </summary>
-		public List<MusicBar> Bars { get; set; }
+		public List<MusicDifficulty> Difficulties { get; private set; }
 
 		/// <summary>
-		/// レーン数を取得または設定します。ここに設定された値がレーン数を決定付けます。
+		/// 現在対象となっている難易度の種類を取得または設定します
 		/// </summary>
-		public int LaneCount { get; set; }
+		public MusicDifficultyType CurrentDifficultyType { get; set; }
+
+		/// <summary>
+		/// 現在対象となっている難易度の種類を取得します
+		/// </summary>
+		public MusicDifficulty CurrentDifficulty { get { return Difficulties[(int)CurrentDifficultyType]; } }
 
 		/// <summary>
 		/// SongUrlから曲データを抽出します
@@ -87,7 +91,7 @@ namespace CrystalResonanceDesktop.Data
 		}
 
 		/// <summary>
-		/// 譜面情報をデシリアライズします
+		/// 譜面ファイルをデシリアライズして譜面情報(MusicScore)として展開します
 		/// </summary>
 		/// <param name="scoreFilePath">譜面のファイルパス</param>
 		/// <returns></returns>
@@ -114,12 +118,14 @@ namespace CrystalResonanceDesktop.Data
 				string songUrl = json.meta.song_url;
 				double offset = json.meta.offset;
 
-				score = new MusicScore(title, (int)bpm, new Uri(songUrl), 4, offset);
+				score = new MusicScore(title, (int)bpm, new Uri(songUrl), offset); // memo: laneCount=4
 
 				foreach (var tags in json.meta.tags)
 				{
 					score.Tags.Add((string)tags);
 				}
+
+				score.Difficulties.Add(new MusicDifficulty(4));
 
 				foreach (var bar in json.bars)
 				{
@@ -148,7 +154,7 @@ namespace CrystalResonanceDesktop.Data
 						musicBar.Lanes.Add(musicLane);
 					}
 
-					score.Bars.Add(musicBar);
+					score.CurrentDifficulty.Bars.Add(musicBar);
 				}
 			}
 			else
