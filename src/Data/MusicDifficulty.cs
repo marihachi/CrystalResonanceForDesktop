@@ -14,6 +14,11 @@ namespace CrystalResonanceDesktop.Data
 		}
 
 		/// <summary>
+		/// 難易度の独自の名称を取得または設定します
+		/// </summary>
+		public string DifficultyName { get; set; }
+
+		/// <summary>
 		/// このスコアに属しているレーンを取得または設定します
 		/// </summary>
 		public List<MusicBar> Bars { get; set; }
