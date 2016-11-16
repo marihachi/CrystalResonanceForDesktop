@@ -73,7 +73,7 @@ namespace CrystalResonanceDesktop.Scenes
 			}
 
 			if (LoadTaskException != null)
-				throw LoadTaskException;
+				throw new Exception("Task内で例外が発生しました", LoadTaskException);
 
 			if (LoadTask.IsCompleted)
 			{
