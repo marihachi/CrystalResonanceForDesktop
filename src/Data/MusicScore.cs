@@ -23,7 +23,7 @@ namespace CrystalResonanceDesktop.Data
 			SongUrl = songUrl;
 			Offset = offset;
 			Tags = tags?.ToList() ?? new List<string>();
-			Difficulties = new List<MusicDifficulty>(difficulties);
+			Difficulties = difficulties?.ToList() ?? new List<MusicDifficulty>();
 		}
 
 		/// <summary>
