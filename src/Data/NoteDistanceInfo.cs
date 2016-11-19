@@ -36,6 +36,6 @@
 
 		public MusicScore Score { get; set; }
 
-		public MusicNote TargetNote { get { return Score.Bars[BarIndex].Lanes[LaneIndex].Notes[NoteIndex]; } }
+		public MusicNote TargetNote { get { return Score.CurrentDifficulty.Bars[BarIndex].Lanes[LaneIndex].Notes[NoteIndex]; } }
 	}
 }

@@ -16,15 +16,14 @@ namespace CrystalResonanceDesktop.Data
 	/// </summary>
 	public class MusicScore
 	{
-		public MusicScore(string songTitle, int bpm, Uri songUrl, int laneCount, double offset = 0, IEnumerable<string> tags = null, IEnumerable<MusicBar> bars = null)
+		public MusicScore(string songTitle, int bpm, Uri songUrl, double offset = 0, IEnumerable<string> tags = null, IEnumerable<MusicDifficulty> difficulties = null)
 		{
 			SongTitle = songTitle;
 			BPM = bpm;
 			SongUrl = songUrl;
-			LaneCount = laneCount;
 			Offset = offset;
 			Tags = tags?.ToList() ?? new List<string>();
-			Bars = bars?.ToList() ?? new List<MusicBar>();
+			Difficulties = difficulties?.ToList() ?? new List<MusicDifficulty>();
 		}
 
 		/// <summary>
@@ -58,14 +57,19 @@ namespace CrystalResonanceDesktop.Data
 		public List<string> Tags { get; private set; }
 
 		/// <summary>
-		/// このスコアに属しているレーンを取得または設定します
+		/// 難易度の一覧を取得します。
 		/// </summary>
-		public List<MusicBar> Bars { get; set; }
+		public List<MusicDifficulty> Difficulties { get; private set; }
 
 		/// <summary>
-		/// レーン数を取得または設定します。ここに設定された値がレーン数を決定付けます。
+		/// 現在対象となっている難易度の種類を取得または設定します
 		/// </summary>
-		public int LaneCount { get; set; }
+		public MusicDifficultyType CurrentDifficultyType { get; set; }
+
+		/// <summary>
+		/// 現在対象となっている難易度の種類を取得します
+		/// </summary>
+		public MusicDifficulty CurrentDifficulty { get { return Difficulties[(int)CurrentDifficultyType]; } }
 
 		/// <summary>
 		/// SongUrlから曲データを抽出します
@@ -87,7 +91,7 @@ namespace CrystalResonanceDesktop.Data
 		}
 
 		/// <summary>
-		/// 譜面情報をデシリアライズします
+		/// 譜面ファイルをデシリアライズして譜面情報(MusicScore)として展開します
 		/// </summary>
 		/// <param name="scoreFilePath">譜面のファイルパス</param>
 		/// <returns></returns>
@@ -109,46 +113,78 @@ namespace CrystalResonanceDesktop.Data
 
 			if (scoreVersion == 1.0)
 			{
-				string title = json.meta.title;
-				double bpm = json.meta.bmp;
-				string songUrl = json.meta.song_url;
-				double offset = json.meta.offset;
-
-				score = new MusicScore(title, (int)bpm, new Uri(songUrl), 4, offset);
-
-				foreach (var tags in json.meta.tags)
+				try
 				{
-					score.Tags.Add((string)tags);
-				}
+					string title = json.meta.title;
+					double bpm = json.meta.bmp;
+					string songUrl = json.meta.song_url;
+					double offset = json.meta.offset;
 
-				foreach (var bar in json.bars)
-				{
-					var size = ((string)bar.size).Split(':').ToList();
+					score = new MusicScore(title, (int)bpm, new Uri(songUrl), offset); // memo: laneCount=4
 
-					var count = int.Parse(size[0]);
-					var span = size.Count == 2 ? double.Parse(size[1]) : 1.0;
-
-					var musicBar = new MusicBar(score, count, span);
-
-					foreach (var lane in bar.notes)
+					foreach (var tags in json.meta.tags)
 					{
-						var musicLane = new MusicLane(musicBar);
-
-						foreach (string noteInfo in lane)
-						{
-							var noteInfoList = noteInfo.Split(':');
-							var countLocation = int.Parse(noteInfoList[0]);
-							var noteType = (MusicNoteType)int.Parse(noteInfoList[1]);
-
-							var musicNote = new MusicNote(countLocation, musicLane, noteType);
-
-							musicLane.Notes.Add(musicNote);
-						}
-
-						musicBar.Lanes.Add(musicLane);
+						score.Tags.Add((string)tags);
 					}
 
-					score.Bars.Add(musicBar);
+					// 空の難易度情報を4つ確保
+					score.Difficulties.AddRange(Enumerable.Repeat<MusicDifficulty>(null, 4));
+
+					// 各難易度の文字列とMusicDifficultyTypeとの関連付け
+					var relations = new Dictionary<string, MusicDifficultyType> {
+						{ "easy", MusicDifficultyType.Easy },
+						{ "normal", MusicDifficultyType.Normal },
+						{ "hard", MusicDifficultyType.Hard },
+						{ "veryhard", MusicDifficultyType.VeryHard }
+					};
+
+					// 難易度毎に譜面を読み込み
+					foreach (var relation in relations)
+					{
+						if (json.defficulties.IsDefined(relation.Key))
+						{
+							var jsonDifficulty = json.defficulties.easy;
+
+							var difficulty = new MusicDifficulty(4);
+							score.Difficulties[(int)relation.Value] = difficulty;
+
+							difficulty.DifficultyName = jsonDifficulty.defficulty_name;
+
+							foreach (var bar in jsonDifficulty.bars)
+							{
+								var size = ((string)bar.size).Split(':').ToList();
+
+								var count = int.Parse(size[0]);
+								var span = size.Count == 2 ? double.Parse(size[1]) : 1.0;
+
+								var musicBar = new MusicBar(score, count, span);
+
+								foreach (var lane in bar.notes)
+								{
+									var musicLane = new MusicLane(musicBar);
+
+									foreach (string noteInfo in lane)
+									{
+										var noteInfoList = noteInfo.Split(':');
+										var countLocation = int.Parse(noteInfoList[0]);
+										var noteType = (MusicNoteType)int.Parse(noteInfoList[1]);
+
+										var musicNote = new MusicNote(countLocation, musicLane, noteType);
+
+										musicLane.Notes.Add(musicNote);
+									}
+
+									musicBar.Lanes.Add(musicLane);
+								}
+
+								score.CurrentDifficulty.Bars.Add(musicBar);
+							}
+						}
+					}
+				}
+				catch(Exception ex)
+				{
+					throw new ArgumentException($"Invalid score format", ex);
 				}
 			}
 			else

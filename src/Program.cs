@@ -7,6 +7,7 @@ using DxSharp.Storage;
 using DxSharp.Utility;
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace CrystalResonanceDesktop
@@ -43,9 +44,29 @@ namespace CrystalResonanceDesktop
 				}
 				catch (Exception ex)
 				{
-					MessageBox.Show($"エラーが発生しました。お手数ですが開発元に報告してください。\r\n\r\n[内容]:\r\n{ex.Message}\r\n\r\n[スタックトレース]:\r\n{ex.StackTrace}", $"実行時エラー({ex.GetType()})", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show(
+						$"エラーが発生しました。お手数ですが開発元に報告してください。\r\n\r\n{ExceptionContents(ex, "")}",
+						$"実行時エラー({ex.GetType()})", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
+		}
+
+		private static string ExceptionContents(Exception ex, string message)
+		{
+			message += $"[内容]:\r\n";
+			message += $"{ex.Message}\r\n\r\n";
+			message += $"[スタックトレース]:\r\n";
+			message += $"{ex.StackTrace}\r\n";
+
+			if (ex.InnerException != null)
+			{
+				message += "[内部例外]: {\r\n";
+				message += ExceptionContents(ex.InnerException, message);
+				message += "}\r\n";
+				return message;
+			}
+
+			return message;
 		}
 	}
 }

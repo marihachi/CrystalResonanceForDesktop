@@ -126,7 +126,7 @@ namespace CrystalResonanceDesktop.Utility
 		/// <returns>レーン毎に管理された最適化済みのNoteDistanceInfoのリスト</returns>
 		private IEnumerable<IEnumerable<NoteDistanceInfo>> ReconstructNoteDistance(IEnumerable<IEnumerable<NoteDistanceInfo>> noteDistancesList)
 		{
-			foreach (var laneLocation in Enumerable.Range(0, Score.LaneCount))
+			foreach (var laneLocation in Enumerable.Range(0, Score.CurrentDifficulty.LaneCount))
 			{
 				var infos = new List<NoteDistanceInfo>();
 
@@ -146,25 +146,25 @@ namespace CrystalResonanceDesktop.Utility
 		{
 			var noteDistanceInfoLists = new List<List<NoteDistanceInfo>>();
 
-			if (ScoreStatus.BarIndex >= 0 && ScoreStatus.BarIndex < Score.Bars.Count)
+			if (ScoreStatus.BarIndex >= 0 && ScoreStatus.BarIndex < Score.CurrentDifficulty.Bars.Count)
 			{
 				foreach (var barIndex in Enumerable.Range(ScoreStatus.BarIndex - 1, 3))
 				{
-					if (barIndex > -1 && Score.Bars.Count > barIndex)
+					if (barIndex > -1 && Score.CurrentDifficulty.Bars.Count > barIndex)
 					{
 						var barInfos = new List<NoteDistanceInfo>();
 
 						if (noteDistanceInfoLists.Count <= barIndex)
 							noteDistanceInfoLists.Add(barInfos);
 
-						foreach (var laneIndex in Enumerable.Range(0, Score.LaneCount))
+						foreach (var laneIndex in Enumerable.Range(0, Score.CurrentDifficulty.LaneCount))
 						{
-							foreach (var noteIndex in Enumerable.Range(0, Score.Bars[barIndex].Lanes[laneIndex].Notes.Count))
+							foreach (var noteIndex in Enumerable.Range(0, Score.CurrentDifficulty.Bars[barIndex].Lanes[laneIndex].Notes.Count))
 							{
 								if (ScoreStatus.NowBar == null)
 									return ReconstructNoteDistance(noteDistanceInfoLists);
 
-								var bar = Score.Bars[barIndex];
+								var bar = Score.CurrentDifficulty.Bars[barIndex];
 								var note = bar.Lanes[laneIndex].Notes[noteIndex];
 
 								// 対象小節の長さ
@@ -245,7 +245,7 @@ namespace CrystalResonanceDesktop.Utility
 					{
 						var targetLaneIndexes = new List<int>();
 
-						foreach (var laneInputIndex in Enumerable.Range(0, Score.LaneCount))
+						foreach (var laneInputIndex in Enumerable.Range(0, Score.CurrentDifficulty.LaneCount))
 							if (keyConfig.Lanes[laneInputIndex].InputTime == 1)
 								targetLaneIndexes.Add(laneInputIndex);
 
@@ -321,12 +321,12 @@ namespace CrystalResonanceDesktop.Utility
 					var targetBarIndex = ScoreStatus.BarIndex + i;
 
 					// 小節のインデックスがマイナスなら処理しない
-					if (targetBarIndex > -1 && Score.Bars.Count > targetBarIndex)
+					if (targetBarIndex > -1 && Score.CurrentDifficulty.Bars.Count > targetBarIndex)
 					{
-						foreach (var laneIndex in Enumerable.Range(0, Score.LaneCount))
+						foreach (var laneIndex in Enumerable.Range(0, Score.CurrentDifficulty.LaneCount))
 						{
-							var targetLane = Score.Bars[targetBarIndex].Lanes[laneIndex];
-							var bar = ScoreStatus.TargetScore.Bars[targetBarIndex];
+							var targetLane = Score.CurrentDifficulty.Bars[targetBarIndex].Lanes[laneIndex];
+							var bar = ScoreStatus.TargetScore.CurrentDifficulty.Bars[targetBarIndex];
 							var barDisplaySize = NoteSpeedBase * 4 * bar.Span;
 							var laneX = laneXcoordinates[laneIndex];
 

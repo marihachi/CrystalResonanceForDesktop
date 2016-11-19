@@ -58,10 +58,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Button.cs" />
+    <Compile Include="Data\Enum\MusicDifficultyType.cs" />
     <Compile Include="Data\Enum\MusicEventType.cs" />
     <Compile Include="Data\Enum\MusicNoteType.cs" />
     <Compile Include="Data\Enum\NotePushRating.cs" />
     <Compile Include="Data\KeyConfig.cs" />
+    <Compile Include="Data\MusicDifficulty.cs" />
     <Compile Include="Data\MusicEvent.cs" />
     <Compile Include="Data\NoteDistanceInfo.cs" />
     <Compile Include="Utility\ScoreStatus.cs" />

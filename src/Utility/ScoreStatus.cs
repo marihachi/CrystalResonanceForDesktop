@@ -22,10 +22,10 @@ namespace CrystalResonanceDesktop.Utility
 				// 現在の小節インデックスを求める
 				var spanSum = 0.0;
 
-				foreach (var i in Enumerable.Range(0, TargetScore.Bars.Count))
-					spanSum += TargetScore.Bars[i].Span;
+				foreach (var i in Enumerable.Range(0, TargetScore.CurrentDifficulty.Bars.Count))
+					spanSum += TargetScore.CurrentDifficulty.Bars[i].Span;
 
-				return (TargetScore.Bars.Count * BeatLocation / (4 * spanSum));
+				return (TargetScore.CurrentDifficulty.Bars.Count * BeatLocation / (4 * spanSum));
 			}
 		}
 		public int BarIndex { get { return (int)BarLocation; } }
@@ -35,7 +35,7 @@ namespace CrystalResonanceDesktop.Utility
 		{
 			get
 			{
-				return TargetScore.Bars?[BarIndex];
+				return TargetScore.CurrentDifficulty.Bars?[BarIndex];
 			}
 		}
 
