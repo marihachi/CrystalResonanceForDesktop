@@ -6,6 +6,7 @@ using CrystalResonanceDesktop.Data;
 using System;
 using System.Collections.Generic;
 using DxSharp.Utility;
+using CrystalResonanceDesktop.Data.Control;
 
 namespace CrystalResonanceDesktop.Scenes
 {
@@ -33,9 +34,9 @@ namespace CrystalResonanceDesktop.Scenes
 				DxSharp.Data.Enum.Position.CenterMiddle,
 				20,
 				fonts.Item("メイリオ20"),
-				new ButtonStyle(Color.FromArgb(160, 255, 255, 255), Color.Transparent, Color.FromArgb(160, 255, 255, 255)),
-				new ButtonStyle(Color.FromArgb(200, 255, 255, 255), Color.Transparent, Color.FromArgb(200, 255, 255, 255)),
-				new ButtonStyle(Color.FromArgb(255, 255, 255, 255), Color.Transparent, Color.FromArgb(255, 255, 255, 255)));
+				new Button.ButtonStyle(Color.FromArgb(160, 255, 255, 255), Color.Transparent, Color.FromArgb(160, 255, 255, 255)),
+				new Button.ButtonStyle(Color.FromArgb(200, 255, 255, 255), Color.Transparent, Color.FromArgb(200, 255, 255, 255)),
+				new Button.ButtonStyle(Color.FromArgb(255, 255, 255, 255), Color.Transparent, Color.FromArgb(255, 255, 255, 255)));
 
 			TitleMenu.Add("Game Start");
 			TitleMenu.Add("Setting");

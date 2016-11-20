@@ -1,23 +1,24 @@
-﻿using DxSharp;
+﻿using CrystalResonanceDesktop.Data.Controls.Interface;
+using DxSharp;
 using DxSharp.Data.Enum;
 using DxSharp.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace CrystalResonanceDesktop.Data
+namespace CrystalResonanceDesktop.Data.Control
 {
 	/// <summary>
 	/// メニューコントロールを表します。
 	/// </summary>
-	public class Menu : IBasePoint
+	public class Menu : IBasePoint, IControl
 	{
 		/// <summary>
 		/// 新しいインスタンスを初期化します。
 		/// </summary>
 		/// <param name="location"></param>
 		/// <param name="itemSize"></param>
-		public Menu(Point location, Size itemSize, Position basePoint, int margin, DxSharp.Data.Font font, ButtonStyle normalStyle = null, ButtonStyle hoverStyle = null, ButtonStyle activeStyle = null)
+		public Menu(Point location, Size itemSize, Position basePoint, int margin, DxSharp.Data.Font font, Button.ButtonStyle normalStyle = null, Button.ButtonStyle hoverStyle = null, Button.ButtonStyle activeStyle = null)
 		{
 			Location = location;
 			ItemSize = itemSize;
@@ -35,7 +36,7 @@ namespace CrystalResonanceDesktop.Data
 		/// <summary>
 		/// メニューの位置を取得または設定します。
 		/// </summary>
-		public Point Location { get; private set; }
+		public Point Location { get; set; }
 
 		/// <summary>
 		/// 項目単体のサイズを取得します。
@@ -60,17 +61,17 @@ namespace CrystalResonanceDesktop.Data
 		/// <summary>
 		/// 全般的な項目の通常時のスタイルを取得または設定します。
 		/// </summary>
-		public ButtonStyle NormalStyle { get; set; }
+		public Button.ButtonStyle NormalStyle { get; set; }
 
 		/// <summary>
 		/// 全般的な項目のホバー時のスタイルを取得または設定します。
 		/// </summary>
-		public ButtonStyle HoverStyle { get; set; }
+		public Button.ButtonStyle HoverStyle { get; set; }
 
 		/// <summary>
 		/// 全般的な項目のアクティブ時のスタイルを取得または設定します。
 		/// </summary>
-		public ButtonStyle ActiveStyle { get; set; }
+		public Button.ButtonStyle ActiveStyle { get; set; }
 
 		/// <summary>
 		/// 画面上の基準位置を取得または設定します。
@@ -92,7 +93,7 @@ namespace CrystalResonanceDesktop.Data
 		/// <param name="normalStyle">通常状態で使用されるスタイル</param>
 		/// <param name="activeStyle">クリックされた状態で使用されるスタイル</param>
 		/// <param name="hoverStyle">マウスポインタが項目上ある状態で使用されるスタイル</param>
-		public void Add(string text, ButtonStyle normalStyle = null, ButtonStyle hoverStyle = null, ButtonStyle activeStyle = null)
+		public void Add(string text, Button.ButtonStyle normalStyle = null, Button.ButtonStyle hoverStyle = null, Button.ButtonStyle activeStyle = null)
 		{
 			var button = new Button(
 				text,
@@ -126,19 +127,6 @@ namespace CrystalResonanceDesktop.Data
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		public delegate void MenuEventHandler(object sender, MenuEventArgs e);
-
-		/// <summary>
-		/// Menuのイベント情報を表します。
-		/// </summary>
-		public class MenuEventArgs : EventArgs
-		{
-			public MenuEventArgs(int itemIndex)
-			{
-				ItemIndex = itemIndex;
-			}
-
-			public int ItemIndex { get; private set; }
-		}
 
 		/// <summary>
 		/// 項目がクリックされたときに発生します。
@@ -176,6 +164,19 @@ namespace CrystalResonanceDesktop.Data
 				item.Location = internalLocation(items.IndexOf(item));
 				item.Draw();
 			});
+		}
+
+		/// <summary>
+		/// Menuのイベント情報を表します。
+		/// </summary>
+		public class MenuEventArgs : EventArgs
+		{
+			public MenuEventArgs(int itemIndex)
+			{
+				ItemIndex = itemIndex;
+			}
+
+			public int ItemIndex { get; private set; }
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using DxLibDLL;
+﻿using CrystalResonanceDesktop.Data.Controls.Interface;
+using DxLibDLL;
 using DxSharp;
 using DxSharp.Data;
 using DxSharp.Data.Enum;
@@ -6,49 +7,12 @@ using DxSharp.Utility;
 using System;
 using System.Drawing;
 
-namespace CrystalResonanceDesktop.Data
+namespace CrystalResonanceDesktop.Data.Control
 {
-	/// <summary>
-	/// ボタンコントロールのスタイルを表します
-	/// </summary>
-	public class ButtonStyle
-	{
-		/// <summary>
-		/// 新しいインスタンスを初期化します
-		/// </summary>
-		public ButtonStyle(Color frameColor, Color backColor, Color textColor, DxSharp.Data.Image backImage = null)
-		{
-			FrameColor = frameColor;
-			BackColor = backColor;
-			BackImage = backImage;
-			TextColor = textColor;
-		}
-
-		/// <summary>
-		/// 枠色を取得または設定します
-		/// </summary>
-		public Color FrameColor { get; set; }
-
-		/// <summary>
-		/// 背景色を取得または設定します
-		/// </summary>
-		public Color BackColor { get; set; }
-
-		/// <summary>
-		/// 背景画像を取得または設定します
-		/// </summary>
-		public DxSharp.Data.Image BackImage { get; set; }
-
-		/// <summary>
-		/// 文字色を取得または設定します
-		/// </summary>
-		public Color TextColor { get; set; }
-	}
-
 	/// <summary>
 	/// ボタンコントロールを表します。
 	/// </summary>
-	public class Button : IBasePoint
+	public class Button : IBasePoint, IControl
 	{
 		/// <summary>
 		/// 新しいインスタンスを初期化します。
@@ -80,13 +44,7 @@ namespace CrystalResonanceDesktop.Data
 		/// <summary>
 		/// このボタンが押されているかどうかを取得します。
 		/// </summary>
-		public bool IsMouseDown
-		{
-			get
-			{
-				return !isMouseDownOld ? IsHover && Input.Instance.Mouse.LeftInputTime == 1 : Input.Instance.Mouse.LeftInputTime >= 1;
-			}
-		}
+		public bool IsMouseDown { get { return !isMouseDownOld ? IsHover && Input.Instance.Mouse.LeftInputTime == 1 : Input.Instance.Mouse.LeftInputTime >= 1; } }
 
 		private bool isMouseDownOld { get; set; } = false;
 
@@ -103,13 +61,7 @@ namespace CrystalResonanceDesktop.Data
 		/// <summary>
 		/// 画面上の絶対位置を取得します。
 		/// </summary>
-		public Point AbsoluteLocation
-		{
-			get
-			{
-				return this.GetAbsoluteLocation(Location, SystemCore.Instance.WindowSize, Size);
-			}
-		}
+		public Point AbsoluteLocation { get { return this.GetAbsoluteLocation(Location, SystemCore.Instance.WindowSize, Size); } }
 
 		/// <summary>
 		/// 枠のサイズを取得または設定します。
@@ -193,6 +145,43 @@ namespace CrystalResonanceDesktop.Data
 			DX.SetDrawBlendMode(DX.DX_BLENDMODE_ALPHA, style.TextColor.A);
 			DX.DrawStringToHandle(textPoint.X, textPoint.Y, Text, (uint)style.TextColor.ToArgb(), Font.Handle, (uint)style.FrameColor.ToArgb());
 			DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 0);
+		}
+
+		/// <summary>
+		/// ボタンコントロールのスタイルを表します
+		/// </summary>
+		public class ButtonStyle
+		{
+			/// <summary>
+			/// 新しいインスタンスを初期化します
+			/// </summary>
+			public ButtonStyle(Color frameColor, Color backColor, Color textColor, DxSharp.Data.Image backImage = null)
+			{
+				FrameColor = frameColor;
+				BackColor = backColor;
+				BackImage = backImage;
+				TextColor = textColor;
+			}
+
+			/// <summary>
+			/// 枠色を取得または設定します
+			/// </summary>
+			public Color FrameColor { get; set; }
+
+			/// <summary>
+			/// 背景色を取得または設定します
+			/// </summary>
+			public Color BackColor { get; set; }
+
+			/// <summary>
+			/// 背景画像を取得または設定します
+			/// </summary>
+			public DxSharp.Data.Image BackImage { get; set; }
+
+			/// <summary>
+			/// 文字色を取得または設定します
+			/// </summary>
+			public Color TextColor { get; set; }
 		}
 	}
 }

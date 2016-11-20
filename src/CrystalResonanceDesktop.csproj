@@ -57,7 +57,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Button.cs" />
+    <Compile Include="Data\Control\Button.cs" />
+    <Compile Include="Data\Control\Interface\IControl.cs" />
     <Compile Include="Data\Enum\MusicDifficultyType.cs" />
     <Compile Include="Data\Enum\MusicEventType.cs" />
     <Compile Include="Data\Enum\MusicNoteType.cs" />
@@ -68,7 +69,7 @@
     <Compile Include="Data\NoteDistanceInfo.cs" />
     <Compile Include="Utility\ScoreStatus.cs" />
     <Compile Include="Data\MusicLane.cs" />
-    <Compile Include="Data\Menu.cs" />
+    <Compile Include="Data\Control\Menu.cs" />
     <Compile Include="Utility\MusicManager.cs" />
     <Compile Include="Data\Ripple.cs" />
     <Compile Include="Data\MusicScore.cs" />
