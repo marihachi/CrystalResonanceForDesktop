@@ -14,7 +14,7 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// <param name="location"></param>
 		/// <param name="itemSize"></param>
 		public MenuControl(Point location, int padding, Size itemSize, DxSharp.Data.Font font, ButtonControl.ButtonStyle normalStyle = null, ButtonControl.ButtonStyle hoverStyle = null, ButtonControl.ButtonStyle activeStyle = null)
-			: base(location, padding, System.Windows.Forms.Orientation.Horizontal)
+			: base(location, padding)
 		{
 			ItemSize = itemSize;
 			Font = font;

@@ -15,16 +15,19 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// 新しいインスタンスを初期化します。
 		/// </summary>
 		public ButtonControl(Point location, Size size, string text, DxSharp.Data.Font font, ButtonStyle normalStyle, ButtonStyle hoverStyle, ButtonStyle activeStyle)
-			: base(location, size)
+			: base(location)
 		{
 			Text = text;
-			Size = size;
+			SizeInternal = size;
 			Location = location;
 			Font = font;
 			NormalStyle = normalStyle;
 			HoverStyle = hoverStyle;
 			ActiveStyle = activeStyle;
 		}
+
+		public override Size Size { get { return SizeInternal; } }
+		private Size SizeInternal { get; set; }
 
 		/// <summary>
 		/// マウスポインタがこのボタン上にあるかどうかを取得します。

@@ -13,13 +13,6 @@ namespace CrystalResonanceDesktop.Data.Control
 			ParentControl = parentControl;
 		}
 
-		public Control(Point location, Size size, Control parentControl = null)
-		{
-			Location = location;
-			Size = size;
-			ParentControl = parentControl;
-		}
-
 		/// <summary>
 		/// 親コントロールを取得または設定します
 		/// </summary>
@@ -46,7 +39,7 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// <summary>
 		/// サイズを取得または設定します
 		/// </summary>
-		public Size Size { get; set; } = new Size(-1, -1);
+		public abstract Size Size { get; }
 
 		public abstract void Update();
 

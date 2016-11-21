@@ -18,6 +18,27 @@ namespace CrystalResonanceDesktop.Data.Control
 			Orientation = orientation;
 		}
 
+		public override Size Size
+		{
+			get
+			{
+				var paddingAll = Padding * (Items.Count * 2);
+
+				// 垂直方向
+				if (Orientation == Orientation.Vertical)
+				{
+					return new Size(Items.Max(i => i.Size.Width) + Padding, Items.Sum(i => i.Size.Height) + paddingAll);
+				}
+				// 水平方向
+				else if (Orientation == Orientation.Horizontal)
+				{
+					return new Size(Items.Sum(i => i.Size.Width) + paddingAll, Items.Max(i => i.Size.Height) + Padding);
+				}
+				else
+					throw new InvalidOperationException("Invalid ListControl.Orientation");
+			}
+		}
+
 		/// <summary>
 		/// 項目同士の余白を取得または設定します
 		/// </summary>
