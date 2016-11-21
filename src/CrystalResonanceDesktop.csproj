@@ -60,6 +60,7 @@
     <Compile Include="Data\Control\ButtonControl.cs" />
     <Compile Include="Data\Control\Control.cs" />
     <Compile Include="Data\Control\ListControl.cs" />
+    <Compile Include="Data\Control\ScrollableListControl.cs" />
     <Compile Include="Data\Enum\MusicDifficultyType.cs" />
     <Compile Include="Data\Enum\MusicEventType.cs" />
     <Compile Include="Data\Enum\MusicNoteType.cs" />
