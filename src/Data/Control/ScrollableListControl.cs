@@ -48,11 +48,6 @@ namespace CrystalResonanceDesktop.Data.Control
 		public override void Draw()
 		{
 			base.Draw();
-
-			foreach (var item in Items)
-			{
-				item.Draw();
-			}
 		}
 	}
 }
