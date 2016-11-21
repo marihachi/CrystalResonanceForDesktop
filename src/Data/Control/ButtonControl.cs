@@ -1,8 +1,5 @@
-﻿using CrystalResonanceDesktop.Data.Controls.Interface;
-using DxLibDLL;
-using DxSharp;
+﻿using DxLibDLL;
 using DxSharp.Data;
-using DxSharp.Data.Enum;
 using DxSharp.Utility;
 using System;
 using System.Drawing;
@@ -12,16 +9,15 @@ namespace CrystalResonanceDesktop.Data.Control
 	/// <summary>
 	/// ボタンコントロールを表します。
 	/// </summary>
-	public class Button : IBasePoint, IControl
+	public class ButtonControl : Control
 	{
 		/// <summary>
 		/// 新しいインスタンスを初期化します。
 		/// </summary>
-		public Button(string text, Size size, Position basePoint, Point location, DxSharp.Data.Font font, ButtonStyle normalStyle, ButtonStyle hoverStyle, ButtonStyle activeStyle)
+		public ButtonControl(string text, Size size, Point location, DxSharp.Data.Font font, ButtonStyle normalStyle, ButtonStyle hoverStyle, ButtonStyle activeStyle)
 		{
 			Text = text;
 			Size = size;
-			BasePoint = basePoint;
 			Location = location;
 			Font = font;
 			NormalStyle = normalStyle;
@@ -44,29 +40,14 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// <summary>
 		/// このボタンが押されているかどうかを取得します。
 		/// </summary>
-		public bool IsMouseDown { get { return !isMouseDownOld ? IsHover && Input.Instance.Mouse.LeftInputTime == 1 : Input.Instance.Mouse.LeftInputTime >= 1; } }
-
+		public bool IsMouseDown
+		{
+			get
+			{
+				return !isMouseDownOld ? IsHover && Input.Instance.Mouse.LeftInputTime == 1 : Input.Instance.Mouse.LeftInputTime >= 1;
+			}
+		}
 		private bool isMouseDownOld { get; set; } = false;
-
-		/// <summary>
-		/// 画面上の基準位置を取得または設定します。
-		/// </summary>
-		public Position BasePoint { get; set; }
-
-		/// <summary>
-		/// 基準からの相対位置を取得または設定します。
-		/// </summary>
-		public Point Location { get; set; }
-
-		/// <summary>
-		/// 画面上の絶対位置を取得します。
-		/// </summary>
-		public Point AbsoluteLocation { get { return this.GetAbsoluteLocation(Location, SystemCore.Instance.WindowSize, Size); } }
-
-		/// <summary>
-		/// 枠のサイズを取得または設定します。
-		/// </summary>
-		public Size Size { get; set; }
 
 		/// <summary>
 		/// 文字列を取得または設定します。
@@ -110,7 +91,7 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// <summary>
 		/// 更新します。
 		/// </summary>
-		public void Update()
+		public override void Update()
 		{
 			if (isMouseDownOld && !IsMouseDown && IsHover)
 				OnClick(new EventArgs());
@@ -121,7 +102,7 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// <summary>
 		/// 描画します。
 		/// </summary>
-		public void Draw()
+		public override void Draw()
 		{
 			var style = IsMouseDown ? ActiveStyle : (IsHover ? HoverStyle : NormalStyle);
 
