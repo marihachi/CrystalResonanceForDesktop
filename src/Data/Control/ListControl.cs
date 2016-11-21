@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -8,8 +9,15 @@ namespace CrystalResonanceDesktop.Data.Control
 	/// <summary>
 	/// リスト状のコントロールを表します
 	/// </summary>
-	public class ListControl<T> : Control where T: Control
+	public class ListControl<T> : Control where T : Control
 	{
+		public ListControl(Point location, int padding, Orientation orientation = Orientation.Vertical)
+			: base(location)
+		{
+			Padding = padding;
+			Orientation = orientation;
+		}
+
 		/// <summary>
 		/// 項目同士の余白を取得または設定します
 		/// </summary>
@@ -18,7 +26,7 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// <summary>
 		/// 配置方向を取得または設定します
 		/// </summary>
-		public Orientation Orientation { get; set; } = Orientation.Vertical;
+		public Orientation Orientation { get; set; }
 
 		/// <summary>
 		/// 属しているコントロールの一覧を取得します
@@ -42,12 +50,12 @@ namespace CrystalResonanceDesktop.Data.Control
 				// 垂直方向
 				if (Orientation == Orientation.Vertical)
 				{
-					item.Location.Offset(Padding, untilItems.Sum(i => i.Size.Height) + untilPadding);
+					item.Location = new Point(Padding, untilItems.Sum(i => i.Size.Height) + untilPadding);
 				}
 				// 水平方向
 				else if (Orientation == Orientation.Horizontal)
 				{
-					item.Location.Offset(untilItems.Sum(i => i.Size.Width) + untilPadding, Padding);
+					item.Location = new Point(untilItems.Sum(i => i.Size.Width) + untilPadding, Padding);
 				}
 				else
 					throw new InvalidOperationException("Invalid ListControl.Orientation");

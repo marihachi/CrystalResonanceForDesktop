@@ -14,7 +14,7 @@ namespace CrystalResonanceDesktop.Scenes
 	{
 		private bool IsInitialized { get; set; }
 
-		private Menu TitleMenu { get; set; }
+		private MenuControl TitleMenu { get; set; }
 		private List<Ripple> Ripples { get; set; } = new List<Ripple>();
 		private Random Random { get; set; } = new Random();
 
@@ -28,15 +28,14 @@ namespace CrystalResonanceDesktop.Scenes
 			if (images.Item("logo") == null)
 				images.Add("logo", new DxSharp.Data.Image("Resource/logo.png", 100, DxSharp.Data.Enum.Position.CenterMiddle));
 
-			TitleMenu = new Menu(
+			TitleMenu = new MenuControl(
 				new Point(0, 100),
+				10,
 				new Size(400, 50),
-				DxSharp.Data.Enum.Position.CenterMiddle,
-				20,
 				fonts.Item("メイリオ20"),
-				new Button.ButtonStyle(Color.FromArgb(160, 255, 255, 255), Color.Transparent, Color.FromArgb(160, 255, 255, 255)),
-				new Button.ButtonStyle(Color.FromArgb(200, 255, 255, 255), Color.Transparent, Color.FromArgb(200, 255, 255, 255)),
-				new Button.ButtonStyle(Color.FromArgb(255, 255, 255, 255), Color.Transparent, Color.FromArgb(255, 255, 255, 255)));
+				new ButtonControl.ButtonStyle(Color.FromArgb(160, 255, 255, 255), Color.Transparent, Color.FromArgb(160, 255, 255, 255)),
+				new ButtonControl.ButtonStyle(Color.FromArgb(200, 255, 255, 255), Color.Transparent, Color.FromArgb(200, 255, 255, 255)),
+				new ButtonControl.ButtonStyle(Color.FromArgb(255, 255, 255, 255), Color.Transparent, Color.FromArgb(255, 255, 255, 255)));
 
 			TitleMenu.Add("Game Start");
 			TitleMenu.Add("Setting");

@@ -13,12 +13,10 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// </summary>
 		/// <param name="location"></param>
 		/// <param name="itemSize"></param>
-		public MenuControl(Point location, Size itemSize, int margin, DxSharp.Data.Font font, ButtonControl.ButtonStyle normalStyle = null, ButtonControl.ButtonStyle hoverStyle = null, ButtonControl.ButtonStyle activeStyle = null)
+		public MenuControl(Point location, int padding, Size itemSize, DxSharp.Data.Font font, ButtonControl.ButtonStyle normalStyle = null, ButtonControl.ButtonStyle hoverStyle = null, ButtonControl.ButtonStyle activeStyle = null)
+			: base(location, padding, System.Windows.Forms.Orientation.Horizontal)
 		{
-			Location = location;
 			ItemSize = itemSize;
-			Size = new Size(itemSize.Width, 0);
-			Margin = margin;
 			Font = font;
 			NormalStyle = normalStyle;
 			HoverStyle = hoverStyle;
@@ -29,11 +27,6 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// 項目単体のサイズを取得します
 		/// </summary>
 		public Size ItemSize { get; private set; }
-
-		/// <summary>
-		/// 項目同士の余白を取得または設定します
-		/// </summary>
-		public int Margin { get; set; }
 
 		/// <summary>
 		/// メニュー全体で使用するフォント
@@ -65,22 +58,18 @@ namespace CrystalResonanceDesktop.Data.Control
 		public void Add(string text, ButtonControl.ButtonStyle normalStyle = null, ButtonControl.ButtonStyle hoverStyle = null, ButtonControl.ButtonStyle activeStyle = null)
 		{
 			var button = new ButtonControl(
-				text,
+				new Point(0, 0),
 				ItemSize,
-				new Point(0, 0), // Draw()呼び出し時に設定されるので仮の値を設定
+				text,
 				Font,
 				normalStyle ?? NormalStyle,
 				hoverStyle ?? HoverStyle,
 				activeStyle ?? ActiveStyle);
-			
+
 			button.Click += buttonClick;
-
-			if(Items.Count == 0)
-				Size = new Size(ItemSize.Width, Size.Height + ItemSize.Height);
-			else
-				Size = new Size(ItemSize.Width, Size.Height + ItemSize.Height + Margin);
-
 			Items.Add(button);
+
+			button.ParentControl = this;
 		}
 
 		private void buttonClick(object sender, EventArgs e)

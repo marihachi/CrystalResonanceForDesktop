@@ -14,7 +14,8 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// <summary>
 		/// 新しいインスタンスを初期化します。
 		/// </summary>
-		public ButtonControl(string text, Size size, Point location, DxSharp.Data.Font font, ButtonStyle normalStyle, ButtonStyle hoverStyle, ButtonStyle activeStyle)
+		public ButtonControl(Point location, Size size, string text, DxSharp.Data.Font font, ButtonStyle normalStyle, ButtonStyle hoverStyle, ButtonStyle activeStyle)
+			: base(location, size)
 		{
 			Text = text;
 			Size = size;
