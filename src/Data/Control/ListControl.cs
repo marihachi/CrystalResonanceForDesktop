@@ -81,6 +81,8 @@ namespace CrystalResonanceDesktop.Data.Control
 				else
 					throw new InvalidOperationException("Invalid ListControl.Orientation");
 
+				item.ParentControl = this;
+
 				item.Update();
 			}
 		}

@@ -29,7 +29,7 @@ namespace CrystalResonanceDesktop.Scenes
 				images.Add("logo", new DxSharp.Data.Image("Resource/logo.png", 100, DxSharp.Data.Enum.Position.CenterMiddle));
 
 			TitleMenu = new MenuControl(
-				new Point(0, 100),
+				new Point(core.WindowSize.Width / 2 - (200 + 10), core.WindowSize.Height * 3 / 5),
 				10,
 				new Size(400, 50),
 				fonts.Item("メイリオ20"),
@@ -103,6 +103,7 @@ namespace CrystalResonanceDesktop.Scenes
 		public void Draw()
 		{
 			var images = ImageStorage.Instance;
+			var fonts = FontStorage.Instance;
 
 			images.Item("logo").Draw(new Point(0, -150));
 
@@ -110,6 +111,12 @@ namespace CrystalResonanceDesktop.Scenes
 
 			foreach (var ripple in Ripples)
 				ripple.Draw();
+
+			if (SystemCore.Instance.IsShowDebugImageBorder)
+			{
+				var font = fonts.Item("メイリオ16");
+				font.Draw(new Point(0, 0), $"Mouse: {Input.Instance.Mouse.PointerLocation}", Color.White);
+			}
 		}
 	}
 }

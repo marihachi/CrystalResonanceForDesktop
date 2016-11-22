@@ -125,7 +125,7 @@ namespace CrystalResonanceDesktop.Data.Control
 			}
 
 			var textSize = new Size(DX.GetDrawStringWidth(Text, Text.Length), DX.GetFontSizeToHandle(Font.Handle));
-			var textPoint = new Point(new Size(AbsoluteLocation) + Size.Divide() - textSize.Divide());
+			var textPoint = new Point(new Size(AbsoluteLocation) + new Size(Size.Width / 2 - (textSize.Width+10) / 2, Size.Height / 2 - textSize.Height / 2));
 
 			DX.SetDrawBlendMode(DX.DX_BLENDMODE_ALPHA, style.TextColor.A);
 			DX.DrawStringToHandle(textPoint.X, textPoint.Y, Text, (uint)style.TextColor.ToArgb(), Font.Handle, (uint)style.FrameColor.ToArgb());
