@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DxLibDLL;
+using DxSharp;
+using DxSharp.Data;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,10 +14,19 @@ namespace CrystalResonanceDesktop.Data.Control
 	/// </summary>
 	public class ListControl<T> : Control where T : Control
 	{
-		public ListControl(Point location, int padding, Orientation orientation = Orientation.Vertical)
-			: base(location)
+		public ListControl(Point location, int padding, Orientation orientation = Orientation.Vertical, Control parentControl = null)
+			: base(location, parentControl)
 		{
 			Padding = padding;
+			Orientation = orientation;
+		}
+
+		public ListControl(Point location, int padding, Size size, Orientation orientation = Orientation.Vertical, Control parentControl = null)
+			: base(location, parentControl)
+		{
+			Padding = padding;
+			Size = size;
+			IsAutoSize = false;
 			Orientation = orientation;
 		}
 
@@ -22,22 +34,34 @@ namespace CrystalResonanceDesktop.Data.Control
 		{
 			get
 			{
-				var paddingAll = Padding * (Items.Count * 2);
+				if (IsAutoSize)
+				{
+					var paddingAll = Padding * (Items.Count * 2);
 
-				// 垂直方向
-				if (Orientation == Orientation.Vertical)
-				{
-					return new Size(Items.Max(i => i.Size.Width) + Padding, Items.Sum(i => i.Size.Height) + paddingAll);
-				}
-				// 水平方向
-				else if (Orientation == Orientation.Horizontal)
-				{
-					return new Size(Items.Sum(i => i.Size.Width) + paddingAll, Items.Max(i => i.Size.Height) + Padding);
+					// 垂直方向
+					if (Orientation == Orientation.Vertical)
+					{
+						return new Size(Items.Max(i => i.Size.Width) + Padding * 2, Items.Sum(i => i.Size.Height) + paddingAll);
+					}
+					// 水平方向
+					else if (Orientation == Orientation.Horizontal)
+					{
+						return new Size(Items.Sum(i => i.Size.Width) + paddingAll, Items.Max(i => i.Size.Height) + Padding * 2);
+					}
+					else
+						throw new InvalidOperationException("Invalid ListControl.Orientation");
 				}
 				else
-					throw new InvalidOperationException("Invalid ListControl.Orientation");
+					return SizeReal;
 			}
+			set { SizeReal = value; }
 		}
+		private Size SizeReal = Size.Empty;
+
+		/// <summary>
+		/// このコントロールが自動的にサイズを決定するかどうかを示す値を取得または設定します
+		/// </summary>
+		public bool IsAutoSize { get; set; } = true;
 
 		/// <summary>
 		/// 項目同士の余白を取得または設定します
@@ -81,10 +105,25 @@ namespace CrystalResonanceDesktop.Data.Control
 				else
 					throw new InvalidOperationException("Invalid ListControl.Orientation");
 
-				item.ParentControl = this;
+				if (item.ParentControl != this)
+					item.ParentControl = this;
 
 				item.Update();
 			}
+		}
+
+		public virtual void DrawItems()
+		{
+			foreach (var item in Items)
+			{
+				item.Draw();
+			}
+		}
+
+		public virtual void DrawBorder()
+		{
+			var a = new Box(AbsoluteLocation, Size, Color.White, false);
+			a.Draw();
 		}
 
 		/// <summary>
@@ -92,10 +131,13 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// </summary>
 		public override void Draw()
 		{
-			foreach (var item in Items)
-			{
-				item.Draw();
-			}
+			var core = SystemCore.Instance;
+
+			DX.SetDrawArea(AbsoluteLocation.X, AbsoluteLocation.Y, AbsoluteLocation.X + Size.Width, AbsoluteLocation.Y + Size.Height);
+			DrawItems();
+			DX.SetDrawArea(0, 0, core.WindowSize.Width, core.WindowSize.Height);
+
+			DrawBorder();
 		}
 	}
 }

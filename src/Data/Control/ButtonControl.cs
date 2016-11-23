@@ -1,5 +1,4 @@
 ﻿using DxLibDLL;
-using DxSharp.Data;
 using DxSharp.Utility;
 using System;
 using System.Drawing;
@@ -14,20 +13,15 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// <summary>
 		/// 新しいインスタンスを初期化します。
 		/// </summary>
-		public ButtonControl(Point location, Size size, string text, DxSharp.Data.Font font, ButtonStyle normalStyle, ButtonStyle hoverStyle, ButtonStyle activeStyle)
-			: base(location)
+		public ButtonControl(Point location, Size size, string text, ButtonStyle style, Control parentControl = null)
+			: base(location, parentControl)
 		{
 			Text = text;
-			SizeInternal = size;
-			Location = location;
-			Font = font;
-			NormalStyle = normalStyle;
-			HoverStyle = hoverStyle;
-			ActiveStyle = activeStyle;
+			Size = size;
+			Style = style;
 		}
 
-		public override Size Size { get { return SizeInternal; } }
-		private Size SizeInternal { get; set; }
+		public override Size Size { get; set; }
 
 		/// <summary>
 		/// マウスポインタがこのボタン上にあるかどうかを取得します。
@@ -59,24 +53,9 @@ namespace CrystalResonanceDesktop.Data.Control
 		public string Text { get; set; }
 
 		/// <summary>
-		/// このボタンに使用するフォント
+		/// 見た目を取得または設定します。
 		/// </summary>
-		public DxSharp.Data.Font Font { get; set; }
-
-		/// <summary>
-		/// 通常時の見た目を取得または設定します。
-		/// </summary>
-		public ButtonStyle NormalStyle { get; set; }
-
-		/// <summary>
-		/// ホバー時の見た目を取得または設定します。
-		/// </summary>
-		public ButtonStyle HoverStyle { get; set; }
-
-		/// <summary>
-		/// アクティブ時の見た目を取得または設定します。
-		/// </summary>
-		public ButtonStyle ActiveStyle { get; set; }
+		public ButtonStyle Style { get; set; }
 
 		/// <summary>
 		/// クリックされたときに発生します。
@@ -108,7 +87,7 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// </summary>
 		public override void Draw()
 		{
-			var style = IsMouseDown ? ActiveStyle : (IsHover ? HoverStyle : NormalStyle);
+			var style = IsMouseDown ? Style.ActiveStyle : (IsHover ? Style.HoverStyle : Style.NormalStyle);
 
 			if (style.BackImage == null)
 			{
@@ -124,11 +103,11 @@ namespace CrystalResonanceDesktop.Data.Control
 				style.BackImage.Draw(AbsoluteLocation);
 			}
 
-			var textSize = new Size(DX.GetDrawStringWidth(Text, Text.Length), DX.GetFontSizeToHandle(Font.Handle));
-			var textPoint = new Point(new Size(AbsoluteLocation) + new Size(Size.Width / 2 - (textSize.Width+10) / 2, Size.Height / 2 - textSize.Height / 2));
+			var textSize = new Size(DX.GetDrawStringWidth(Text, Text.Length), DX.GetFontSizeToHandle(Style.Font.Handle));
+			var textPoint = new Point(new Size(AbsoluteLocation) + new Size(Size.Width / 2 - (textSize.Width + 10) / 2, Size.Height / 2 - textSize.Height / 2));
 
 			DX.SetDrawBlendMode(DX.DX_BLENDMODE_ALPHA, style.TextColor.A);
-			DX.DrawStringToHandle(textPoint.X, textPoint.Y, Text, (uint)style.TextColor.ToArgb(), Font.Handle, (uint)style.FrameColor.ToArgb());
+			DX.DrawStringToHandle(textPoint.X, textPoint.Y, Text, (uint)style.TextColor.ToArgb(), Style.Font.Handle, (uint)style.FrameColor.ToArgb());
 			DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 0);
 		}
 
@@ -140,7 +119,44 @@ namespace CrystalResonanceDesktop.Data.Control
 			/// <summary>
 			/// 新しいインスタンスを初期化します
 			/// </summary>
-			public ButtonStyle(Color frameColor, Color backColor, Color textColor, DxSharp.Data.Image backImage = null)
+			public ButtonStyle(DxSharp.Data.Font font, ButtonStyleStatus normalStyle, ButtonStyleStatus hoverStyle, ButtonStyleStatus activeStyle)
+			{
+				Font = font;
+				NormalStyle = normalStyle;
+				HoverStyle = hoverStyle;
+				ActiveStyle = activeStyle;
+			}
+
+			/// <summary>
+			/// 使用するフォント
+			/// </summary>
+			public DxSharp.Data.Font Font { get; set; }
+
+			/// <summary>
+			/// 全般的な項目の通常時のスタイルを取得または設定します
+			/// </summary>
+			public ButtonStyleStatus NormalStyle { get; set; }
+
+			/// <summary>
+			/// 全般的な項目のホバー時のスタイルを取得または設定します
+			/// </summary>
+			public ButtonStyleStatus HoverStyle { get; set; }
+
+			/// <summary>
+			/// 全般的な項目のアクティブ時のスタイルを取得または設定します
+			/// </summary>
+			public ButtonStyleStatus ActiveStyle { get; set; }
+		}
+
+		/// <summary>
+		/// ボタンコントロールの状態毎のスタイルを表します
+		/// </summary>
+		public class ButtonStyleStatus
+		{
+			/// <summary>
+			/// 新しいインスタンスを初期化します
+			/// </summary>
+			public ButtonStyleStatus(Color frameColor, Color backColor, Color textColor, DxSharp.Data.Image backImage = null)
 			{
 				FrameColor = frameColor;
 				BackColor = backColor;

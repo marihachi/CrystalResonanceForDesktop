@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using static CrystalResonanceDesktop.Data.Control.ButtonControl;
 
 namespace CrystalResonanceDesktop.Data.Control
 {
@@ -13,14 +14,11 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// </summary>
 		/// <param name="location"></param>
 		/// <param name="itemSize"></param>
-		public MenuControl(Point location, int padding, Size itemSize, DxSharp.Data.Font font, ButtonControl.ButtonStyle normalStyle = null, ButtonControl.ButtonStyle hoverStyle = null, ButtonControl.ButtonStyle activeStyle = null)
+		public MenuControl(Point location, int padding, Size itemSize, ButtonStyle defaultStyle = null)
 			: base(location, padding)
 		{
 			ItemSize = itemSize;
-			Font = font;
-			NormalStyle = normalStyle;
-			HoverStyle = hoverStyle;
-			ActiveStyle = activeStyle;
+			Style = defaultStyle;
 		}
 
 		/// <summary>
@@ -29,80 +27,26 @@ namespace CrystalResonanceDesktop.Data.Control
 		public Size ItemSize { get; private set; }
 
 		/// <summary>
-		/// メニュー全体で使用するフォント
-		/// </summary>
-		public DxSharp.Data.Font Font { get; set; }
-
-		/// <summary>
 		/// 全般的な項目の通常時のスタイルを取得または設定します
 		/// </summary>
-		public ButtonControl.ButtonStyle NormalStyle { get; set; }
-
-		/// <summary>
-		/// 全般的な項目のホバー時のスタイルを取得または設定します
-		/// </summary>
-		public ButtonControl.ButtonStyle HoverStyle { get; set; }
-
-		/// <summary>
-		/// 全般的な項目のアクティブ時のスタイルを取得または設定します
-		/// </summary>
-		public ButtonControl.ButtonStyle ActiveStyle { get; set; }
+		public ButtonStyle Style { get; set; }
 
 		/// <summary>
 		/// このコントロールに項目を追加します
 		/// </summary>
 		/// <param name="text">文字列</param>
-		/// <param name="normalStyle">通常状態で使用されるスタイル</param>
-		/// <param name="activeStyle">クリックされた状態で使用されるスタイル</param>
-		/// <param name="hoverStyle">マウスポインタが項目上ある状態で使用されるスタイル</param>
-		public void Add(string text, ButtonControl.ButtonStyle normalStyle = null, ButtonControl.ButtonStyle hoverStyle = null, ButtonControl.ButtonStyle activeStyle = null)
+		/// <param name="style">使用されるスタイル</param>
+		public void Add(string text, EventHandler click, ButtonStyle style = null)
 		{
 			var button = new ButtonControl(
 				new Point(0, 0),
 				ItemSize,
 				text,
-				Font,
-				normalStyle ?? NormalStyle,
-				hoverStyle ?? HoverStyle,
-				activeStyle ?? ActiveStyle);
+				style ?? Style);
 
-			button.Click += buttonClick;
 			Items.Add(button);
 
-			button.ParentControl = this;
-		}
-
-		private void buttonClick(object sender, EventArgs e)
-		{
-			var target = (ButtonControl)sender;
-			OnItemClick(new MenuEventArgs(Items.IndexOf(target)));
-		}
-
-		/// <summary>
-		/// 項目がクリックされたときに発生します
-		/// </summary>
-		public event EventHandler<MenuEventArgs> ItemClick;
-
-		/// <summary>
-		/// 項目の ItemClick イベントを発生させます
-		/// </summary>
-		/// <param name="e">イベント情報</param>
-		protected virtual void OnItemClick(MenuEventArgs e)
-		{
-			ItemClick?.Invoke(this, e);
-		}
-
-		/// <summary>
-		/// Menuのイベント情報を表します
-		/// </summary>
-		public class MenuEventArgs : EventArgs
-		{
-			public MenuEventArgs(int itemIndex)
-			{
-				ItemIndex = itemIndex;
-			}
-
-			public int ItemIndex { get; private set; }
+			button.Click += click;
 		}
 	}
 }

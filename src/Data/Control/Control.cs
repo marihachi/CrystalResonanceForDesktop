@@ -39,7 +39,7 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// <summary>
 		/// サイズを取得または設定します
 		/// </summary>
-		public abstract Size Size { get; }
+		public abstract Size Size { get; set; }
 
 		public abstract void Update();
 

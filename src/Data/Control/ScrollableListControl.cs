@@ -10,8 +10,8 @@ namespace CrystalResonanceDesktop.Data.Control
 	/// <typeparam name="T"></typeparam>
 	public class ScrollableListControl<T> : ListControl<T> where T: Control
 	{
-		public ScrollableListControl(Point location, int padding, Size frameSize, Orientation orientation = Orientation.Vertical)
-			: base(location, padding, orientation)
+		public ScrollableListControl(Point location, int padding, Size frameSize, Orientation orientation = Orientation.Vertical, Control parentControl = null)
+			: base(location, padding, orientation, parentControl)
 		{
 			FrameSize = frameSize;
 		}

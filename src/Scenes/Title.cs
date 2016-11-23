@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using DxSharp.Utility;
 using CrystalResonanceDesktop.Data.Control;
+using static CrystalResonanceDesktop.Data.Control.ButtonControl;
 
 namespace CrystalResonanceDesktop.Scenes
 {
@@ -28,41 +29,28 @@ namespace CrystalResonanceDesktop.Scenes
 			if (images.Item("logo") == null)
 				images.Add("logo", new DxSharp.Data.Image("Resource/logo.png", 100, DxSharp.Data.Enum.Position.CenterMiddle));
 
-			TitleMenu = new MenuControl(
-				new Point(core.WindowSize.Width / 2 - (200 + 10), core.WindowSize.Height * 3 / 5),
-				10,
-				new Size(400, 50),
+			var style = new ButtonStyle(
 				fonts.Item("メイリオ20"),
-				new ButtonControl.ButtonStyle(Color.FromArgb(160, 255, 255, 255), Color.Transparent, Color.FromArgb(160, 255, 255, 255)),
-				new ButtonControl.ButtonStyle(Color.FromArgb(200, 255, 255, 255), Color.Transparent, Color.FromArgb(200, 255, 255, 255)),
-				new ButtonControl.ButtonStyle(Color.FromArgb(255, 255, 255, 255), Color.Transparent, Color.FromArgb(255, 255, 255, 255)));
+				new ButtonStyleStatus(Color.FromArgb(160, 255, 255, 255), Color.Transparent, Color.FromArgb(160, 255, 255, 255)),
+				new ButtonStyleStatus(Color.FromArgb(200, 255, 255, 255), Color.Transparent, Color.FromArgb(200, 255, 255, 255)),
+				new ButtonStyleStatus(Color.FromArgb(255, 255, 255, 255), Color.Transparent, Color.FromArgb(255, 255, 255, 255)));
 
-			TitleMenu.Add("Game Start");
-			TitleMenu.Add("Setting");
-			TitleMenu.Add("Close");
+			TitleMenu = new MenuControl(new Point(core.WindowSize.Width / 2 - (200 + 10), core.WindowSize.Height * 3 / 5), 10, new Size(400, 50), style);
 
-			TitleMenu.ItemClick += (s, e) =>
-			{
+			TitleMenu.Add("Game Start", (s, e) => {
 				IsInitialized = false;
+				scenes.TargetScene = scenes.FindByName("GameMusicSelect");
+			});
 
-				// game start
-				if (e.ItemIndex == 0)
-				{
-					scenes.TargetScene = scenes.FindByName("GameMusicSelect");
-				}
+			TitleMenu.Add("Setting", (s, e) => {
+				IsInitialized = false;
+				scenes.TargetScene = scenes.FindByName("Setting");
+			});
 
-				// setting
-				if (e.ItemIndex == 1)
-				{
-					scenes.TargetScene = scenes.FindByName("Setting");
-				}
-
-				// close
-				if (e.ItemIndex == 2)
-				{
-					core.Close();
-				}
-			};
+			TitleMenu.Add("Close", (s, e) => {
+				IsInitialized = false;
+				core.Close();
+			});
 
 			Ripples.Clear();
 		}
@@ -86,7 +74,7 @@ namespace CrystalResonanceDesktop.Scenes
 				Ripples.Add(new Ripple(new Point(x, y)));
 			}
 
-			for(var i = 0; i < Ripples.Count; i++)
+			for (var i = 0; i < Ripples.Count; i++)
 			{
 				Ripples[i].AddRadius(2);
 
