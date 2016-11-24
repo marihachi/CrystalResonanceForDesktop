@@ -35,7 +35,7 @@ namespace CrystalResonanceDesktop.Scenes
 				new ButtonStyleStatus(Color.FromArgb(200, 255, 255, 255), Color.Transparent, Color.FromArgb(200, 255, 255, 255)),
 				new ButtonStyleStatus(Color.FromArgb(255, 255, 255, 255), Color.Transparent, Color.FromArgb(255, 255, 255, 255)));
 
-			TitleMenu = new MenuControl(new Point(core.WindowSize.Width / 2 - (200 + 10), core.WindowSize.Height * 3 / 5), 10, new Size(400, 50), Color.White, style);
+			TitleMenu = new MenuControl(new Point(core.WindowSize.Width / 2 - (200 + 10), core.WindowSize.Height * 3 / 5), 10, new Size(400, 50), Color.Transparent, style);
 
 			TitleMenu.Add("Game Start", (s, e) => {
 				IsInitialized = false;
