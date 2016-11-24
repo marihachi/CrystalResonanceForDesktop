@@ -48,12 +48,18 @@ namespace CrystalResonanceDesktop.Data.Control
 					// 垂直方向
 					if (Orientation == Orientation.Vertical)
 					{
-						return new Size(Items.Max(i => i.Size.Width) + Padding * 2, Items.Sum(i => i.Size.Height) + paddingAll);
+						if (Items.Count >= 1)
+							return new Size(Items.Max(i => i.Size.Width) + Padding * 2, Items.Sum(i => i.Size.Height) + paddingAll);
+						else
+							return Size.Empty;
 					}
 					// 水平方向
 					else if (Orientation == Orientation.Horizontal)
 					{
-						return new Size(Items.Sum(i => i.Size.Width) + paddingAll, Items.Max(i => i.Size.Height) + Padding * 2);
+						if (Items.Count >= 1)
+							return new Size(Items.Sum(i => i.Size.Width) + paddingAll, Items.Max(i => i.Size.Height) + Padding * 2);
+						else
+							return Size.Empty;
 					}
 					else
 						throw new InvalidOperationException("Invalid ListControl.Orientation");
