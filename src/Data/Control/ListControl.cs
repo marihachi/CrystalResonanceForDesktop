@@ -1,6 +1,7 @@
 ﻿using DxLibDLL;
 using DxSharp;
 using DxSharp.Data;
+using DxSharp.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -150,9 +151,10 @@ namespace CrystalResonanceDesktop.Data.Control
 		{
 			var core = SystemCore.Instance;
 
-			DX.SetDrawArea(AbsoluteLocation.X, AbsoluteLocation.Y, AbsoluteLocation.X + Size.Width, AbsoluteLocation.Y + Size.Height);
-			DrawItems();
-			DX.SetDrawArea(0, 0, core.WindowSize.Width, core.WindowSize.Height);
+			using (new DrawArea(AbsoluteLocation, Size))
+			{
+				DrawItems();
+			}
 
 			DrawBorder();
 		}
