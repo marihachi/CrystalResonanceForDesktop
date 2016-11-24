@@ -10,8 +10,8 @@ namespace CrystalResonanceDesktop.Data.Control
 	/// <typeparam name="T"></typeparam>
 	public class ScrollableListControl<T> : ListControl<T> where T: Control
 	{
-		public ScrollableListControl(Point location, int padding, Size frameSize, Orientation orientation = Orientation.Vertical, Control parentControl = null)
-			: base(location, padding, orientation, parentControl)
+		public ScrollableListControl(Point location, int padding, Size frameSize, Color borderColor, Orientation orientation = Orientation.Vertical, Control parentControl = null)
+			: base(location, padding, borderColor, orientation, parentControl)
 		{
 			FrameSize = frameSize;
 		}
@@ -23,7 +23,7 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// <summary>
 		/// コントロールがスクロールされたときに発生します
 		/// </summary>
-		public event EventHandler<EventArgs> Scroll;
+		public event EventHandler Scroll;
 
 		/// <summary>
 		/// 項目の Scroll イベントを発生させます
@@ -43,11 +43,20 @@ namespace CrystalResonanceDesktop.Data.Control
 		}
 
 		/// <summary>
+		/// スクロールバーを描画します
+		/// </summary>
+		protected virtual void DrawScrollBar()
+		{
+
+		}
+
+		/// <summary>
 		/// コントロールを描画します
 		/// </summary>
 		public override void Draw()
 		{
 			base.Draw();
+			DrawScrollBar();
 		}
 	}
 }

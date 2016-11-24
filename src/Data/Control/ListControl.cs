@@ -14,22 +14,28 @@ namespace CrystalResonanceDesktop.Data.Control
 	/// </summary>
 	public class ListControl<T> : Control where T : Control
 	{
-		public ListControl(Point location, int padding, Orientation orientation = Orientation.Vertical, Control parentControl = null)
+		public ListControl(Point location, int padding, Color borderColor, Orientation orientation = Orientation.Vertical, Control parentControl = null)
 			: base(location, parentControl)
 		{
 			Padding = padding;
+			BorderColor = borderColor;
 			Orientation = orientation;
 		}
 
-		public ListControl(Point location, int padding, Size size, Orientation orientation = Orientation.Vertical, Control parentControl = null)
+		public ListControl(Point location, int padding, Color borderColor, Size size, Orientation orientation = Orientation.Vertical, Control parentControl = null)
 			: base(location, parentControl)
 		{
 			Padding = padding;
+			BorderColor = borderColor;
 			Size = size;
 			IsAutoSize = false;
 			Orientation = orientation;
 		}
 
+		/// <summary>
+		/// サイズを取得または設定します
+		/// ※IsAutoSizeがTrueのときは設定されたサイズは無視されます
+		/// </summary>
 		public override Size Size
 		{
 			get
@@ -62,6 +68,11 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// このコントロールが自動的にサイズを決定するかどうかを示す値を取得または設定します
 		/// </summary>
 		public bool IsAutoSize { get; set; } = true;
+
+		/// <summary>
+		/// 境界色を取得または設定します
+		/// </summary>
+		public Color BorderColor { get; set; }
 
 		/// <summary>
 		/// 項目同士の余白を取得または設定します
@@ -112,7 +123,10 @@ namespace CrystalResonanceDesktop.Data.Control
 			}
 		}
 
-		public virtual void DrawItems()
+		/// <summary>
+		/// 項目を描画します
+		/// </summary>
+		protected virtual void DrawItems()
 		{
 			foreach (var item in Items)
 			{
@@ -120,9 +134,12 @@ namespace CrystalResonanceDesktop.Data.Control
 			}
 		}
 
-		public virtual void DrawBorder()
+		/// <summary>
+		/// 境界を描画します
+		/// </summary>
+		protected virtual void DrawBorder()
 		{
-			var a = new Box(AbsoluteLocation, Size, Color.White, false);
+			var a = new Box(AbsoluteLocation, Size, BorderColor, false);
 			a.Draw();
 		}
 

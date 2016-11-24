@@ -14,8 +14,8 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// </summary>
 		/// <param name="location"></param>
 		/// <param name="itemSize"></param>
-		public MenuControl(Point location, int padding, Size itemSize, ButtonStyle defaultStyle = null)
-			: base(location, padding)
+		public MenuControl(Point location, int padding, Size itemSize, Color borderColor, ButtonStyle defaultStyle = null)
+			: base(location, padding, borderColor)
 		{
 			ItemSize = itemSize;
 			Style = defaultStyle;
