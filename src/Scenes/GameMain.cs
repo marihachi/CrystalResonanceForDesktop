@@ -99,9 +99,8 @@ namespace CrystalResonanceDesktop.Scenes
 			var images = ImageStorage.Instance;
 
 			// 判定ライン
-			DX.SetDrawBlendMode(DX.DX_BLENDMODE_ALPHA, (int)(255 * 0.5));
-			DX.DrawLine(0, 650, SystemCore.Instance.WindowSize.Width, 650, 0xffffff);
-			DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 0);
+			using (new AlphaBlend((int)(255 * 0.5)))
+				DX.DrawLine(0, 650, SystemCore.Instance.WindowSize.Width, 650, 0xffffff);
 
 			// レーン軸の決定
 			var margin = 50;

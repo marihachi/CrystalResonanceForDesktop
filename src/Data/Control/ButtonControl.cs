@@ -91,11 +91,15 @@ namespace CrystalResonanceDesktop.Data.Control
 
 			if (style.BackImage == null)
 			{
-				DX.SetDrawBlendMode(DX.DX_BLENDMODE_ALPHA, style.BackColor.A);
-				DX.DrawBox(AbsoluteLocation.X, AbsoluteLocation.Y, (AbsoluteLocation + Size).X, (AbsoluteLocation + Size).Y, (uint)style.BackColor.ToArgb(), 1);
+				using (new AlphaBlend(style.BackColor))
+				{
+					DX.DrawBox(AbsoluteLocation.X, AbsoluteLocation.Y, (AbsoluteLocation + Size).X, (AbsoluteLocation + Size).Y, (uint)style.BackColor.ToArgb(), 1);
+				}
 
-				DX.SetDrawBlendMode(DX.DX_BLENDMODE_ALPHA, style.FrameColor.A);
-				DX.DrawBox(AbsoluteLocation.X, AbsoluteLocation.Y, (AbsoluteLocation + Size).X, (AbsoluteLocation + Size).Y, (uint)style.FrameColor.ToArgb(), 0);
+				using (new AlphaBlend(style.FrameColor))
+				{
+					DX.DrawBox(AbsoluteLocation.X, AbsoluteLocation.Y, (AbsoluteLocation + Size).X, (AbsoluteLocation + Size).Y, (uint)style.FrameColor.ToArgb(), 0);
+				}
 			}
 			else
 			{
@@ -106,9 +110,10 @@ namespace CrystalResonanceDesktop.Data.Control
 			var textSize = new Size(DX.GetDrawStringWidth(Text, Text.Length), DX.GetFontSizeToHandle(Style.Font.Handle));
 			var textPoint = new Point(new Size(AbsoluteLocation) + new Size(Size.Width / 2 - (textSize.Width + 10) / 2, Size.Height / 2 - textSize.Height / 2));
 
-			DX.SetDrawBlendMode(DX.DX_BLENDMODE_ALPHA, style.TextColor.A);
-			DX.DrawStringToHandle(textPoint.X, textPoint.Y, Text, (uint)style.TextColor.ToArgb(), Style.Font.Handle, (uint)style.FrameColor.ToArgb());
-			DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 0);
+			using (new AlphaBlend(style.TextColor))
+			{
+				DX.DrawStringToHandle(textPoint.X, textPoint.Y, Text, (uint)style.TextColor.ToArgb(), Style.Font.Handle, (uint)style.FrameColor.ToArgb());
+			}
 		}
 
 		/// <summary>
