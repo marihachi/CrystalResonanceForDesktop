@@ -18,7 +18,7 @@ namespace CrystalResonanceDesktop.Data.Control
 
 		public Size FrameSize { get; set; }
 
-		public Point ScrollLocation { get; set; }
+		public Point ScrollLocation { get; private set; }
 
 		/// <summary>
 		/// コントロールがスクロールされたときに発生します

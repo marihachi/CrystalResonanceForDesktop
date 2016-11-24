@@ -1,12 +1,12 @@
-﻿using DxSharp;
+﻿using CrystalResonanceDesktop.Data;
+using CrystalResonanceDesktop.Data.Control;
+using DxSharp;
 using DxSharp.Data;
-using System.Drawing;
 using DxSharp.Storage;
-using CrystalResonanceDesktop.Data;
+using DxSharp.Utility;
 using System;
 using System.Collections.Generic;
-using DxSharp.Utility;
-using CrystalResonanceDesktop.Data.Control;
+using System.Drawing;
 using static CrystalResonanceDesktop.Data.Control.ButtonControl;
 
 namespace CrystalResonanceDesktop.Scenes

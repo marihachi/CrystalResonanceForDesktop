@@ -112,7 +112,7 @@ namespace CrystalResonanceDesktop.Data.Control
 
 			using (new AlphaBlend(style.TextColor))
 			{
-				DX.DrawStringToHandle(textPoint.X, textPoint.Y, Text, (uint)style.TextColor.ToArgb(), Style.Font.Handle, (uint)style.FrameColor.ToArgb());
+				Style.Font.Draw(textPoint, Text, style.TextColor);
 			}
 		}
 
