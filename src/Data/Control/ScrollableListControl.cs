@@ -49,7 +49,7 @@ namespace CrystalResonanceDesktop.Data.Control
 				{
 					var y = ScrollLocation.Y + Input.Instance.Mouse.WheelValue * 5;
 
-					if (y >= 0)
+					if (y >= 0)// TODO: ItemsSize, Size を見てスクロールが必要かを判定
 					{
 						ScrollLocation = new Point(ScrollLocation.X, y);
 

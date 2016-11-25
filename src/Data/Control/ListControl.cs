@@ -35,38 +35,11 @@ namespace CrystalResonanceDesktop.Data.Control
 
 		/// <summary>
 		/// サイズを取得または設定します
-		/// ※IsAutoSizeがTrueのときは設定されたサイズは無視されます
+		/// ※IsAutoSize が True のときは設定されたサイズは無視され、 ItemsSize の値が返されます
 		/// </summary>
 		public override Size Size
 		{
-			get
-			{
-				if (IsAutoSize)
-				{
-					var paddingAll = Padding * (Items.Count * 2);
-
-					// 垂直方向
-					if (Orientation == Orientation.Vertical)
-					{
-						if (Items.Count >= 1)
-							return new Size(Items.Max(i => i.Size.Width) + Padding * 2, Items.Sum(i => i.Size.Height) + paddingAll);
-						else
-							return Size.Empty;
-					}
-					// 水平方向
-					else if (Orientation == Orientation.Horizontal)
-					{
-						if (Items.Count >= 1)
-							return new Size(Items.Sum(i => i.Size.Width) + paddingAll, Items.Max(i => i.Size.Height) + Padding * 2);
-						else
-							return Size.Empty;
-					}
-					else
-						throw new InvalidOperationException("Invalid ListControl.Orientation");
-				}
-				else
-					return SizeReal;
-			}
+			get { return IsAutoSize ? ItemsSize : SizeReal; }
 			set { SizeReal = value; }
 		}
 		private Size SizeReal = Size.Empty;
@@ -75,6 +48,36 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// このコントロールが自動的にサイズを決定するかどうかを示す値を取得または設定します
 		/// </summary>
 		public bool IsAutoSize { get; set; } = true;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public virtual Size ItemsSize
+		{
+			get
+			{
+				var paddingAll = Padding * (Items.Count * 2);
+
+				// 垂直方向
+				if (Orientation == Orientation.Vertical)
+				{
+					if (Items.Count >= 1)
+						return new Size(Items.Max(i => i.Size.Width) + Padding * 2, Items.Sum(i => i.Size.Height) + paddingAll);
+					else
+						return Size.Empty;
+				}
+				// 水平方向
+				else if (Orientation == Orientation.Horizontal)
+				{
+					if (Items.Count >= 1)
+						return new Size(Items.Sum(i => i.Size.Width) + paddingAll, Items.Max(i => i.Size.Height) + Padding * 2);
+					else
+						return Size.Empty;
+				}
+				else
+					throw new InvalidOperationException("Invalid ListControl.Orientation");
+			}
+		}
 
 		/// <summary>
 		/// 境界色を取得または設定します
