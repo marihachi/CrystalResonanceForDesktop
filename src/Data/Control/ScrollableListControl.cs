@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace CrystalResonanceDesktop.Data.Control
 {
 	/// <summary>
-	/// 
+	/// マウスでスクロール可能なリスト状のコントロールを表します
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	public class ScrollableListControl<T> : ListControl<T> where T : Control
