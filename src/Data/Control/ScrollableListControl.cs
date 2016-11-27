@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace CrystalResonanceDesktop.Data.Control
@@ -10,7 +11,7 @@ namespace CrystalResonanceDesktop.Data.Control
 	/// 
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class ScrollableListControl<T> : ListControl<T> where T: Control
+	public class ScrollableListControl<T> : ListControl<T> where T : Control
 	{
 		public ScrollableListControl(Point location, int padding, Color borderColor, Size size, Orientation orientation = Orientation.Vertical, Control parentControl = null)
 			: base(location, padding, borderColor, size, orientation, parentControl)
@@ -39,36 +40,76 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// </summary>
 		public override void Update()
 		{
-			base.Update();
-
 			if (Input.Instance.Mouse.WheelValue != 0)
 			{
 				var old = ScrollLocation;
 
 				if (Orientation == Orientation.Vertical)
 				{
-					var y = ScrollLocation.Y + Input.Instance.Mouse.WheelValue * 5;
+					var y = ScrollLocation.Y - Input.Instance.Mouse.WheelValue * 17;
 
-					if (y >= 0)// TODO: ItemsSize, Size を見てスクロールが必要かを判定
+					if (Input.Instance.Mouse.WheelValue > 0 && ScrollLocation.Y != 0) // 上スクロール
 					{
-						ScrollLocation = new Point(ScrollLocation.X, y);
+						ScrollLocation = (y > 0) ? new Point(ScrollLocation.X, y) : new Point(ScrollLocation.X, 0);
+
+						OnScroll(new ScrollEventArgs(old, ScrollLocation));
+					}
+
+					if (Input.Instance.Mouse.WheelValue < 0 && ScrollLocation.Y != ItemsSize.Height - 1 - Size.Height) // 下スクロール
+					{
+						ScrollLocation = (Size.Height + y < ItemsSize.Height - 1) ? new Point(ScrollLocation.X, y) : new Point(ScrollLocation.X, ItemsSize.Height - 1 - Size.Height);
 
 						OnScroll(new ScrollEventArgs(old, ScrollLocation));
 					}
 				}
 				else if (Orientation == Orientation.Horizontal)
 				{
-					var x = ScrollLocation.X + Input.Instance.Mouse.WheelValue * 5;
+					var x = ScrollLocation.X - Input.Instance.Mouse.WheelValue * 17;
 
-					if (x >= 0)
+					if (Input.Instance.Mouse.WheelValue > 0 && ScrollLocation.X != 0) // 左スクロール
 					{
-						ScrollLocation = new Point(x, ScrollLocation.Y);
+						ScrollLocation = (x > 0) ? new Point(x, ScrollLocation.Y) : new Point(0, ScrollLocation.Y);
+
+						OnScroll(new ScrollEventArgs(old, ScrollLocation));
+					}
+
+					if (Input.Instance.Mouse.WheelValue < 0 && ScrollLocation.X != ItemsSize.Width - 1 - Size.Width) // 右スクロール
+					{
+						ScrollLocation = (Size.Width + x < ItemsSize.Width - 1) ? new Point(x, ScrollLocation.Y) : new Point(ItemsSize.Width - 1 - Size.Width, ScrollLocation.Y);
 
 						OnScroll(new ScrollEventArgs(old, ScrollLocation));
 					}
 				}
 				else
 					throw new InvalidOperationException("Invalid ListControl.Orientation");
+			}
+
+			foreach (var itemIndex in Enumerable.Range(0, Items.Count))
+			{
+				var item = Items[itemIndex];
+
+				// 現在の項目までの項目の一覧
+				var untilItems = Items.GetRange(0, itemIndex);
+
+				var untilPadding = Padding * (untilItems.Count * 2 + 1);
+
+				// 垂直方向
+				if (Orientation == Orientation.Vertical)
+				{
+					item.Location = new Point(Padding, untilItems.Sum(i => i.Size.Height) + untilPadding - ScrollLocation.Y);
+				}
+				// 水平方向
+				else if (Orientation == Orientation.Horizontal)
+				{
+					item.Location = new Point(untilItems.Sum(i => i.Size.Width) + untilPadding - ScrollLocation.X, Padding);
+				}
+				else
+					throw new InvalidOperationException("Invalid ListControl.Orientation");
+
+				if (item.ParentControl != this)
+					item.ParentControl = this;
+
+				item.Update();
 			}
 		}
 
@@ -77,7 +118,7 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// </summary>
 		protected virtual void DrawScrollBar()
 		{
-
+			// TODO
 		}
 
 		/// <summary>
