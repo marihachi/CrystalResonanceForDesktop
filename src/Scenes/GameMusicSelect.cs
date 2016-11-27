@@ -12,13 +12,13 @@ namespace CrystalResonanceDesktop.Scenes
 {
 	public class GameMusicSelect : IScene
 	{
-		public ScrollableListControl<Control> SongList { get; set; }
+		public SwipeableListControl<Control> SongList { get; set; }
 
 		private bool IsInitialized { get; set; }
 
 		private void Initialize()
 		{
-			SongList = new ScrollableListControl<Control>(new Point(0, 0), 10, Color.White, new Size((int)(SystemCore.Instance.WindowSize.Width * (49 / 64d)), SystemCore.Instance.WindowSize.Height), System.Windows.Forms.Orientation.Vertical);
+			SongList = new SwipeableListControl<Control>(new Point(0, 0), 10, Color.White, new Size((int)(SystemCore.Instance.WindowSize.Width * (49 / 64d)), SystemCore.Instance.WindowSize.Height), System.Windows.Forms.Orientation.Vertical);
 
 			foreach (var i in Enumerable.Range(0, 20))
 				SongList.Items.Add(
