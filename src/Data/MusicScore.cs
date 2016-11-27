@@ -143,7 +143,7 @@ namespace CrystalResonanceDesktop.Data
 					{
 						if (json.defficulties.IsDefined(relation.Key))
 						{
-							var jsonDifficulty = json.defficulties.easy;
+							var jsonDifficulty = json.defficulties[relation.Key];
 
 							var difficulty = new MusicDifficulty(4);
 							score.Difficulties[(int)relation.Value] = difficulty;
