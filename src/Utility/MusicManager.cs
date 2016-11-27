@@ -65,7 +65,6 @@ namespace CrystalResonanceDesktop.Utility
 		public async Task LoadScoreAsync(string scoreFilePath)
 		{
 			Score = await MusicScore.DeserializeAsync(scoreFilePath);
-			await Score.ExtractSong();
 			ScoreStatus = new ScoreStatus(0, Score);
 		}
 
