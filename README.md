@@ -13,4 +13,10 @@ image of game play:
 - [ffmpeg](https://ffmpeg.zeranoe.com)
 
 ## License
-Released under the [MIT license](LICENSE)
+basic released under the [MIT license](LICENSE)
+
+**However, that this shall not apply to following provided resource by other people**
+
+## Special Thanks (Not inclued non built-in resource)
+- しゃおん
+  - Song: Opening
