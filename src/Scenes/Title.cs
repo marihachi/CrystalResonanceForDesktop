@@ -25,9 +25,18 @@ namespace CrystalResonanceDesktop.Scenes
 			var scenes = SceneStorage.Instance;
 			var fonts = FontStorage.Instance;
 			var images = ImageStorage.Instance;
+			var sounds = SoundStorage.Instance;
+
+			if (sounds.Item("opening") == null)
+				sounds.Add("opening", new Sound("Resource/opening.mp3", 100));
 
 			if (images.Item("logo") == null)
 				images.Add("logo", new DxSharp.Data.Image("Resource/logo.png", 100, DxSharp.Data.Enum.Position.CenterMiddle));
+
+			var opening = sounds.Item("opening");
+
+			opening.CurrentTime = 0;
+			opening.Play();
 
 			var style = new ButtonStyle(
 				fonts.Item("メイリオ20"),
@@ -39,16 +48,19 @@ namespace CrystalResonanceDesktop.Scenes
 
 			TitleMenu.Add("Game Start", (s, e) => {
 				IsInitialized = false;
+				sounds.Item("opening").Stop();
 				scenes.TargetScene = scenes.FindByName("GameMusicSelect");
 			});
 
 			TitleMenu.Add("Setting", (s, e) => {
 				IsInitialized = false;
+				sounds.Item("opening").Stop();
 				scenes.TargetScene = scenes.FindByName("Setting");
 			});
 
 			TitleMenu.Add("Close", (s, e) => {
 				IsInitialized = false;
+				sounds.Item("opening").Stop();
 				core.Close();
 			});
 
@@ -58,6 +70,7 @@ namespace CrystalResonanceDesktop.Scenes
 		public void Update()
 		{
 			var input = Input.Instance;
+			var sounds = SoundStorage.Instance;
 
 			if (!IsInitialized)
 			{
@@ -85,6 +98,7 @@ namespace CrystalResonanceDesktop.Scenes
 				}
 			}
 
+			sounds.Item("opening").Update();
 			TitleMenu.Update();
 		}
 
