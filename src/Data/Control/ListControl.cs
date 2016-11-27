@@ -1,6 +1,4 @@
-﻿using DxLibDLL;
-using DxSharp;
-using DxSharp.Data;
+﻿using DxSharp.Data;
 using DxSharp.Utility;
 using System;
 using System.Collections.Generic;
@@ -100,6 +98,32 @@ namespace CrystalResonanceDesktop.Data.Control
 		public List<T> Items { get; private set; } = new List<T>();
 
 		/// <summary>
+		/// 項目の位置を更新します
+		/// </summary>
+		/// <param name="item"></param>
+		/// <param name="itemIndex"></param>
+		protected virtual void UpdateItemLocation(T item, int itemIndex)
+		{
+			// 現在の項目までの項目の一覧
+			var untilItems = Items.GetRange(0, itemIndex);
+
+			var untilPadding = Padding * (untilItems.Count * 2 + 1);
+
+			// 垂直方向
+			if (Orientation == Orientation.Vertical)
+			{
+				item.Location = new Point(Padding, untilItems.Sum(i => i.Size.Height) + untilPadding);
+			}
+			// 水平方向
+			else if (Orientation == Orientation.Horizontal)
+			{
+				item.Location = new Point(untilItems.Sum(i => i.Size.Width) + untilPadding, Padding);
+			}
+			else
+				throw new InvalidOperationException("Invalid ListControl.Orientation");
+		}
+
+		/// <summary>
 		/// 状態を更新します
 		/// </summary>
 		public override void Update()
@@ -108,23 +132,7 @@ namespace CrystalResonanceDesktop.Data.Control
 			{
 				var item = Items[itemIndex];
 
-				// 現在の項目までの項目の一覧
-				var untilItems = Items.GetRange(0, itemIndex);
-
-				var untilPadding = Padding * (untilItems.Count * 2 + 1);
-
-				// 垂直方向
-				if (Orientation == Orientation.Vertical)
-				{
-					item.Location = new Point(Padding, untilItems.Sum(i => i.Size.Height) + untilPadding);
-				}
-				// 水平方向
-				else if (Orientation == Orientation.Horizontal)
-				{
-					item.Location = new Point(untilItems.Sum(i => i.Size.Width) + untilPadding, Padding);
-				}
-				else
-					throw new InvalidOperationException("Invalid ListControl.Orientation");
+				UpdateItemLocation(item, itemIndex);
 
 				if (item.ParentControl != this)
 					item.ParentControl = this;
@@ -136,12 +144,9 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// <summary>
 		/// 項目を描画します
 		/// </summary>
-		protected virtual void DrawItems()
+		protected virtual void DrawItem(T item)
 		{
-			foreach (var item in Items)
-			{
-				item.Draw();
-			}
+			item.Draw();
 		}
 
 		/// <summary>
@@ -158,11 +163,12 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// </summary>
 		public override void Draw()
 		{
-			var core = SystemCore.Instance;
-
 			using (new DrawArea(AbsoluteLocation, Size))
 			{
-				DrawItems();
+				foreach (var item in Items)
+				{
+					DrawItem(item);
+				}
 			}
 
 			DrawBorder();

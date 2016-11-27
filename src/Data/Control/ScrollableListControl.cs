@@ -1,6 +1,5 @@
 ﻿using DxSharp.Utility;
 using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -36,9 +35,9 @@ namespace CrystalResonanceDesktop.Data.Control
 		}
 
 		/// <summary>
-		/// 状態を更新します
+		/// スクロール位置を更新します
 		/// </summary>
-		public override void Update()
+		public virtual void UpdateScrollLocation()
 		{
 			if (Input.Instance.Mouse.WheelValue != 0)
 			{
@@ -83,34 +82,42 @@ namespace CrystalResonanceDesktop.Data.Control
 				else
 					throw new InvalidOperationException("Invalid ListControl.Orientation");
 			}
+		}
 
-			foreach (var itemIndex in Enumerable.Range(0, Items.Count))
+		/// <summary>
+		/// 項目の位置を更新します
+		/// </summary>
+		/// <param name="item"></param>
+		/// <param name="itemIndex"></param>
+		protected override void UpdateItemLocation(T item, int itemIndex)
+		{
+			// 現在の項目までの項目の一覧
+			var untilItems = Items.GetRange(0, itemIndex);
+
+			var untilPadding = Padding * (untilItems.Count * 2 + 1);
+
+			// 垂直方向
+			if (Orientation == Orientation.Vertical)
 			{
-				var item = Items[itemIndex];
-
-				// 現在の項目までの項目の一覧
-				var untilItems = Items.GetRange(0, itemIndex);
-
-				var untilPadding = Padding * (untilItems.Count * 2 + 1);
-
-				// 垂直方向
-				if (Orientation == Orientation.Vertical)
-				{
-					item.Location = new Point(Padding, untilItems.Sum(i => i.Size.Height) + untilPadding - ScrollLocation.Y);
-				}
-				// 水平方向
-				else if (Orientation == Orientation.Horizontal)
-				{
-					item.Location = new Point(untilItems.Sum(i => i.Size.Width) + untilPadding - ScrollLocation.X, Padding);
-				}
-				else
-					throw new InvalidOperationException("Invalid ListControl.Orientation");
-
-				if (item.ParentControl != this)
-					item.ParentControl = this;
-
-				item.Update();
+				item.Location = new Point(Padding, untilItems.Sum(i => i.Size.Height) + untilPadding - ScrollLocation.Y);
 			}
+			// 水平方向
+			else if (Orientation == Orientation.Horizontal)
+			{
+				item.Location = new Point(untilItems.Sum(i => i.Size.Width) + untilPadding - ScrollLocation.X, Padding);
+			}
+			else
+				throw new InvalidOperationException("Invalid ListControl.Orientation");
+		}
+
+		/// <summary>
+		/// 状態を更新します
+		/// </summary>
+		public override void Update()
+		{
+			UpdateScrollLocation();
+
+			base.Update();
 		}
 
 		/// <summary>
@@ -118,7 +125,7 @@ namespace CrystalResonanceDesktop.Data.Control
 		/// </summary>
 		protected virtual void DrawScrollBar()
 		{
-			// TODO
+			// TODO: そのうちかくよ
 		}
 
 		/// <summary>
