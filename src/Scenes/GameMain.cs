@@ -21,7 +21,7 @@ namespace CrystalResonanceDesktop.Scenes
 		private Task LoadTask { get; set; }
 		private Exception LoadTaskException { get; set; }
 
-		private MusicManager Manager { get; set; }
+		public MusicManager Manager { get; set; }
 
 		private Box SideBar { get; set; }
 		private Box MessageBox { get; set; }
@@ -29,8 +29,6 @@ namespace CrystalResonanceDesktop.Scenes
 		private void Initialize()
 		{
 			var core = SystemCore.Instance;
-
-			Manager = new MusicManager();
 
 			MessageBox = new Box(new Point(0, 0), new Size(core.WindowSize.Width, 0), Color.FromArgb(186, 231, 234), true, 0, Position.LeftMiddle);
 
@@ -41,7 +39,8 @@ namespace CrystalResonanceDesktop.Scenes
 					MessageBox.FadeSize(new Size(core.WindowSize.Width, 200), 0.5);
 					MessageBox.FadeOpacity(100, 0.5);
 
-					await Manager.LoadScoreAsync("Song/test/score.json");
+					Manager.ScoreStatus = new ScoreStatus(0, Manager.Score);
+					await Manager.Score.ExtractSong();
 
 					Manager.Score.CurrentDifficultyType = Data.Enum.MusicDifficultyType.Easy;
 
@@ -99,9 +98,8 @@ namespace CrystalResonanceDesktop.Scenes
 			var images = ImageStorage.Instance;
 
 			// 判定ライン
-			DX.SetDrawBlendMode(DX.DX_BLENDMODE_ALPHA, (int)(255 * 0.5));
-			DX.DrawLine(0, 650, SystemCore.Instance.WindowSize.Width, 650, 0xffffff);
-			DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 0);
+			using (new AlphaBlend((int)(255 * 0.5)))
+				DX.DrawLine(0, 650, SystemCore.Instance.WindowSize.Width, 650, 0xffffff);
 
 			// レーン軸の決定
 			var margin = 50;

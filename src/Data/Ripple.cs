@@ -1,4 +1,5 @@
 ﻿using DxLibDLL;
+using DxSharp.Utility;
 using System.Drawing;
 
 namespace CrystalResonanceDesktop.Data
@@ -22,9 +23,8 @@ namespace CrystalResonanceDesktop.Data
 
 		public void Draw()
 		{
-			DX.SetDrawBlendMode(DX.DX_BLENDMODE_ALPHA, (int)(255 * 0.5));
-			DX.DrawCircle(Location.X, Location.Y, Radius, 0xffffff, 0);
-			DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 0);
+			using (new AlphaBlend((int)(255 * 0.5)))
+				DX.DrawCircle(Location.X, Location.Y, Radius, 0xffffff, 0);
 		}
 	}
 }

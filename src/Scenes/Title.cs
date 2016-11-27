@@ -1,11 +1,13 @@
-﻿using DxSharp;
+﻿using CrystalResonanceDesktop.Data;
+using CrystalResonanceDesktop.Data.Control;
+using DxSharp;
 using DxSharp.Data;
-using System.Drawing;
 using DxSharp.Storage;
-using CrystalResonanceDesktop.Data;
+using DxSharp.Utility;
 using System;
 using System.Collections.Generic;
-using DxSharp.Utility;
+using System.Drawing;
+using static CrystalResonanceDesktop.Data.Control.ButtonControl;
 
 namespace CrystalResonanceDesktop.Scenes
 {
@@ -13,7 +15,7 @@ namespace CrystalResonanceDesktop.Scenes
 	{
 		private bool IsInitialized { get; set; }
 
-		private Menu TitleMenu { get; set; }
+		private MenuControl TitleMenu { get; set; }
 		private List<Ripple> Ripples { get; set; } = new List<Ripple>();
 		private Random Random { get; set; } = new Random();
 
@@ -23,46 +25,44 @@ namespace CrystalResonanceDesktop.Scenes
 			var scenes = SceneStorage.Instance;
 			var fonts = FontStorage.Instance;
 			var images = ImageStorage.Instance;
+			var sounds = SoundStorage.Instance;
+
+			if (sounds.Item("opening") == null)
+				sounds.Add("opening", new Sound("Resource/opening.mp3", 100));
 
 			if (images.Item("logo") == null)
 				images.Add("logo", new DxSharp.Data.Image("Resource/logo.png", 100, DxSharp.Data.Enum.Position.CenterMiddle));
 
-			TitleMenu = new Menu(
-				new Point(0, 100),
-				new Size(400, 50),
-				DxSharp.Data.Enum.Position.CenterMiddle,
-				20,
+			var opening = sounds.Item("opening");
+
+			opening.CurrentTime = 0;
+			opening.Play();
+
+			var style = new ButtonStyle(
 				fonts.Item("メイリオ20"),
-				new ButtonStyle(Color.FromArgb(160, 255, 255, 255), Color.Transparent, Color.FromArgb(160, 255, 255, 255)),
-				new ButtonStyle(Color.FromArgb(200, 255, 255, 255), Color.Transparent, Color.FromArgb(200, 255, 255, 255)),
-				new ButtonStyle(Color.FromArgb(255, 255, 255, 255), Color.Transparent, Color.FromArgb(255, 255, 255, 255)));
+				new ButtonStyleStatus(Color.FromArgb(160, 255, 255, 255), Color.Transparent, Color.FromArgb(160, 255, 255, 255)),
+				new ButtonStyleStatus(Color.FromArgb(200, 255, 255, 255), Color.Transparent, Color.FromArgb(200, 255, 255, 255)),
+				new ButtonStyleStatus(Color.FromArgb(255, 255, 255, 255), Color.Transparent, Color.FromArgb(255, 255, 255, 255)));
 
-			TitleMenu.Add("Game Start");
-			TitleMenu.Add("Setting");
-			TitleMenu.Add("Close");
+			TitleMenu = new MenuControl(new Point(core.WindowSize.Width / 2 - (200 + 10), core.WindowSize.Height * 3 / 5), 10, new Size(400, 50), Color.Transparent, style);
 
-			TitleMenu.ItemClick += (s, e) =>
-			{
+			TitleMenu.Add("Game Start", (s, e) => {
 				IsInitialized = false;
+				sounds.Item("opening").Stop();
+				scenes.TargetScene = scenes.FindByName("GameMusicSelect");
+			});
 
-				// game start
-				if (e.ItemIndex == 0)
-				{
-					scenes.TargetScene = scenes.FindByName("GameMusicSelect");
-				}
+			TitleMenu.Add("Setting", (s, e) => {
+				IsInitialized = false;
+				sounds.Item("opening").Stop();
+				scenes.TargetScene = scenes.FindByName("Setting");
+			});
 
-				// setting
-				if (e.ItemIndex == 1)
-				{
-					scenes.TargetScene = scenes.FindByName("Setting");
-				}
-
-				// close
-				if (e.ItemIndex == 2)
-				{
-					core.Close();
-				}
-			};
+			TitleMenu.Add("Close", (s, e) => {
+				IsInitialized = false;
+				sounds.Item("opening").Stop();
+				core.Close();
+			});
 
 			Ripples.Clear();
 		}
@@ -70,6 +70,7 @@ namespace CrystalResonanceDesktop.Scenes
 		public void Update()
 		{
 			var input = Input.Instance;
+			var sounds = SoundStorage.Instance;
 
 			if (!IsInitialized)
 			{
@@ -86,7 +87,7 @@ namespace CrystalResonanceDesktop.Scenes
 				Ripples.Add(new Ripple(new Point(x, y)));
 			}
 
-			for(var i = 0; i < Ripples.Count; i++)
+			for (var i = 0; i < Ripples.Count; i++)
 			{
 				Ripples[i].AddRadius(2);
 
@@ -97,12 +98,14 @@ namespace CrystalResonanceDesktop.Scenes
 				}
 			}
 
+			sounds.Item("opening").Update();
 			TitleMenu.Update();
 		}
 
 		public void Draw()
 		{
 			var images = ImageStorage.Instance;
+			var fonts = FontStorage.Instance;
 
 			images.Item("logo").Draw(new Point(0, -150));
 
@@ -110,6 +113,12 @@ namespace CrystalResonanceDesktop.Scenes
 
 			foreach (var ripple in Ripples)
 				ripple.Draw();
+
+			if (SystemCore.Instance.IsShowDebugImageBorder)
+			{
+				var font = fonts.Item("メイリオ16");
+				font.Draw(new Point(0, 0), $"Mouse: {Input.Instance.Mouse.PointerLocation}", Color.White);
+			}
 		}
 	}
 }
