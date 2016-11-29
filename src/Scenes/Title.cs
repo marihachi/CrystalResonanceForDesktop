@@ -2,6 +2,7 @@
 using CrystalResonanceDesktop.Data.Control;
 using DxSharp;
 using DxSharp.Data;
+using DxSharp.Data.Enum;
 using DxSharp.Storage;
 using DxSharp.Utility;
 using System;
@@ -31,7 +32,7 @@ namespace CrystalResonanceDesktop.Scenes
 				sounds.Add("opening", new Sound("Resource/opening.mp3", 100));
 
 			if (images.Item("logo") == null)
-				images.Add("logo", new DxSharp.Data.Image("Resource/logo.png", 100, DxSharp.Data.Enum.Position.CenterMiddle));
+				images.Add("logo", new DxSharp.Data.Image("Resource/logo.png", 100));
 
 			var opening = sounds.Item("opening");
 
@@ -104,10 +105,12 @@ namespace CrystalResonanceDesktop.Scenes
 
 		public void Draw()
 		{
+			var core = SystemCore.Instance;
 			var images = ImageStorage.Instance;
 			var fonts = FontStorage.Instance;
 
-			images.Item("logo").Draw(new Point(0, -150));
+			var logo = images.Item("logo");
+			logo.Draw(new Point(core.WindowSize.Width / 2 - logo.Size.Width / 2, core.WindowSize.Height / 2 - logo.Size.Height / 2  - 150));
 
 			TitleMenu.Draw();
 

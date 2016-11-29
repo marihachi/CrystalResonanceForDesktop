@@ -29,6 +29,7 @@ namespace CrystalResonanceDesktop.Scenes
 		private void Initialize()
 		{
 			var core = SystemCore.Instance;
+			var images = ImageStorage.Instance;
 
 			MessageBox = new Box(new Point(0, 0), new Size(core.WindowSize.Width, 0), Color.FromArgb(186, 231, 234), true, 0, Position.LeftMiddle);
 
@@ -58,6 +59,9 @@ namespace CrystalResonanceDesktop.Scenes
 			SideBar = new Box(new Point(0, 0), new Size(0, core.WindowSize.Height), Color.FromArgb(117, 207, 213), true, 0);
 			SideBar.FadeOpacity(100);
 			SideBar.FadeSize(new Size(280, core.WindowSize.Height));
+
+			if (images.Item("logoMini") == null)
+				images.Add("logoMini", new DxSharp.Data.Image("Resource/logoMini.png", 100));
 		}
 
 		public void Update()
@@ -138,6 +142,10 @@ namespace CrystalResonanceDesktop.Scenes
 					fonts.Item("メイリオ20").Draw(new Point(50, core.WindowSize.Height * 3 / 4 - 30), $"♪{Manager.Score.SongTitle}", Color.White, Position.LeftTop);
 					fonts.Item("メイリオ20").Draw(new Point(50, core.WindowSize.Height * 3 / 4), $"{Manager.Combo} combo", Color.White, Position.LeftTop);
 				}
+
+				// ロゴ
+				var logoMini = images.Item("logoMini");
+				logoMini.Draw(new Point(SideBar.Size.Width - 280 + 280 / 2 - logoMini.Size.Width / 2, 30), 1);
 			}
 
 			// メッセージ

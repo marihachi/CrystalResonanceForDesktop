@@ -22,9 +22,9 @@ namespace CrystalResonanceDesktop.Utility
 			var images = ImageStorage.Instance;
 
 			if (images.Item("note") == null)
-				images.Add("note", new DxSharp.Data.Image("Resource/note.png", 100, Position.LeftTop));
+				images.Add("note", new DxSharp.Data.Image("Resource/note.png", 100));
 
-			var effect = new DxSharp.Data.Image("Resource/detectFrameEffect.png", 0, Position.LeftTop);
+			var effect = new DxSharp.Data.Image("Resource/detectFrameEffect.png", 0);
 
 			if (images.Item("detectFrameEffect1") == null)
 				images.Add("detectFrameEffect1", effect);
