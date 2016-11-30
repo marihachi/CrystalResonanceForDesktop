@@ -7,12 +7,11 @@ using DxSharp.Data.Enum;
 using DxSharp.Storage;
 using DxSharp.Utility;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using static CrystalResonanceDesktop.Data.Control.ButtonControl;
 
 namespace CrystalResonanceDesktop.Scenes
 {
@@ -27,12 +26,22 @@ namespace CrystalResonanceDesktop.Scenes
 
 		private void Initialize()
 		{
+			var core = SystemCore.Instance;
 			var scenes = SceneStorage.Instance;
+			var fonts = FontStorage.Instance;
 
-			SongList = new SwipeableListControl<Control>(new Point(0, 0), 30, Color.White, new Size((int)(SystemCore.Instance.WindowSize.Width * (49 / 64d)), SystemCore.Instance.WindowSize.Height), System.Windows.Forms.Orientation.Vertical);
+			// 曲リストのコントロール 初期化
+			SongList = new SwipeableListControl<Control>(
+				new Point(0, 0),
+				30,
+				Color.White,
+				new Size((int)(core.WindowSize.Width * (49 / 64d)), core.WindowSize.Height),
+				System.Windows.Forms.Orientation.Vertical);
 
+			// Songディレクトリ下のサブディレクトリを取得
 			var dirs = Directory.GetDirectories("Song/");
 
+			// 非同期読み込み
 			LoadTask = Task.Run(async () =>
 			{
 				try
@@ -45,11 +54,11 @@ namespace CrystalResonanceDesktop.Scenes
 							new Point(0, 0),
 							new Size(700, 60),
 							$"{score.SongTitle}  (BPM: {score.BPM})",
-							new ButtonControl.ButtonStyle(
-								FontStorage.Instance.Item("メイリオ20"),
-								new ButtonControl.ButtonStyleStatus(Color.White, Color.Transparent, Color.White),
-								new ButtonControl.ButtonStyleStatus(Color.White, Color.Transparent, Color.White),
-								new ButtonControl.ButtonStyleStatus(Color.White, Color.Transparent, Color.White)));
+							new ButtonStyle(
+								fonts.Item("メイリオ20"),
+								new ButtonStyleStatus(Color.White, Color.Transparent, Color.White),
+								new ButtonStyleStatus(Color.White, Color.Transparent, Color.White),
+								new ButtonStyleStatus(Color.White, Color.Transparent, Color.White)));
 
 						button.Click += (s, e) =>
 						{
@@ -94,21 +103,13 @@ namespace CrystalResonanceDesktop.Scenes
 				IsInitialized = false;
 			}
 
-			/*
-			if (input.GetKey(KeyType.Enter).InputTime == 1)
-			{
-				scenes.TargetScene = scenes.FindByName("GameMain");
-				IsInitialized = false;
-			}
-			*/
-
+			// 更新
 			SongList.Update();
 		}
 
 		public void Draw()
 		{
-			var fonts = FontStorage.Instance;
-
+			// 曲リスト
 			SongList.Draw();
 		}
 	}

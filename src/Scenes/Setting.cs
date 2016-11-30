@@ -1,8 +1,7 @@
-﻿using DxSharp;
-using DxSharp.Data;
+﻿using DxSharp.Data;
+using DxSharp.Data.Enum;
 using DxSharp.Storage;
 using DxSharp.Utility;
-using DxSharp.Data.Enum;
 
 namespace CrystalResonanceDesktop.Scenes
 {
@@ -17,7 +16,6 @@ namespace CrystalResonanceDesktop.Scenes
 
 		public void Update()
 		{
-			var core = SystemCore.Instance;
 			var input = Input.Instance;
 			var scenes = SceneStorage.Instance;
 

@@ -31,8 +31,19 @@ namespace CrystalResonanceDesktop.Scenes
 			var core = SystemCore.Instance;
 			var images = ImageStorage.Instance;
 
+			// リソース読み込み
+			if (images.Item("logoMini") == null)
+				images.Add("logoMini", new DxSharp.Data.Image("Resource/logoMini.png", 100));
+
+			// メッセージボックス 初期化
 			MessageBox = new Box(new Point(0, 0), new Size(core.WindowSize.Width, 0), Color.FromArgb(186, 231, 234), true, 0, Position.LeftMiddle);
 
+			// サイドバー 初期化
+			SideBar = new Box(new Point(0, 0), new Size(0, core.WindowSize.Height), Color.FromArgb(117, 207, 213), true, 0);
+			SideBar.FadeOpacity(100);
+			SideBar.FadeSize(new Size(280, core.WindowSize.Height));
+
+			// 非同期読み込み
 			LoadTask = Task.Run(async () =>
 			{
 				try
@@ -55,13 +66,6 @@ namespace CrystalResonanceDesktop.Scenes
 					LoadTaskException = e;
 				}
 			});
-
-			SideBar = new Box(new Point(0, 0), new Size(0, core.WindowSize.Height), Color.FromArgb(117, 207, 213), true, 0);
-			SideBar.FadeOpacity(100);
-			SideBar.FadeSize(new Size(280, core.WindowSize.Height));
-
-			if (images.Item("logoMini") == null)
-				images.Add("logoMini", new DxSharp.Data.Image("Resource/logoMini.png", 100));
 		}
 
 		public void Update()
@@ -90,6 +94,7 @@ namespace CrystalResonanceDesktop.Scenes
 				}
 			}
 
+			// 更新
 			SideBar.Update();
 			MessageBox.Update();
 		}
@@ -98,7 +103,6 @@ namespace CrystalResonanceDesktop.Scenes
 		{
 			var fonts = FontStorage.Instance;
 			var core = SystemCore.Instance;
-
 			var images = ImageStorage.Instance;
 
 			// 判定ライン
