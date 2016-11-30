@@ -7,6 +7,7 @@ using DxSharp.Data.Enum;
 using DxSharp.Storage;
 using DxSharp.Utility;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -39,14 +40,16 @@ namespace CrystalResonanceDesktop.Scenes
 				System.Windows.Forms.Orientation.Vertical);
 
 			// Songディレクトリ下のサブディレクトリを取得
-			var dirs = Directory.GetDirectories("Song/");
+			if (!Directory.Exists("Song/"))
+				Directory.CreateDirectory("Song/");
+			var dirs = new List<string>(Directory.GetDirectories("Song/"));
 
 			// 非同期読み込み
 			LoadTask = Task.Run(async () =>
 			{
 				try
 				{
-					foreach (var index in Enumerable.Range(0, dirs.Length))
+					foreach (var index in Enumerable.Range(0, dirs.Count))
 					{
 						var score = await MusicScore.DeserializeAsync($"{dirs[index]}/score.json");
 
