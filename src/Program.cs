@@ -63,7 +63,6 @@ namespace CrystalResonanceDesktop
 							$"ランタイムエラー({ex.GetType()})", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					}
 				}
-
 			}
 			catch (Exception ex) when (FirstException(ex) is ReflectionTypeLoadException)
 			{
