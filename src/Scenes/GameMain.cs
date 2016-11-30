@@ -105,6 +105,9 @@ namespace CrystalResonanceDesktop.Scenes
 			var core = SystemCore.Instance;
 			var images = ImageStorage.Instance;
 
+			var font16 = fonts.Item("メイリオ16");
+			var font20 = fonts.Item("メイリオ20");
+
 			// 判定ライン
 			using (new AlphaBlend((int)(255 * 0.5)))
 				DX.DrawLine(0, 650, SystemCore.Instance.WindowSize.Width, 650, 0xffffff);
@@ -143,8 +146,8 @@ namespace CrystalResonanceDesktop.Scenes
 				SideBar.Draw();
 				if (SideBar.Opacity == 100)
 				{
-					fonts.Item("メイリオ20").Draw(new Point(50, core.WindowSize.Height * 3 / 4 - 30), $"♪{Manager.Score.SongTitle}", Color.White, Position.LeftTop);
-					fonts.Item("メイリオ20").Draw(new Point(50, core.WindowSize.Height * 3 / 4), $"{Manager.Combo} combo", Color.White, Position.LeftTop);
+					font20.Draw(new Point(50, core.WindowSize.Height * 3 / 4 - 30), $"♪{Manager.Score.SongTitle}", Color.White, Position.LeftTop);
+					font20.Draw(new Point(50, core.WindowSize.Height * 3 / 4), $"{Manager.Combo} combo", Color.White, Position.LeftTop);
 				}
 
 				// ロゴ
@@ -156,25 +159,23 @@ namespace CrystalResonanceDesktop.Scenes
 			MessageBox.Draw();
 
 			if (!LoadTask.IsCompleted && !MessageBox.IsFading)
-				fonts.Item("メイリオ20").Draw(new Point(0, 0), "Now Loading ...", core.BackColor, Position.CenterMiddle);
+				font20.Draw(new Point(0, 0), "Now Loading ...", core.BackColor, Position.CenterMiddle);
 
 			// デバッグ
 			if (SystemCore.Instance.IsShowDebugImageBorder)
 			{
-				var font = fonts.Item("メイリオ16");
-
 				if (Manager.ScoreStatus != null)
 				{
-					font.Draw(new Point(5, 20 * 1), $"beatLocation: {Manager.ScoreStatus.BeatLocation:00.0}", Color.White);
-					font.Draw(new Point(5, 20 * 2), $"beatIndex: {Manager.ScoreStatus.BeatIndex}", Color.White);
-					font.Draw(new Point(5, 20 * 3), $"beatOffset: {Manager.ScoreStatus.BeatOffset:00.0}", Color.White);
-					font.Draw(new Point(5, 20 * 4), $"barLocation: {Manager.ScoreStatus.BarLocation:00.0}", Color.White);
-					font.Draw(new Point(5, 20 * 5), $"barIndex: {Manager.ScoreStatus.BarIndex}", Color.White);
-					font.Draw(new Point(5, 20 * 6), $"barOffset: {Manager.ScoreStatus.BarOffset:00.0}", Color.White);
-					font.Draw(new Point(5, 20 * 7), $"barBeatLocation1: {Manager.ScoreStatus.BarBeatLocation:00.0}", Color.White);
-					font.Draw(new Point(5, 20 * 8), $"countLocation: {Manager.ScoreStatus.CountLocation:00.0}", Color.White);
+					font16.Draw(new Point(5, 20 * 1), $"beatLocation: {Manager.ScoreStatus.BeatLocation:00.0}", Color.White);
+					font16.Draw(new Point(5, 20 * 2), $"beatIndex: {Manager.ScoreStatus.BeatIndex}", Color.White);
+					font16.Draw(new Point(5, 20 * 3), $"beatOffset: {Manager.ScoreStatus.BeatOffset:00.0}", Color.White);
+					font16.Draw(new Point(5, 20 * 4), $"barLocation: {Manager.ScoreStatus.BarLocation:00.0}", Color.White);
+					font16.Draw(new Point(5, 20 * 5), $"barIndex: {Manager.ScoreStatus.BarIndex}", Color.White);
+					font16.Draw(new Point(5, 20 * 6), $"barOffset: {Manager.ScoreStatus.BarOffset:00.0}", Color.White);
+					font16.Draw(new Point(5, 20 * 7), $"barBeatLocation1: {Manager.ScoreStatus.BarBeatLocation:00.0}", Color.White);
+					font16.Draw(new Point(5, 20 * 8), $"countLocation: {Manager.ScoreStatus.CountLocation:00.0}", Color.White);
 				}
-				font.Draw(new Point(5, 20 * 9), $"NoteSpeedBase: {Manager.NoteSpeedBase}", Color.White);
+				font16.Draw(new Point(5, 20 * 9), $"NoteSpeedBase: {Manager.NoteSpeedBase}", Color.White);
 			}
 		}
 	}
