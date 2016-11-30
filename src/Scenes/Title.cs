@@ -42,25 +42,28 @@ namespace CrystalResonanceDesktop.Scenes
 			// メニュー 初期化
 			var style = new ButtonStyle(
 				fonts.Item("メイリオ20"),
-				new ButtonStyleStatus(Color.FromArgb(160, 255, 255, 255), Color.Transparent, Color.FromArgb(160, 255, 255, 255)),
-				new ButtonStyleStatus(Color.FromArgb(200, 255, 255, 255), Color.Transparent, Color.FromArgb(200, 255, 255, 255)),
-				new ButtonStyleStatus(Color.FromArgb(255, 255, 255, 255), Color.Transparent, Color.FromArgb(255, 255, 255, 255)));
+				new ButtonStyleStatus(Color.FromArgb(160, 255, 255, 255), Color.FromArgb(30, Color.White), Color.FromArgb(180, 255, 255, 255)),
+				new ButtonStyleStatus(Color.FromArgb(200, 255, 255, 255), Color.FromArgb(30, Color.White), Color.FromArgb(220, 255, 255, 255)),
+				new ButtonStyleStatus(Color.FromArgb(255, 255, 255, 255), Color.FromArgb(30, Color.White), Color.FromArgb(255, 255, 255, 255)));
 
 			TitleMenu = new MenuControl(new Point(core.WindowSize.Width / 2 - (200 + 10), core.WindowSize.Height * 3 / 5), 10, new Size(400, 50), Color.Transparent, style);
 
-			TitleMenu.Add("Game Start", (s, e) => {
+			TitleMenu.Add("Game Start", (s, e) =>
+			{
 				IsInitialized = false;
 				sounds.Item("opening").Stop();
 				scenes.TargetScene = scenes.FindByName("GameMusicSelect");
 			});
 
-			TitleMenu.Add("Setting", (s, e) => {
+			TitleMenu.Add("Setting", (s, e) =>
+			{
 				IsInitialized = false;
 				sounds.Item("opening").Stop();
 				scenes.TargetScene = scenes.FindByName("Setting");
 			});
 
-			TitleMenu.Add("Close", (s, e) => {
+			TitleMenu.Add("Close", (s, e) =>
+			{
 				IsInitialized = false;
 				sounds.Item("opening").Stop();
 				core.Close();
@@ -116,7 +119,7 @@ namespace CrystalResonanceDesktop.Scenes
 
 			// ロゴ
 			var logo = images.Item("logo");
-			logo.Draw(new Point(core.WindowSize.Width / 2 - logo.Size.Width / 2, core.WindowSize.Height / 2 - logo.Size.Height / 2  - 150));
+			logo.Draw(new Point(core.WindowSize.Width / 2 - logo.Size.Width / 2, core.WindowSize.Height / 2 - logo.Size.Height / 2 - 150));
 
 			// メニュー
 			TitleMenu.Draw();
