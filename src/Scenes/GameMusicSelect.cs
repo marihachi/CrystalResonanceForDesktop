@@ -49,16 +49,16 @@ namespace CrystalResonanceDesktop.Scenes
 					foreach (var index in Enumerable.Range(0, dirs.Length))
 					{
 						var score = await MusicScore.DeserializeAsync($"{dirs[index]}/score.json");
-						
+
 						var button = new ButtonControl(
 							new Point(0, 0),
 							new Size(700, 60),
 							$"{score.SongTitle}  (BPM: {score.BPM})",
 							new ButtonStyle(
 								fonts.Item("メイリオ20"),
-								new ButtonStyleStatus(Color.White, Color.Transparent, Color.White),
-								new ButtonStyleStatus(Color.White, Color.Transparent, Color.White),
-								new ButtonStyleStatus(Color.White, Color.Transparent, Color.White)));
+								new ButtonStyleStatus(Color.FromArgb(160, 255, 255, 255), Color.FromArgb(30, Color.White), Color.FromArgb(180, 255, 255, 255)),
+								new ButtonStyleStatus(Color.FromArgb(200, 255, 255, 255), Color.FromArgb(30, Color.White), Color.FromArgb(220, 255, 255, 255)),
+								new ButtonStyleStatus(Color.FromArgb(255, 255, 255, 255), Color.FromArgb(30, Color.White), Color.FromArgb(255, 255, 255, 255))));
 
 						button.Click += (s, e) =>
 						{
